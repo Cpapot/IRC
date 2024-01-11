@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   parsingUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 10:37:08 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/11 17:06:39 by cpapot           ###   ########.fr       */
+/*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
+/*   Updated: 2024/01/11 18:08:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string>
 #include <iostream>
-#include "server.hpp"
-#include "client.hpp"
+#include <string>
+#include <vector>
 
-int main(int argc, char **argv)
+void tokenize(std::string const &str, const char delim, std::vector<std::string> &out)
 {
-	server	serv(argc, argv);
-	while (serv.getStatus())
-	{
-			client(serv.acceptClient());
-	}
+	size_t start;
+	size_t end = 0;
 
+	while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
+	{
+		end = str.find(delim, start);
+		out.push_back(str.substr(start, end - start));
+	}
 }

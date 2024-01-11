@@ -6,64 +6,42 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2023/12/03 07:35:28 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/11 18:46:34 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-#include "server.hpp"
+# include <arpa/inet.h>
+# include <iostream>
+# include <string>
+# include <unistd.h>
+# include <vector>
+# include <cstring>
 
-//le client depend du server
-class client: public server
+# define CLIENTBUFFERSIZE	1024
+
+void tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
+
+class client
 {
 private:
-	socklen_t	_clientSocketLen;
+	std::string	_nickname;
+
+	std::string	_username;
+	std::string	_hostname;
+	std::string	_servername;
+	std::string	_realname;
+
+	std::string	_pass;
 	int			_clientSocket;
-	sockaddr_in	_clientAddrs;
 public:
-	client(/* args */);
+	client(int clientSocket);
 	~client();
 
-	int		acceptClient(void);
-
-	//test
-	void	printmsg();
+	void	setClientInfo(char buffer[CLIENTBUFFERSIZE]);
+	void	parseConnectionCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 };
-
-void	client::printmsg()
-{
-	char	buffer[1024];
-
-	memset(buffer, 0, sizeof(buffer));
-	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
-		std::cout << "Error" << std::endl;
-	else
-		std::cout << "message : \"" << buffer << "\"" << std::endl;
-}
-
-int	client::acceptClient()
-{
-	std::cout << "Waiting for client" << std::endl;
-	_clientSocket = accept(_socket, (struct sockaddr*)&_clientAddrs, &_clientSocketLen);
-	if (_clientSocket == -1)
-	{
-		std::cout << "client can't connect" << std::endl;
-		return 0;
-	}
-	std::cout << "Connexion accepted" << std::endl;
-	return 1;
-}
-client::client(/* args */)
-{
-	_clientSocketLen = sizeof(_clientAddrs);
-	this->acceptClient();
-	this->printmsg();
-}
-
-client::~client()
-{
-}
 
 #endif

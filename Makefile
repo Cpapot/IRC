@@ -11,7 +11,10 @@ NAME		=	IRC
 
 # --------------- FILES --------------- #
 
-LIST_SRC		=	main.cpp
+LIST_SRC		=	main.cpp	\
+					parsingUtils.cpp	\
+					server.cpp			\
+					client.cpp
 
 # ------------ DIRECTORIES ------------ #
 
