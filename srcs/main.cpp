@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:37:08 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/11 17:06:39 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:04:00 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int main(int argc, char **argv)
 	server	serv(argc, argv);
 	while (serv.getStatus())
 	{
-			client(serv.acceptClient());
+		client cl(serv.acceptClient());
+		std::cout << cl;
 	}
 
 }
