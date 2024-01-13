@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/12 16:56:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:34:27 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,26 @@ public:
 	~client();
 
 	void	setClientInfo(char buffer[CLIENTBUFFERSIZE]);
-	void	parseConnectionCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
+	bool	parseConnectionCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 	void	sendToClient(std::string message);
+	void	sendToClient(char *message);
 
-	friend std::ostream& operator<<(std::ostream& os, const client& dt);
 
+	//first handshake
+	bool	hsNick(std::vector<std::string> splitLine);
+	bool	hsUser(std::vector<std::string> splitLine);
+	bool	hsPass(std::vector<std::string> splitLine);
+	bool	hsCap(void);
+
+	//getters
 	std::string	getUsername(void);
 	std::string	getNickname(void);
 	std::string	getHostname(void);
 	std::string	getRealname(void);
 	std::string	getPass(void);
 	int			getSocket(void);
+
+	friend std::ostream& operator<<(std::ostream& os, const client& dt);
 };
 
 #endif

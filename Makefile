@@ -14,7 +14,8 @@ NAME		=	IRC
 LIST_SRC		=	main.cpp	\
 					parsingUtils.cpp	\
 					server.cpp			\
-					client.cpp
+					client.cpp			\
+					firstHandShake.cpp
 
 # ------------ DIRECTORIES ------------ #
 
