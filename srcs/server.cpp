@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/11 18:43:10 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/15 12:29:47 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ server const	&server::operator=(const server &src)
 	_port = src._port;
 	return (*this);
 }
+
+std::string		server::getPasswd(void)
+{
+	return (_passwd);
+}
+
 
 bool	server::getStatus(void)
 {
@@ -36,17 +42,24 @@ struct sockaddr_in	server::getAddrs(void)
 	return (_serverAddrs);
 }
 
+void	server::assosiateClientSocket(int clientSocket)
+{
+	if (_clientMap.find(clientSocket) == _clientMap.end())
+		_clientMap[clientSocket] = new client(clientSocket, this);
+	_clientMap[clientSocket]->listenToClient();
+}
+
 int		server::acceptClient()
 {
 	int clientSocket;
 
 	if (!_status)
 		throw std::invalid_argument("server::ServerNotLauched");
-
 	std::cout << "Waiting for client" << std::endl;
 	clientSocket = accept(_socket, (struct sockaddr*)&_clientAddrs, &_clientSocketLen);
 	if (clientSocket == -1)
 	{
+		std::cout << "log(-1) failed: " << std::strerror(errno) << '\n';
 		std::cout << "client can't connect" << std::endl;
 		return -1;
 	}
@@ -56,17 +69,12 @@ int		server::acceptClient()
 
 void	server::parseArg(int argc, char **argv)
 {
-	if (argc <= 1)
-		throw std::invalid_argument("server::PortNotSpecified");
-	if (argc > 3)
-		throw std::invalid_argument("server::ToMuchArg");
+	if (argc != 3)
+		throw std::invalid_argument("server::InvalidArgument");
 	_port = std::atoi(argv[1]);
 	if (_port <= 0 && _port >= 10000)
 		throw std::invalid_argument("server::invalidPort");
-	if (argc == 2)
-		_passwd = std::string("");
-	else
-		_passwd = std::string(argv[2]);
+	_passwd = std::string(argv[2]);
 }
 
 int		server::launch(void)
@@ -136,5 +144,7 @@ server::server(int argc, char **argv)
 
 server::~server()
 {
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+		delete i->second;
 	close(_socket);
 }

@@ -15,7 +15,7 @@ LIST_SRC		=	main.cpp	\
 					parsingUtils.cpp	\
 					server.cpp			\
 					client.cpp			\
-					firstHandShake.cpp
+					clientCommand.cpp
 
 # ------------ DIRECTORIES ------------ #
 

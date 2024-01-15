@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/13 17:34:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/15 11:35:09 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define CLIENTBUFFERSIZE	1024
 
+class server;
+
 void tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
 
 class client
@@ -36,21 +38,26 @@ private:
 
 	std::string	_pass;
 	int			_clientSocket;
+	bool		_logged;
+
+	server		*_serverPtr;
 public:
-	client(int clientSocket);
+	client(int _clientSocket, server *serverPtr);
 	~client();
 
-	void	setClientInfo(char buffer[CLIENTBUFFERSIZE]);
-	bool	parseConnectionCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 	void	sendToClient(std::string message);
 	void	sendToClient(char *message);
+	void	listenToClient();
 
 
-	//first handshake
-	bool	hsNick(std::vector<std::string> splitLine);
-	bool	hsUser(std::vector<std::string> splitLine);
-	bool	hsPass(std::vector<std::string> splitLine);
-	bool	hsCap(void);
+	bool	parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
+
+	//command
+	void	findCommand(char buffer[CLIENTBUFFERSIZE]);
+	bool	Nick(std::vector<std::string> splitLine);
+	bool	User(std::vector<std::string> splitLine);
+	bool	Pass(std::vector<std::string> splitLine);
+	bool	Cap(void);
 
 	//getters
 	std::string	getUsername(void);
