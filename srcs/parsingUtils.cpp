@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 18:03:50 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 21:36:18 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,14 @@
 #include <cstring>
 #include <vector>
 
-void tokenize(std::string const &str, const char delim, std::vector<std::string> &out)
+bool	IsChanel(std::string str)
+{
+	if (str[0] == '#')
+		return true;
+	return false;
+}
+
+void	tokenize(std::string const &str, const char delim, std::vector<std::string> &out)
 {
 	size_t start;
 	size_t end = 0;

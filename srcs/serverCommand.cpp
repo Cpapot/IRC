@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:10:50 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 19:26:58 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 20:07:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ bool	server::whoIs(int clientSocket, std::vector<std::string> splitline)
 	{
 		if (splitline[1] == i->second->getNickname())
 		{
-			_clientMap[clientSocket]->sendToClient(std::string(RPL_WHOISUSER(i->second->getNickname(), i->second->getUsername(), \
-				i->second->getHostname(), i->second->getRealname())));
+			_clientMap[clientSocket]->sendToClient(std::string(RPL_WHOISUSER(i->second->getNickname(), \
+				i->second->getUsername(), i->second->getHostname(), i->second->getRealname())));
 			break;
 		}
 		if (i == _clientMap.end()--)

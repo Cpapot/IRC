@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 19:56:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 21:42:29 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,58 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 	}
 }
 
+bool	client::mode(std::vector<std::string> splitLine)
+{
+	bool	mode;
+
+	if (splitLine.size() < 3)
+	{
+		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		return false;
+	}
+	if (splitLine[1] != _nickname)
+	{
+		if (_serverPtr->getClient(splitLine[1]) == NULL)
+			sendToClient(std::string(ERR_NOSUCHNICK(splitLine[1])));
+		else
+			sendToClient(std::string(ERR_USERSDONTMATCH));
+		return false;
+	}
+	if (splitLine[2][0] == '-')
+		mode = false;
+	else if (splitLine[2][0] == '+')
+		mode = true;
+	else
+	{
+		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG));
+		return false;
+	}
+	for (size_t i = 1; i != splitLine[2].size(); i++)
+	{
+		switch (char(splitLine[2][i]))
+		{
+			case 'i':
+				_modeInvisivle = mode;
+				break;
+			case 'w':
+				_modeWallops = mode;
+				break;
+			case 's':
+				_modeNotice = mode;
+				break;
+			case 'o':
+				if (!mode)
+					_modeOperator = mode;
+				break;
+			default:
+				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG));
+				return false;
+		}
+	}
+	sendToClient(std::string(RPL_UMODEIS(splitLine[1] + SPACE + splitLine[2])));
+	return true;
+}
+
 bool	client::quit(std::vector<std::string> splitLine)
 {
 	splitLine[1].erase(0, 1);
@@ -105,7 +157,7 @@ bool	client::User(std::vector<std::string> splitLine)
 	_servername = splitLine[3];
 	_realname = splitLine[4];
 	_realname.erase(0, 1);
-	sendToClient("001 " + _nickname + ": Welcome " + _nickname + "\r\n");
+	sendToClient("001 " + _nickname + " :Welcome " + _nickname + "\r\n");
 	return true;
 }
 
@@ -114,7 +166,6 @@ bool	client::Pass(std::vector<std::string> splitLine)
 	_pass = splitLine[1];
 	if (_pass.compare(_serverPtr->getPasswd()) != 0)
 	{
-		std::cout << "user pass : \"" << _pass << "\" " << _pass.length() << " pass: \"" << _serverPtr->getPasswd() << "\" " <<  _serverPtr->getPasswd().length() << " value :" << _pass.compare(_serverPtr->getPasswd()) << std::endl;
 		sendToClient(std::string(ERR_PASSWDMISMATCH));
 		return false;
 	}

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 18:36:29 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 21:07:54 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,16 @@ int		server::acceptClient()
 	}
 	std::cout << "Connexion accepted" << std::endl;
 	return clientSocket;
+}
+
+client	*server::getClient(std::string nickname)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->second->getNickname() == nickname)
+			return i->second;
+	}
+	return NULL;
 }
 
 void	server::parseArg(int argc, char **argv)
