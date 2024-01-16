@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 12:29:47 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 16:46:55 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,21 @@ struct sockaddr_in	server::getAddrs(void)
 	return (_serverAddrs);
 }
 
+pollfd	server::fillPollFd(int socket)
+{
+	pollfd	result;
+
+	result.fd = socket;
+	result.events = POLLIN;
+	result.revents = 0;
+	return result;
+}
+
 void	server::assosiateClientSocket(int clientSocket)
 {
 	if (_clientMap.find(clientSocket) == _clientMap.end())
 		_clientMap[clientSocket] = new client(clientSocket, this);
-	_clientMap[clientSocket]->listenToClient();
+	//_clientMap[clientSocket]->listenToClient();
 }
 
 int		server::acceptClient()
@@ -55,7 +65,6 @@ int		server::acceptClient()
 
 	if (!_status)
 		throw std::invalid_argument("server::ServerNotLauched");
-	std::cout << "Waiting for client" << std::endl;
 	clientSocket = accept(_socket, (struct sockaddr*)&_clientAddrs, &_clientSocketLen);
 	if (clientSocket == -1)
 	{
@@ -99,6 +108,36 @@ int		server::launch(void)
 		return 0;
 	}
 	return 1;
+}
+
+int		server::WaitForClient(void)
+{
+	if (_pollFds.size() == 0)
+		_pollFds.push_back(fillPollFd(_socket));
+	while (true)
+	{
+		if (poll(_pollFds.data(), _pollFds.size(), -1) == -1)
+			throw std::invalid_argument("server::PollError");
+		for (size_t i = 0; i != _pollFds.size(); i++)
+		{
+			if (_pollFds[i].revents && POLLIN)
+			{
+				if (_pollFds[i].fd == _socket)
+				{
+					// NOUVEL USER
+					int	newClientSocket = acceptClient();
+					_pollFds.push_back(fillPollFd(newClientSocket));
+					assosiateClientSocket(newClientSocket);
+					_clientMap[newClientSocket]->listenToClient();
+				}
+				else
+				{
+					// ANCIEN USER
+					_clientMap[_pollFds[i].fd]->listenToClient();
+				}
+			}
+		}
+	}
 }
 
 void	server::fillSockAddr(void)

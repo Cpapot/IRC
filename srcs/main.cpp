@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:37:08 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 12:05:18 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 16:47:58 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	signal(SIGINT, handler);
 	while (serv->getStatus())
 	{
-		serv->assosiateClientSocket(serv->acceptClient());
+		serv->WaitForClient();
 	}
 
 }

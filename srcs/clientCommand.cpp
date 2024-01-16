@@ -6,13 +6,38 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 12:55:43 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 16:00:45 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 #include "IRCMessage.hpp"
 #include "server.hpp"
+
+enum {CAP = 0, PASS = 1, NICK = 2, USER = 3};
+
+bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
+{
+	std::vector<std::string>	splitLine;
+	tokenize(split[splitIndex], ' ', splitLine);
+	if (commandIndex >= 2 && _logged != true)
+	{
+		sendToClient(std::string(ERR_NOTREGISTERED));
+		return false;
+	}
+	switch (commandIndex)
+	{
+	case CAP:
+		return Cap();
+	case PASS:
+		return Pass(splitLine);
+	case NICK:
+		return Nick(splitLine);
+	case USER:
+		return User(splitLine);
+	}
+	return false;
+}
 
 void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
@@ -32,7 +57,10 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 					return ;
 			}
 			else if (commandfound == false && y == 3)
-				throw std::invalid_argument("client::InvalidCommand");
+			{
+				split[i].erase(split[i].size() - 1);
+				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i])));
+			}
 		}
 	}
 }
@@ -47,7 +75,10 @@ bool	client::Nick(std::vector<std::string> splitLine)
 		for (size_t y = 0; y != invalidChar.size(); y++)
 		{
 			if (splitLine[1][i] == invalidChar[y])
-				std::cout << "ERROR " << y << " " << i << " " << splitLine[1] <<std::endl;
+			{
+				sendToClient(std::string(ERR_ERRONEUSNICKNAME));
+				return false;
+			}
 		}
 	}
 	_nickname = splitLine[1];

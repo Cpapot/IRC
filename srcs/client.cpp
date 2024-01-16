@@ -6,14 +6,12 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 12:53:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 14:17:48 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 #include "IRCMessage.hpp"
-
-enum {CAP = 0, PASS = 1, NICK = 2, USER = 3};
 
 void	client::listenToClient()
 {
@@ -38,33 +36,6 @@ void	client::sendToClient(std::string message)
 		throw	std::invalid_argument("client::CantSendMessageToClient");
 	else
 		std::cout << "\033[1;32m message sent : \"" << message << "\"\033[0m" << std::endl;
-}
-
-bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
-{
-	std::vector<std::string>	splitLine;
-	tokenize(split[splitIndex], ' ', splitLine);
-	if (commandIndex >= 2 && _logged != true)
-	{
-		sendToClient(std::string(ERR_NOTREGISTERED));
-		return false;
-	}
-	switch (commandIndex)
-	{
-	case CAP:
-		return Cap();
-		break;
-	case PASS:
-		return Pass(splitLine);
-		break;
-	case NICK:
-		return Nick(splitLine);
-		break;
-	case USER:
-		return User(splitLine);
-		break;
-	}
-	return false;
 }
 
 std::ostream& operator<<(std::ostream& os, const client& dt)

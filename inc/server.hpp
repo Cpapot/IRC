@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 11:10:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 16:40:09 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <cerrno>
 # include <map>
 # include "client.hpp"
+# include <poll.h>
 
 # define MAXCLIENT 64
 
@@ -40,6 +41,11 @@ private:
 	sockaddr_in				_clientAddrs;
 
 	std::map<int, client*>	_clientMap;
+	std::vector<pollfd>		_pollFds;
+
+	//server utils
+	pollfd				fillPollFd(int socket);
+	void				fillSockAddr();
 public:
 	//server(std::string _passwd, std::string _port);
 	server();
@@ -47,10 +53,10 @@ public:
 	~server();
 
 	void				assosiateClientSocket(int clientSocket);
-	void				fillSockAddr();
 	void				parseArg(int argc, char **argv);
 	int					launch(void);
 	int					acceptClient();
+	int					WaitForClient();
 
 	bool				getStatus(void);
 	int					getSocket(void);
