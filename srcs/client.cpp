@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 14:17:48 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 18:44:22 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ client::client(int clientSocket, server *serverPtr)
 client::~client()
 {
 	close(_clientSocket);
+	std::cout << _nickname << " deleted." << std::endl;
 }

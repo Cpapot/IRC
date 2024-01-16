@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/15 11:35:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 19:52:55 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@
 # include <unistd.h>
 # include <vector>
 # include <cstring>
+# include "server.hpp"
 
 # define CLIENTBUFFERSIZE	1024
-
-class server;
 
 void tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
 
@@ -39,6 +38,12 @@ private:
 	std::string	_pass;
 	int			_clientSocket;
 	bool		_logged;
+
+	//MODE
+	bool		_modeInvisivle;
+	bool		_modeNotice;
+	bool		_modeWallops;
+	bool		_modeOperator;
 
 	server		*_serverPtr;
 public:
@@ -58,6 +63,8 @@ public:
 	bool	User(std::vector<std::string> splitLine);
 	bool	Pass(std::vector<std::string> splitLine);
 	bool	Cap(void);
+	bool	quit(std::vector<std::string> splitLine);
+	bool	mode(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);

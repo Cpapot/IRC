@@ -15,7 +15,8 @@ LIST_SRC		=	main.cpp	\
 					parsingUtils.cpp	\
 					server.cpp			\
 					client.cpp			\
-					clientCommand.cpp
+					clientCommand.cpp	\
+					serverCommand.cpp
 
 # ------------ DIRECTORIES ------------ #
 

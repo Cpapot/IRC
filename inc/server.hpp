@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 16:40:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/16 18:52:39 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,18 @@
 # include <cstdlib>
 # include <cerrno>
 # include <map>
-# include "client.hpp"
+# include <vector>
 # include <poll.h>
 
 # define MAXCLIENT 64
 
+class client;
+
 class server
 {
 private:
+	const std::string		_serverName;
+
 	int						_socket;
 	struct sockaddr_in		_serverAddrs;
 	std::string				_passwd;
@@ -53,10 +57,15 @@ public:
 	~server();
 
 	void				assosiateClientSocket(int clientSocket);
+	void				deleteClientSocket(int clientSocket);
 	void				parseArg(int argc, char **argv);
 	int					launch(void);
 	int					acceptClient();
 	int					WaitForClient();
+
+	//command
+	bool				ping(int clientSocket, std::vector<std::string> splitLine);
+	bool				whoIs(int clientSocket, std::vector<std::string> splitline);
 
 	bool				getStatus(void);
 	int					getSocket(void);
