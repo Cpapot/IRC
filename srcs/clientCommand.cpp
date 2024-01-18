@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 21:42:29 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:11:29 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "IRCMessage.hpp"
 #include "server.hpp"
 
-enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE};
+enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN};
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {
@@ -43,6 +43,8 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 		return _serverPtr->whoIs(_clientSocket, splitLine);
 	case MODE:
 		return mode(splitLine);
+	case JOIN:
+		return true;
 	}
 	return false;
 }
@@ -50,13 +52,13 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
-	std::string	commandList[8] = {"CAP", "PASS", "PING", "QUIT","NICK", "USER", "WHOIS", "MODE"};
+	std::string	commandList[9] = {"CAP", "PASS", "PING", "QUIT","NICK", "USER", "WHOIS", "MODE", "JOIN"};
 
 	tokenize(std::string(buffer), '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
 	{
 		bool	commandfound = false;
-		for (size_t y = 0; y != 8; y++)
+		for (size_t y = 0; y != 9; y++)
 		{
 			if (split[i].find(commandList[y]) == 0 && commandfound == false)
 			{
@@ -64,7 +66,7 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 				if (!parseCommand(i, y, split))
 					return ;
 			}
-			else if (commandfound == false && y == 7)
+			else if (commandfound == false && y == 8)
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i])));
 		}
 	}
@@ -101,7 +103,7 @@ bool	client::mode(std::vector<std::string> splitLine)
 		switch (char(splitLine[2][i]))
 		{
 			case 'i':
-				_modeInvisivle = mode;
+				_modeInvisible = mode;
 				break;
 			case 'w':
 				_modeWallops = mode;

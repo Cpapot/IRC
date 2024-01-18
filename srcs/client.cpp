@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 21:15:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:11:10 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	client::getSocket(void)
 client::client(int clientSocket, server *serverPtr)
 {
 	_logged = false;
-	_modeInvisivle = false;
+	_modeInvisible = false;
 	_modeNotice = false;
 	_modeWallops = false;
 	_modeOperator = false;

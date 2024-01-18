@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 19:52:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:22:46 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ private:
 	bool		_logged;
 
 	//MODE
-	bool		_modeInvisivle;
+	bool		_modeInvisible;
 	bool		_modeNotice;
 	bool		_modeWallops;
 	bool		_modeOperator;
@@ -65,6 +65,7 @@ public:
 	bool	Cap(void);
 	bool	quit(std::vector<std::string> splitLine);
 	bool	mode(std::vector<std::string> splitLine);
+	bool	join(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);

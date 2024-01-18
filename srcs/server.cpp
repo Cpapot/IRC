@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 21:07:54 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:30:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	server::parseArg(int argc, char **argv)
 	if (argc != 3)
 		throw std::invalid_argument("server::InvalidArgument");
 	_port = std::atoi(argv[1]);
-	if (_port <= 0 && _port >= 10000)
+	if (_port <= 0 || _port >= 10000)
 		throw std::invalid_argument("server::invalidPort");
 	_passwd = std::string(argv[2]);
 }

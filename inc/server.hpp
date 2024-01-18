@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 21:04:42 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:33:59 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 class client;
 
+class channel;
+
 class server
 {
 private:
@@ -44,12 +46,13 @@ private:
 	socklen_t				_clientSocketLen;
 	sockaddr_in				_clientAddrs;
 
+	std::map<int, channel*>	_channelMap;
 	std::map<int, client*>	_clientMap;
 	std::vector<pollfd>		_pollFds;
 
 	//server utils
-	pollfd				fillPollFd(int socket);
-	void				fillSockAddr();
+	pollfd					fillPollFd(int socket);
+	void					fillSockAddr();
 public:
 	//server(std::string _passwd, std::string _port);
 	server();
