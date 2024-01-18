@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 12:11:29 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:57:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 	case MODE:
 		return mode(splitLine);
 	case JOIN:
-		return true;
+		return join(splitLine);
 	}
 	return false;
 }
@@ -70,6 +70,24 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i])));
 		}
 	}
+}
+
+bool	client::join(std::vector<std::string> splitLine)
+{
+	std::string	channelName;
+	if (splitLine.size() <= 1)
+	{
+		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		return false;
+	}
+	if (splitLine[1][0] == '#')
+		channelName = splitLine[1];
+	else
+	{
+		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		return false;
+	}
+	return true;
 }
 
 bool	client::mode(std::vector<std::string> splitLine)
