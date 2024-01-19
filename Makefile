@@ -16,7 +16,8 @@ LIST_SRC		=	main.cpp	\
 					server.cpp			\
 					client.cpp			\
 					clientCommand.cpp	\
-					serverCommand.cpp
+					serverCommand.cpp	\
+					channel.cpp
 
 # ------------ DIRECTORIES ------------ #
 

@@ -6,15 +6,16 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 15:57:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 12:43:50 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 #include "IRCMessage.hpp"
 #include "server.hpp"
+#include "channel.hpp"
 
-enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN};
+enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN, PRIVMSG};
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {
@@ -45,6 +46,8 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 		return mode(splitLine);
 	case JOIN:
 		return join(splitLine);
+	case PRIVMSG:
+		return privmsg(splitLine);
 	}
 	return false;
 }
@@ -52,13 +55,13 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
-	std::string	commandList[9] = {"CAP", "PASS", "PING", "QUIT","NICK", "USER", "WHOIS", "MODE", "JOIN"};
+	std::string	commandList[10] = {"CAP", "PASS", "PING", "QUIT","NICK", "USER", "WHOIS", "MODE", "JOIN", "PRIVMSG"};
 
 	tokenize(std::string(buffer), '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
 	{
 		bool	commandfound = false;
-		for (size_t y = 0; y != 9; y++)
+		for (size_t y = 0; y != 10; y++)
 		{
 			if (split[i].find(commandList[y]) == 0 && commandfound == false)
 			{
@@ -66,10 +69,32 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 				if (!parseCommand(i, y, split))
 					return ;
 			}
-			else if (commandfound == false && y == 8)
+			else if (commandfound == false && y == 9)
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i])));
 		}
 	}
+}
+
+bool	client::privmsg(std::vector<std::string> splitLine)
+{
+	std::string message;
+	if (splitLine.size() <= 2)
+	{
+		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		return false;
+	}
+	if (!_serverPtr->getChannel(splitLine[1]))
+	{
+		sendToClient(std::string(ERR_NOTONCHANNEL(splitLine[1])));
+		return false;
+	}
+	message = ":" + _nickname + " PRIVMSG " + splitLine[1] + " :";
+	splitLine[2].erase(0, 1);
+	for (size_t i = 2; i != splitLine.size(); i++)
+		message += splitLine[i] + SPACE;
+	message += END;
+	_serverPtr->getChannel(splitLine[1])->sendToAll(message, _clientSocket);
+	return true;
 }
 
 bool	client::join(std::vector<std::string> splitLine)
@@ -87,6 +112,13 @@ bool	client::join(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_NEEDMOREPARAMS));
 		return false;
 	}
+	_serverPtr->assosiateChannel(channelName);
+	if (_serverPtr->getChannel(channelName)->newClient(this) == 1)
+	{
+		sendToClient(std::string(ERR_UNKNOWNERROR("Already log into channel")));
+		return false;
+	}
+	sendToClient(":You are logged into " + channelName + END);
 	return true;
 }
 

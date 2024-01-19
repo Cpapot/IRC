@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 15:59:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 11:37:41 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ public:
 	bool				ping(int clientSocket, std::vector<std::string> splitLine);
 	bool				whoIs(int clientSocket, std::vector<std::string> splitline);
 
+	channel				*getChannel(std::string channel);
 	client				*getClient(std::string nickname);
 	bool				getStatus(void);
 	int					getSocket(void);
