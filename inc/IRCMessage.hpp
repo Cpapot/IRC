@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 12:46:13 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:01:46 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define ERR_ERRONEUSNICKNAME						"432 :Errorneus nickname\r\n"
 # define ERR_UMODEUNKNOWNFLAG						"501 :Unknown MODE flag\r\n"
 # define ERR_USERSDONTMATCH							"502 :Cannot change mode for other users\r\n"
+# define ERR_NOTONCHANNEL(channelName)				std::string("442 :") + channelName + std::string(" You're not on that channel") + END
+# define ERR_UNKNOWNERROR(msg)						std::string("400 :") + msg + END
 
 bool	testString(std::string str);
-// # define ERR_
 #endif

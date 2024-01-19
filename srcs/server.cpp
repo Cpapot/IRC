@@ -6,12 +6,13 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 12:30:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 11:51:16 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "client.hpp"
+#include "channel.hpp"
 
 server const	&server::operator=(const server &src)
 {
@@ -52,6 +53,19 @@ pollfd	server::fillPollFd(int socket)
 	return result;
 }
 
+void	server::deleteChannel(std::string channelName)
+{
+	for(std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
+	{
+		if (i->first == channelName)
+		{
+			delete i->second;
+			_channelMap.erase(i);
+			break;
+		}
+	}
+}
+
 void	server::deleteClientSocket(int clientSocket)
 {
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
@@ -70,6 +84,12 @@ void	server::deleteClientSocket(int clientSocket)
 			break ;
 		}
 	}
+}
+
+void		server::assosiateChannel(std::string channelName)
+{
+	if (_channelMap.find(channelName) == _channelMap.end())
+		_channelMap[channelName] = new channel(channelName);
 }
 
 void	server::assosiateClientSocket(int clientSocket)
@@ -93,6 +113,16 @@ int		server::acceptClient()
 	}
 	std::cout << "Connexion accepted" << std::endl;
 	return clientSocket;
+}
+
+channel	*server::getChannel(std::string channelName)
+{
+	for(std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
+	{
+		if (i->second->getChannelName() == channelName)
+			return i->second;
+	}
+	return NULL;
 }
 
 client	*server::getClient(std::string nickname)
