@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 17:45:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 17:57:46 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 													"*                                            *\n" + \
 													"*          Welcome to IRC++ Network!         *\n" + \
 													"*                                            *\n" + \
-													"**********************************************\n"
+													"**********************************************\n" + \
+													" \n    Use /join <channel> to join a channel\n \n"
 
 //REPLY
 # define RPL_USER(nickname, username, msg)				USER_ID(nickname, username) + std::string("001 ") + nickname + SPACE + DDOT + msg + END
