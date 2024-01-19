@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 10:24:54 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:07:53 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,15 @@
 
 # define ERR_UNKNOWNCOMMAND(cmd)					std::string("421 : \"") + cmd + std::string("\" Unknown command\r\n")
 # define ERR_PASSWDMISMATCH							"464 :Password incorrect\r\n"
-# define ERR_ALREADYREGISTERED						"462 :You may not reregister\r\n"
+# define ERR_ALREADYREGISTERED						"462 :You may not register a second time\r\n"
 # define ERR_NONICKNAMEGIVEN						"431 :No nickname given\r\n"
 # define ERR_NOSUCHNICK(nick)						std::string("401 ") + nick + std::string(" : No such nick/channel\r\n")
 # define ERR_NEEDMOREPARAMS							"461 :Not enough parameters\r\n"
-# define ERR_NOTREGISTERED							"451 :You have not registered\r\n"
+# define ERR_NOTREGISTERED							"451 :You are not registered\r\n"
 # define ERR_ERRONEUSNICKNAME						"432 :Errorneus nickname\r\n"
 # define ERR_UMODEUNKNOWNFLAG						"501 :Unknown MODE flag\r\n"
-# define ERR_USERSDONTMATCH							"502 :Cant change mode for other users\r\n"
+# define ERR_USERSDONTMATCH							"502 :Cannot change mode for other users\r\n"
+
+bool	testString(std::string str);
+// # define ERR_
 #endif

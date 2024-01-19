@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clientCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 12:11:29 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 11:20:57 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,14 @@ bool	client::Nick(std::vector<std::string> splitLine)
 
 bool	client::User(std::vector<std::string> splitLine)
 {
+	if (testString(splitLine[1]) == false)
+		return(sendToClient(std::string("Le user il pue sa mere")), false);
+	if (testString(splitLine[2]) == false)
+		return(sendToClient(std::string("Le hostname il pue sa mere")), false);
+	if (testString(splitLine[3]) == false)
+		return(sendToClient(std::string("The server name has an incorrect character")), false);
+	if (testString(splitLine[4]) == false)
+		return(sendToClient(std::string("This real name has an incorrect character")), false);
 	_username = splitLine[1];
 	_hostname = splitLine[2];
 	_servername = splitLine[3];

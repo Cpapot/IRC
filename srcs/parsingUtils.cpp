@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 21:36:18 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:10:58 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,22 @@ void	tokenize(std::string const &str, const char delim, std::vector<std::string>
 				out[i].erase(out[i].size() - 1);
 		}
 	}
+}
+
+bool	testString(std::string str)
+{
+	std::string invalidChar = " &#:\r\n\t\v";
+
+	for(unsigned long i = 0; i < str.size(); i++)
+	{	
+		for(unsigned long j = 0; j < invalidChar.size(); j++)
+		{
+			if (str[i] == invalidChar[j])
+			{
+				std::cout << str[i] << std::endl;
+				return false;
+			}
+		}
+	}
+	return true;
 }
