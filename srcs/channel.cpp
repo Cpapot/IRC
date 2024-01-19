@@ -6,18 +6,25 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 12:44:32 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 17:51:37 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
+#include "IRCMessage.hpp"
 
 std::string	channel::getChannelName(void)
 {
 	return (_channelName);
 }
 
-void	channel::sendToAll(std::string message, int senderSocket)
+void	channel::sendToAll(std::string message)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+			i->second->sendToClient(message);
+}
+
+void	channel::sendToAllExept(std::string message, int senderSocket)
 {
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 	{
@@ -45,6 +52,7 @@ int		channel::newClient(client *ClientPtr)
 		return 1;
 	_clientMap[ClientPtr->getSocket()] = ClientPtr;
 	std::cout << ClientPtr->getNickname() << " joinded " << _channelName << std::endl;
+	sendToAll(RPL_JOIN(ClientPtr->getNickname(), _channelName));
 	return 0;
 }
 
