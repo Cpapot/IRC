@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/18 17:10:58 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:30:08 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include "print.hpp"
 
 bool	IsChanel(std::string str)
 {
@@ -55,9 +56,11 @@ bool	testString(std::string str)
 			if (str[i] == invalidChar[j])
 			{
 				std::cout << str[i] << std::endl;
+				new Print("Invalid Char in this info", RED, 1);
 				return false;
 			}
 		}
 	}
 	return true;
 }
+

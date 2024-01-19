@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 15:01:23 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:09:42 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "IRCMessage.hpp"
 #include "server.hpp"
 #include "channel.hpp"
+#include "print.hpp"
 
 enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN, PRIVMSG};
 
@@ -94,6 +95,7 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		message += splitLine[i] + SPACE;
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAll(message, _clientSocket);
+	new Print(message, MAGENTA, 3);
 	return true;
 }
 
@@ -119,6 +121,9 @@ bool	client::join(std::vector<std::string> splitLine)
 		return false;
 	}
 	sendToClient(":You are logged into " + channelName + END);
+	std::string join = "JOIN : ";
+	join += splitLine[1];
+	new Print(join, MAGENTA, 3);
 	return true;
 }
 
@@ -179,6 +184,10 @@ bool	client::quit(std::vector<std::string> splitLine)
 	splitLine[1].erase(0, 1);
 	std::cout << _nickname << " is leaving from the server with the message: \"" << splitLine[1] << "\"" << std::endl;
 	_serverPtr->deleteClientSocket(_clientSocket);
+	std::string quit = "QUIT : ";
+	for (unsigned long i = 1; i < splitLine.size(); i++)
+		quit += splitLine[i] + SPACE;
+	new Print(quit, MAGENTA, 3);
 	delete this;
 	return true;
 }
