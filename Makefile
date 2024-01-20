@@ -23,16 +23,29 @@ export HEADER
 
 MUTE		:=		1
 
+IRC_PORT		=		6667
+IRC_PASS		=		mdp
+
 # --------------- FILES --------------- #
 
 LIST_SRC		=	main.cpp	\
 					parsingUtils.cpp	\
-					server.cpp			\
-					client.cpp			\
+					server.cpp	\
+					client.cpp	\
 					clientCommand.cpp	\
 					serverCommand.cpp	\
-					channel.cpp   		\
-					print.cpp
+					serverUtils.cpp	\
+					channel.cpp	\
+					print.cpp	\
+					commands/join.cpp	\
+					commands/mode.cpp	\
+					commands/nick.cpp	\
+					commands/part.cpp	\
+					commands/pass.cpp	\
+					commands/ping.cpp	\
+					commands/privmsg.cpp	\
+					commands/quit.cpp	\
+					commands/user.cpp
 
 # ------------ DIRECTORIES ------------ #
 
@@ -57,7 +70,10 @@ CXX              =    c++
 # -------------  COMMANDS ------------- #
 
 RM                =    rm -rf
+
 MKDIR            =    mkdir -p
+
+START = $(NAME) $(IRC_PORT) $(IRC_PASS)
 
 #***********************************  RULES  **********************************#
 
@@ -98,4 +114,10 @@ header:
 re:		fclean
 	@$(MAKE) all --no-print-directory
 
-.PHONY:	re clean fclean all header
+
+start:
+	@$(MAKE) all --no-print-directory
+	./$(START)
+
+
+.PHONY:	re clean fclean all header start

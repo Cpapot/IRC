@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 15:14:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 18:03:43 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ public:
 
 	//command
 	void	findCommand(char buffer[CLIENTBUFFERSIZE]);
-	bool	Nick(std::vector<std::string> splitLine);
-	bool	User(std::vector<std::string> splitLine);
-	bool	Pass(std::vector<std::string> splitLine);
-	bool	Cap(void);
+	bool	nick(std::vector<std::string> splitLine);
+	bool	user(std::vector<std::string> splitLine);
+	bool	pass(std::vector<std::string> splitLine);
+	bool	cap(void);
 	bool	quit(std::vector<std::string> splitLine);
 	bool	mode(std::vector<std::string> splitLine);
 	bool	join(std::vector<std::string> splitLine);
