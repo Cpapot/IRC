@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 18:09:42 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:50:43 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 	tokenize(split[splitIndex], ' ', splitLine);
 	if (commandIndex >= 3 && _logged != true)
 	{
-		sendToClient(std::string(ERR_NOTREGISTERED));
+		sendToClient(std::string(ERR_NOTREGISTERED(_nickname, _username)));
 		return false;
 	}
 	switch (commandIndex)
@@ -71,7 +71,7 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 					return ;
 			}
 			else if (commandfound == false && y == 9)
-				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i])));
+				sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
 		}
 	}
 }
@@ -81,12 +81,12 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 	std::string message;
 	if (splitLine.size() <= 2)
 	{
-		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
 	if (!_serverPtr->getChannel(splitLine[1]))
 	{
-		sendToClient(std::string(ERR_NOTONCHANNEL(splitLine[1])));
+		sendToClient(std::string(ERR_NOTONCHANNEL(_nickname, _username, splitLine[1])));
 		return false;
 	}
 	message = ":" + _nickname + " PRIVMSG " + splitLine[1] + " :";
@@ -94,7 +94,7 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 	for (size_t i = 2; i != splitLine.size(); i++)
 		message += splitLine[i] + SPACE;
 	message += END;
-	_serverPtr->getChannel(splitLine[1])->sendToAll(message, _clientSocket);
+	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
 	new Print(message, MAGENTA, 3);
 	return true;
 }
@@ -104,23 +104,22 @@ bool	client::join(std::vector<std::string> splitLine)
 	std::string	channelName;
 	if (splitLine.size() <= 1)
 	{
-		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
 	if (splitLine[1][0] == '#')
 		channelName = splitLine[1];
 	else
 	{
-		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
 	_serverPtr->assosiateChannel(channelName);
 	if (_serverPtr->getChannel(channelName)->newClient(this) == 1)
 	{
-		sendToClient(std::string(ERR_UNKNOWNERROR("Already log into channel")));
+		sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
 		return false;
 	}
-	sendToClient(":You are logged into " + channelName + END);
 	std::string join = "JOIN : ";
 	join += splitLine[1];
 	new Print(join, MAGENTA, 3);
@@ -133,15 +132,15 @@ bool	client::mode(std::vector<std::string> splitLine)
 
 	if (splitLine.size() < 3)
 	{
-		sendToClient(std::string(ERR_NEEDMOREPARAMS));
+		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
 	if (splitLine[1] != _nickname)
 	{
 		if (_serverPtr->getClient(splitLine[1]) == NULL)
-			sendToClient(std::string(ERR_NOSUCHNICK(splitLine[1])));
+			sendToClient(std::string(ERR_NOSUCHNICK(_nickname, _username, splitLine[1])));
 		else
-			sendToClient(std::string(ERR_USERSDONTMATCH));
+			sendToClient(std::string(ERR_USERSDONTMATCH(_nickname, _username)));
 		return false;
 	}
 	if (splitLine[2][0] == '-')
@@ -150,7 +149,7 @@ bool	client::mode(std::vector<std::string> splitLine)
 		mode = true;
 	else
 	{
-		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG));
+		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 		return false;
 	}
 	for (size_t i = 1; i != splitLine[2].size(); i++)
@@ -171,11 +170,11 @@ bool	client::mode(std::vector<std::string> splitLine)
 					_modeOperator = mode;
 				break;
 			default:
-				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG));
+				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 				return false;
 		}
 	}
-	sendToClient(std::string(RPL_UMODEIS(splitLine[1] + SPACE + splitLine[2])));
+	//sendToClient(std::string(RPL_UMODEIS(splitLine[1] + SPACE + splitLine[2])));
 	return true;
 }
 
@@ -202,7 +201,7 @@ bool	client::Nick(std::vector<std::string> splitLine)
 		{
 			if (splitLine[1][i] == invalidChar[y])
 			{
-				sendToClient(std::string(ERR_ERRONEUSNICKNAME));
+				sendToClient(std::string(ERR_ERRONEUSNICKNAME(_nickname, _username)));
 				return false;
 			}
 		}
@@ -226,7 +225,7 @@ bool	client::User(std::vector<std::string> splitLine)
 	_servername = splitLine[3];
 	_realname = splitLine[4];
 	_realname.erase(0, 1);
-	sendToClient("001 " + _nickname + " :Welcome " + _nickname + "\r\n");
+	sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
 	return true;
 }
 
@@ -235,10 +234,10 @@ bool	client::Pass(std::vector<std::string> splitLine)
 	_pass = splitLine[1];
 	if (_pass.compare(_serverPtr->getPasswd()) != 0)
 	{
-		sendToClient(std::string(ERR_PASSWDMISMATCH));
+		sendToClient(std::string(ERR_PASSWDMISMATCH(_nickname, _username)));
 		return false;
 	}
-	sendToClient(std::string("Password correct!!\r\n"));
+	sendToClient(std::string(":Logged\r\n"));
 	_logged = true;
 	return true;
 }

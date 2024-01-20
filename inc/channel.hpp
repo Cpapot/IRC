@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 12:43:38 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/19 17:49:40 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ public:
 	int		newClient(client *ClientPtr);
 	void	disconnectClient(int clientSocket);
 
-	void	sendToAll(std::string message, int senderSocket);
+	void	sendToAll(std::string message);
+	void	sendToAllExept(std::string message, int senderSocket);
 
 	std::string	getChannelName(void);
 };
