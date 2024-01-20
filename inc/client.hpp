@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 12:08:37 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 15:14:27 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,26 @@ void tokenize(std::string const &str, const char delim, std::vector<std::string>
 class client
 {
 private:
-	std::string	_nickname;
+	std::string					_nickname;
 
-	std::string	_username;
-	std::string	_hostname;
-	std::string	_servername;
-	std::string	_realname;
+	std::string					_username;
+	std::string					_hostname;
+	std::string					_servername;
+	std::string					_realname;
 
-	std::string	_pass;
-	int			_clientSocket;
-	bool		_logged;
+	std::string					_pass;
+	int							_clientSocket;
+	bool						_logged;
+
+	std::vector<std::string>	_loggedChannel;
 
 	//MODE
-	bool		_modeInvisible;
-	bool		_modeNotice;
-	bool		_modeWallops;
-	bool		_modeOperator;
+	bool						_modeInvisible;
+	bool						_modeNotice;
+	bool						_modeWallops;
+	bool						_modeOperator;
 
-	server		*_serverPtr;
+	server						*_serverPtr;
 public:
 	client(int _clientSocket, server *serverPtr);
 	~client();
@@ -67,6 +69,7 @@ public:
 	bool	mode(std::vector<std::string> splitLine);
 	bool	join(std::vector<std::string> splitLine);
 	bool	privmsg(std::vector<std::string> splitLine);
+	bool	part(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);

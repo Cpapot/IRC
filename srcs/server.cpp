@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 11:51:16 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:27:48 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ pollfd	server::fillPollFd(int socket)
 	result.events = POLLIN;
 	result.revents = 0;
 	return result;
+}
+
+void	server::sendToAllNetwork(std::string message)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+		i->second->sendToClient(message);
 }
 
 void	server::deleteChannel(std::string channelName)
@@ -139,34 +145,23 @@ void	server::parseArg(int argc, char **argv)
 {
 	if (argc != 3)
 		throw std::invalid_argument("server::InvalidArgument");
-	_port = std::atoi(argv[1]);
-	if (_port <= 0 || _port >= 10000)
+	_port = std::atol(argv[1]);
+	if (_port <= 0 || _port >= 65536)
 		throw std::invalid_argument("server::invalidPort");
 	_passwd = std::string(argv[2]);
 }
 
-int		server::launch(void)
+void		server::launch(void)
 {
 	//crée un socket (comme un fd)
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socket == -1)
-	{
-		std::cout << "Failed to open socket." << std::endl;
-		return 0;
-	}
+		return throw std::invalid_argument("server::FailedToOpenSocket");
 	//affecte le socket a un nom
 	if(bind(_socket, (struct sockaddr*)&_serverAddrs, (socklen_t)sizeof(_serverAddrs)) == -1)
-	{
-		std::cout << "Failed to bind socket." << std::endl;
-		std::cout << "log(-1) failed: " << std::strerror(errno) << '\n';
-		return 0;
-	}
+		return throw std::invalid_argument("server::FailedToBindSocket(PortMayBeBusy)");
 	if (listen(_socket, MAXCLIENT) == -1)
-	{
-		std::cout << "Failed to listen on socket." << std::endl;
-		return 0;
-	}
-	return 1;
+		return throw std::invalid_argument("server::FailedToListenOnSocket");
 }
 
 int		server::WaitForClient(void)
@@ -213,31 +208,16 @@ server::server(/* args */)
 	_port = 6667;
 	_passwd = "1234";
 	this->fillSockAddr();
-	if (this->launch())
-		std::cout << "server lauched" << std::endl;
-	else
-		_status = false;
+	this->launch();
 }
 
 server::server(int argc, char **argv): _serverName("IRC++")
 {
-	_status = true;
-	try
-	{
-		this->parseArg(argc, argv);
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-		_status = false;
-		return ;
-	}
+	_status = false;
+	this->parseArg(argc, argv);
 	this->fillSockAddr();
-	if (this->launch())
-		std::cout << "server lauched" << std::endl;
-	else
-		_status = false;
-
+	this->launch();
+	_status = true;
 }
 
 server::~server()

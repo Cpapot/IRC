@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clientCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 17:50:43 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:37:42 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "channel.hpp"
 #include "print.hpp"
 
-enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN, PRIVMSG};
+enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG};
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {
@@ -41,8 +41,8 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 		return _serverPtr->ping(_clientSocket, splitLine);
 	case QUIT:
 		return quit(splitLine);
-	case WHOIS:
-		return _serverPtr->whoIs(_clientSocket, splitLine);
+	case PART:
+		return part(splitLine);
 	case MODE:
 		return mode(splitLine);
 	case JOIN:
@@ -56,7 +56,7 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
-	std::string	commandList[10] = {"CAP", "PASS", "PING", "QUIT","NICK", "USER", "WHOIS", "MODE", "JOIN", "PRIVMSG"};
+	std::string	commandList[10] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG"};
 
 	tokenize(std::string(buffer), '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
@@ -71,9 +71,34 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 					return ;
 			}
 			else if (commandfound == false && y == 9)
-				sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
+				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i], _nickname, _username)));
 		}
 	}
+}
+
+bool	client::part(std::vector<std::string> splitLine)
+{
+	if (splitLine.size() != 2)
+	{
+		sendToClient(ERR_NEEDMOREPARAMS(_nickname, _username));
+		return false;
+	}
+	for (size_t i = 0; i != _loggedChannel.size(); i++)
+	{
+		if (_loggedChannel[i] == splitLine[1])
+			break;
+		if (i == _loggedChannel.size() - 1)
+		{
+			if (_serverPtr->getChannel(splitLine[1]) != NULL)
+				sendToClient(ERR_NOTONCHANNEL(_nickname, _username, splitLine[1]));
+			else
+				sendToClient(ERR_NOSUCHCHANNEL(_nickname, _username, splitLine[1]));
+			return false;
+		}
+	}
+	//_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_PART(_nickname, _username, splitLine[1]));
+	_serverPtr->getChannel(splitLine[1])->disconnectClient(_clientSocket);
+	return true;
 }
 
 bool	client::privmsg(std::vector<std::string> splitLine)
@@ -120,9 +145,10 @@ bool	client::join(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
 		return false;
 	}
-	std::string join = "JOIN : ";
+	_loggedChannel.push_back(channelName);
+	/*std::string join = "JOIN : ";
 	join += splitLine[1];
-	new Print(join, MAGENTA, 3);
+	new Print(join, MAGENTA, 3);*/
 	return true;
 }
 
@@ -182,11 +208,16 @@ bool	client::quit(std::vector<std::string> splitLine)
 {
 	splitLine[1].erase(0, 1);
 	std::cout << _nickname << " is leaving from the server with the message: \"" << splitLine[1] << "\"" << std::endl;
+	for (size_t i = 0; i != _loggedChannel.size(); i++)
+	{
+		_serverPtr->getChannel(_loggedChannel[i])->disconnectClient(_clientSocket);
+	}
 	_serverPtr->deleteClientSocket(_clientSocket);
 	std::string quit = "QUIT : ";
 	for (unsigned long i = 1; i < splitLine.size(); i++)
 		quit += splitLine[i] + SPACE;
 	new Print(quit, MAGENTA, 3);
+	_serverPtr->sendToAllNetwork(RPL_QUIT(_nickname, _username, "c'est tchao"));
 	delete this;
 	return true;
 }
