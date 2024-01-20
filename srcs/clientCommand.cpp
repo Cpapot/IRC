@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   clientCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
 /*   Updated: 2024/01/19 17:50:43 by cpapot           ###   ########.fr       */
@@ -14,6 +14,7 @@
 #include "IRCMessage.hpp"
 #include "server.hpp"
 #include "channel.hpp"
+#include "print.hpp"
 
 enum {CAP = 0, PASS, PING, QUIT, NICK, USER, WHOIS, MODE, JOIN, PRIVMSG};
 
@@ -94,6 +95,7 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		message += splitLine[i] + SPACE;
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
+	new Print(message, MAGENTA, 3);
 	return true;
 }
 
@@ -118,6 +120,9 @@ bool	client::join(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
 		return false;
 	}
+	std::string join = "JOIN : ";
+	join += splitLine[1];
+	new Print(join, MAGENTA, 3);
 	return true;
 }
 
@@ -178,6 +183,10 @@ bool	client::quit(std::vector<std::string> splitLine)
 	splitLine[1].erase(0, 1);
 	std::cout << _nickname << " is leaving from the server with the message: \"" << splitLine[1] << "\"" << std::endl;
 	_serverPtr->deleteClientSocket(_clientSocket);
+	std::string quit = "QUIT : ";
+	for (unsigned long i = 1; i < splitLine.size(); i++)
+		quit += splitLine[i] + SPACE;
+	new Print(quit, MAGENTA, 3);
 	delete this;
 	return true;
 }
@@ -203,6 +212,14 @@ bool	client::Nick(std::vector<std::string> splitLine)
 
 bool	client::User(std::vector<std::string> splitLine)
 {
+	// if (testString(splitLine[1]) == false)
+	// 	return(sendToClient(std::string("Le user il pue sa mere")), false);
+	// if (testString(splitLine[2]) == false)
+	// 	return(sendToClient(std::string("Le hostname il pue sa mere")), false);
+	// if (testString(splitLine[3]) == false)
+	// 	return(sendToClient(std::string("The server name has an incorrect character")), false);
+	// if (testString(splitLine[4]) == false)
+	// 	return(sendToClient(std::string("This real name has an incorrect character")), false);
 	_username = splitLine[1];
 	_hostname = splitLine[2];
 	_servername = splitLine[3];
