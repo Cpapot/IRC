@@ -31,7 +31,8 @@ LIST_SRC		=	main.cpp	\
 					client.cpp			\
 					clientCommand.cpp	\
 					serverCommand.cpp	\
-					channel.cpp
+					channel.cpp   		\
+					print.cpp
 
 # ------------ DIRECTORIES ------------ #
 

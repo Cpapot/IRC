@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
 /*   Updated: 2024/01/19 17:57:46 by cpapot           ###   ########.fr       */
@@ -54,4 +54,5 @@
 # define ERR_USERSDONTMATCH(nick, user)					PREFIX(nick, user, "502") + std::string("Cant change mode for other users") + END
 # define ERR_NOTONCHANNEL(nick, user, channelName)		PREFIX(nick, user, "442") + channelName + std::string(" You're not on that channel") + END
 # define ERR_UNKNOWNERROR(nick, user, msg)				PREFIX(nick, user, "400") + msg + END
+
 #endif
