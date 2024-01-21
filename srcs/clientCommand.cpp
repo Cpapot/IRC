@@ -95,7 +95,8 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		message += splitLine[i] + SPACE;
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
-	new Print(message, MAGENTA, 3);
+	printShit("#c %s\n", message.c_str());
+
 	return true;
 }
 
@@ -120,9 +121,7 @@ bool	client::join(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));
 		return false;
 	}
-	std::string join = "JOIN : ";
-	join += splitLine[1];
-	new Print(join, MAGENTA, 3);
+	printShit("#c %s\n", ("JOIN : " + splitLine[1]).c_str());
 	return true;
 }
 
@@ -183,10 +182,10 @@ bool	client::quit(std::vector<std::string> splitLine)
 	splitLine[1].erase(0, 1);
 	std::cout << _nickname << " is leaving from the server with the message: \"" << splitLine[1] << "\"" << std::endl;
 	_serverPtr->deleteClientSocket(_clientSocket);
-	std::string quit = "QUIT : ";
+	std::string quit;
 	for (unsigned long i = 1; i < splitLine.size(); i++)
 		quit += splitLine[i] + SPACE;
-	new Print(quit, MAGENTA, 3);
+	printShit("#c %s\n", ("QUIT : " + quit).c_str());
 	delete this;
 	return true;
 }

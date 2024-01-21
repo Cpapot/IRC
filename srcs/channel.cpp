@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
 /*   Updated: 2024/01/19 17:51:37 by cpapot           ###   ########.fr       */
@@ -51,8 +51,8 @@ int		channel::newClient(client *ClientPtr)
 	if (_clientMap.find(ClientPtr->getSocket()) != _clientMap.end())
 		return 1;
 	_clientMap[ClientPtr->getSocket()] = ClientPtr;
-	std::cout << ClientPtr->getNickname() << " joinded " << _channelName << std::endl;
 	sendToAll(RPL_JOIN(ClientPtr->getNickname(), _channelName));
+	std::cout << ClientPtr->getNickname() << " joined " << _channelName << std::endl;
 	return 0;
 }
 
