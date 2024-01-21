@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 19:13:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/21 18:37:17 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # include <map>
 # include <vector>
 # include <poll.h>
-//# include "serverLogs.hpp"
 
 # define MAXCLIENT 64
+
+class serverLogs;
 
 class client;
 
@@ -50,6 +51,8 @@ private:
 	std::map<std::string, channel*>	_channelMap;
 	std::map<int, client*>			_clientMap;
 	std::vector<pollfd>				_pollFds;
+
+	serverLogs						*_logs;
 
 	//server utils
 	pollfd					fillPollFd(int socket);
@@ -80,6 +83,7 @@ public:
 	int					getSocket(void);
 	struct sockaddr_in	getAddrs(void);
 	std::string			getPasswd(void);
+	serverLogs			*getLogs(void);
 };
 
 #endif

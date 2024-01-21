@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 17:11:48 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:58:05 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 #include "IRCMessage.hpp"
 #include "print.hpp"
+#include "serverLogs.hpp"
 
 void	client::listenToClient()
 {
@@ -21,7 +22,7 @@ void	client::listenToClient()
 	memset(buffer, 0, sizeof(buffer));
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
-	std::cout << buffer << std::endl;
+	_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
 	findCommand(buffer);
 }
 
@@ -29,14 +30,14 @@ void	client::sendToClient(char* message)
 {
 	if (send(_clientSocket, message, strlen(message), 0) == -1)
 		throw	std::invalid_argument("client::CantSendMessageToClient");
+	_serverPtr->getLogs()->sent(message, _clientSocket);
 }
 
 void	client::sendToClient(std::string message)
 {
 	if (send(_clientSocket, message.c_str(), message.length(), 0) == -1)
 		throw	std::invalid_argument("client::CantSendMessageToClient");
-	else
-		std::cout << "\033[1;32m message sent : \"" << message << "\"\033[0m" << std::endl;
+	_serverPtr->getLogs()->sent(message, _clientSocket);
 }
 
 std::ostream& operator<<(std::ostream& os, const client& dt)

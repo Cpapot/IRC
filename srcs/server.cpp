@@ -6,12 +6,13 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 19:13:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/21 18:37:07 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "client.hpp"
+#include "serverLogs.hpp"
 #include "channel.hpp"
 
 void	server::sendToAllNetwork(std::string message)
@@ -83,6 +84,11 @@ int		server::WaitForClient(void)
 
 
 
+serverLogs			*server::getLogs(void)
+{
+	return _logs;
+}
+
 std::string		server::getPasswd(void)
 {
 	return (_passwd);
@@ -123,9 +129,6 @@ client	*server::getClient(std::string nickname)
 	return NULL;
 }
 
-
-
-
 server::server(/* args */)
 {
 	_status = true;
@@ -141,7 +144,7 @@ server::server(int argc, char **argv): _serverName("IRC++")
 	this->parseArg(argc, argv);
 	this->fillSockAddr();
 	this->launch();
-	//_logs = new serverLogs(_port);
+	_logs = new serverLogs(_port);
 	_status = true;
 }
 
