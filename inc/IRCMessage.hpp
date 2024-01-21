@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 16:25:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/21 21:41:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,9 @@
 # define ERR_NOSUCHCHANNEL(nick, user, chan)			PREFIX(nick, user, "403") + std::string("\"") + chan + std::string("\" No such channel\r\n")
 # define ERR_USERSDONTMATCH(nick, user)					PREFIX(nick, user, "502") + std::string("Cant change mode for other users") + END
 # define ERR_UNKNOWNERROR(nick, user, msg)				PREFIX(nick, user, "400") + msg + END
+# define ERR_CHANOPRIVSNEEDED(nick, user, chan)			PREFIX(nick, user, "482") + chan + std::string(" :You're not channel operator") + END
+# define ERR_BADCHANNELKEY(nick, user, chan)			PREFIX(nick, user, "475") + chan + std::string(" :Cannot join channel (+k)") + END
+# define ERR_CHANNELISFULL(nick, user, chan)			PREFIX(nick, user, "471") + chan + std::string(" :Cannot join channel (+l)") + END
+# define ERR_INVITEONLYCHAN(nick, user, chan)			PREFIX(nick, user, "473") + chan + std::string(" :Cannot join channel (+i)") + END
 
 #endif
