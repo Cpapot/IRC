@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:37:08 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/16 18:01:33 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 14:21:54 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,17 @@ void handler(int s)
 
 int main(int argc, char **argv)
 {
-	serv = new server(argc, argv);
+	try
+	{
+		serv = new server(argc, argv);
+	}
+	catch(const std::exception& e)
+	{
+		//mettre print error clean;
+		std::cerr << "Fatal error: " << e.what() << '\n';
+		return 1;
+	}
+	std::cout << "server Lauched" << std::endl;
 
 	signal(SIGINT, handler);
 	while (serv->getStatus())

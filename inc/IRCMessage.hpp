@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 17:57:46 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:25:44 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@
 # define RPL_NAMREPLY(nick, user, chan)					PREFIX(nick, user, "353") + std::string("=") + SPACE + chan + std::string(":@") + nick + END
 # define RPL_NOTOPIC(nick, user, chan)					PREFIX(nick, user, "331") + chan + ":No topic is set" + END
 # define RPL_PING(nick, user, msg)						USER_ID(nick, user) + std::string("PONG") + SPACE + msg + END
+# define RPL_PART(nick, user, channel)					USER_ID(nick, user) + std::string("PART") + SPACE + channel + END
+# define RPL_QUIT(nick, user, message)					USER_ID(nick, user) + std::string("QUIT") + SPACE + DDOT + message + END
 
 //ERROR REPLY
-# define ERR_UNKNOWNCOMMAND(cmd,nick, user)				PREFIX(nick, user, "421") + str::string("\"") + cmd + std::string("\" Unknown command\r\n")
+# define ERR_UNKNOWNCOMMAND(cmd,nick, user)				PREFIX(nick, user, "421") + std::string("\"") + cmd + std::string("\" Unknown command\r\n")
 # define ERR_PASSWDMISMATCH(nick, user)					PREFIX(nick, user, "464") + std::string("Password incorrect\r\n")
 # define ERR_ALREADYREGISTERED(nick, user)				PREFIX(nick, user, "432") + std::string("You may not reregister\r\n")
 # define ERR_NONICKNAMEGIVEN(nick, user)				PREFIX(nick, user, "431") + std::string("No nickname given\r\n")
@@ -51,8 +53,9 @@
 # define ERR_NOTREGISTERED(nick, user)					PREFIX(nick, user, "451") + std::string("You have not registered\r\n")
 # define ERR_ERRONEUSNICKNAME(nick, user)				PREFIX(nick, user, "432") + std::string("Errorneus nickname\r\n")
 # define ERR_UMODEUNKNOWNFLAG(nick, user)				PREFIX(nick, user, "501") + std::string("Unknown MODE flag\r\n")
+# define ERR_NOTONCHANNEL(nick, user, chan)				PREFIX(nick, user, "442") + std::string("\"") + chan + std::string("\" You are not on that channel\r\n")
+# define ERR_NOSUCHCHANNEL(nick, user, chan)			PREFIX(nick, user, "403") + std::string("\"") + chan + std::string("\" No such channel\r\n")
 # define ERR_USERSDONTMATCH(nick, user)					PREFIX(nick, user, "502") + std::string("Cant change mode for other users") + END
-# define ERR_NOTONCHANNEL(nick, user, channelName)		PREFIX(nick, user, "442") + channelName + std::string(" You're not on that channel") + END
 # define ERR_UNKNOWNERROR(nick, user, msg)				PREFIX(nick, user, "400") + msg + END
 
 #endif

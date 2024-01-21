@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.cpp                                          :+:      :+:    :+:   */
+/*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 13:29:20 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/20 13:14:57 by cpapot           ###   ########.fr       */
+/*   Created: 2024/01/20 18:00:36 by cpapot            #+#    #+#             */
+/*   Updated: 2024/01/20 18:03:15 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "client.hpp"
+#include "IRCMessage.hpp"
+#include "server.hpp"
+#include "channel.hpp"
 #include "print.hpp"
-#include <stdio.h>
 
-Print::Print( std::string message, unsigned long color, int mode )
+bool	client::pass(std::vector<std::string> splitLine)
 {
-	if (mode == 0)
-		printf("\033[1;%lum[MESSAGE] : %s\033[0m\n", color, message.c_str());
-	if (mode == 1)
-		printf("\033[1;%lum[ERROR] : %s\033[0m\n", color, message.c_str());
-	if (mode == 2)
-		printf("\033[1;%lum[INFO] : %s\033[0m\n", color, message.c_str());
-	if (mode == 3)
-		printf("\033[1;%lum[CMD] %s\033[0m\n", color, message.c_str());
-
+	_pass = splitLine[1];
+	if (_pass.compare(_serverPtr->getPasswd()) != 0)
+	{
+		sendToClient(std::string(ERR_PASSWDMISMATCH(_nickname, _username)));
+		return false;
+	}
+	sendToClient(std::string(":Logged\r\n"));
+	_logged = true;
+	return true;
 }
