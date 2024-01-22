@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 17:27:23 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:38:44 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 //REPLY
 # define RPL_USER(nickname, username, msg)				USER_ID(nickname, username) + std::string("001 ") + nickname + SPACE + DDOT + msg + END
+# define RPL_NICK(oldnickname, username, nick)			USER_ID(oldnickname, username) + std::string("NICK ") + nick + END
 # define RPL_JOIN(nickname, channel)					DDOT + nickname + std::string(" JOIN ") + channel + END
 //# define RPL_WHOISUSER(nick, user, host, real)			std::string("311 :") + nick + SPACE + user + SPACE + host + std::string(" * :") + real + END
 //# define RPL_UMODEIS(msg)								std::string("221 :") + msg + END
@@ -61,5 +62,5 @@
 # define ERR_BADCHANNELKEY(nick, user, chan)			PREFIX(nick, user, "475") + chan + std::string(" :Cannot join channel (+k)") + END
 # define ERR_CHANNELISFULL(nick, user, chan)			PREFIX(nick, user, "471") + chan + std::string(" :Cannot join channel (+l)") + END
 # define ERR_INVITEONLYCHAN(nick, user, chan)			PREFIX(nick, user, "473") + chan + std::string(" :Cannot join channel (+i)") + END
-# define ERR_NICKNAMEINUSE(nick, user)					PREFIX(nick, user, "433") + std::string("Nickname is already in use") + END
+# define ERR_NICKNAMEINUSE(nick, user)					PREFIX(nick, user, "433") + std::string(" is already in use") + END
 #endif

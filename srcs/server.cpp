@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 18:37:07 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:20:32 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int		server::WaitForClient(void)
 					int	newClientSocket = acceptClient();
 					_pollFds.push_back(fillPollFd(newClientSocket));
 					assosiateClientSocket(newClientSocket);
-					_clientMap[newClientSocket]->listenToClient();
+					if (!_clientMap[newClientSocket]->listenToClient())
+						deleteClientSocket(newClientSocket);
 				}
 				else
 				{
@@ -153,5 +154,5 @@ server::~server()
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 		delete i->second;
 	close(_socket);
-	//delete _logs;
+	delete _logs;
 }

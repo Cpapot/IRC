@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:02:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:55:52 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ public:
 
 	void	sendToClient(std::string message);
 	void	sendToClient(char *message);
-	void	listenToClient();
+	bool	listenToClient();
 
 
 	bool	parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 
 	//command
-	void	findCommand(char buffer[CLIENTBUFFERSIZE]);
+	bool	findCommand(char buffer[CLIENTBUFFERSIZE]);
 	bool	nick(std::vector<std::string> splitLine);
 	bool	user(std::vector<std::string> splitLine);
 	bool	pass(std::vector<std::string> splitLine);

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:30 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:03:20 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:25:57 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ bool	client::nick(std::vector<std::string> splitLine)
 			}
 		}
 	}
-	_nickname = splitLine[1];
+	if (_serverPtr->getClient(splitLine[1]) != NULL)
+	{
+		sendToClient(ERR_NICKNAMEINUSE(splitLine[1], _username));
+		return false;
+	}
+	if (_nickname == "")
+	{
+		_nickname = splitLine[1];
+		_serverPtr->sendToAllNetwork(RPL_NICK(_nickname, _username, splitLine[1]));
+	}
+	else
+	{
+		_serverPtr->sendToAllNetwork(RPL_NICK(_nickname, _username, splitLine[1]));
+		_nickname = splitLine[1];
+	}
 	return true;
 }

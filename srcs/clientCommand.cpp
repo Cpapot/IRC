@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:03:56 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 18:32:40 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,22 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 	case USER:
 		return user(splitLine);
 	case PING:
-		return _serverPtr->ping(_clientSocket, splitLine);
+		return _serverPtr->ping(_clientSocket, splitLine) || true;
 	case QUIT:
-		return quit(splitLine);
+		return quit(splitLine) || true;
 	case PART:
-		return part(splitLine);
+		return part(splitLine) || true;
 	case MODE:
-		return mode(splitLine);
+		return mode(splitLine) || true;
 	case JOIN:
-		return join(splitLine);
+		return join(splitLine) || true;
 	case PRIVMSG:
-		return privmsg(splitLine);
+		return privmsg(splitLine) || true;
 	}
-	return false;
+	return true;
 }
 
-void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
+bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
 	std::string	commandList[10] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG"};
@@ -68,12 +68,13 @@ void	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 			{
 				commandfound = true;
 				if (!parseCommand(i, y, split))
-					return ;
+					return false;
 			}
 			else if (commandfound == false && y == 9)
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i], _nickname, _username)));
 		}
 	}
+	return true;
 }
 
 bool	client::cap(void)
