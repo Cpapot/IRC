@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:41:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:38:10 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@
 # define ERR_BADCHANNELKEY(nick, user, chan)			PREFIX(nick, user, "475") + chan + std::string(" :Cannot join channel (+k)") + END
 # define ERR_CHANNELISFULL(nick, user, chan)			PREFIX(nick, user, "471") + chan + std::string(" :Cannot join channel (+l)") + END
 # define ERR_INVITEONLYCHAN(nick, user, chan)			PREFIX(nick, user, "473") + chan + std::string(" :Cannot join channel (+i)") + END
-
+# define ERR_NICKNAMEINUSE(nick, user)					PREFIX(nick, user, "433") + std::string("Nickname is already in use") + END
 #endif

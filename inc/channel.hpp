@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:24:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:54:01 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,22 @@ public:
 	channel(std::string	name, int clientSocket);
 	~channel();
 
-	int		newClient(client *ClientPtr, std::vector<std::string> splitLine);
-	void	disconnectClient(int clientSocket);
+	int			newClient(client *ClientPtr, std::vector<std::string> splitLine);
+	bool		isOnChannel(int socket);
+	void		disconnectClient(int clientSocket);
 
-	void	sendToAll(std::string message);
-	void	sendToAllExept(std::string message, int senderSocket);
+	void		sendToAll(std::string message);
+	void		sendToAllExept(std::string message, int senderSocket);
 
-	bool	isOperator(int clientSocket);
-	void	makeOperator(int clientSocket);
-	void	deleteOperator(int clientSocket);
+	bool		isOperator(int clientSocket);
+	void		makeOperator(int clientSocket);
+	void		deleteOperator(int clientSocket);
 
 	std::string	getChannelName(void);
+	void		setIsInviteOnly(bool value);
+	void		setIsTopicOperator(bool value);
+	void		setIsLocked(bool value, std::string pass);
+	void		setIsUserLimit(bool value, unsigned int maxUser);
 };
 
 #endif

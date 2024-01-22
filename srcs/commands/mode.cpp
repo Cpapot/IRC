@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:49:01 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:48:09 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	IsChanel(std::string str);
 
 bool	client::modeChannel(std::vector<std::string> splitLine)
 {
-	//bool	mode;
+	bool	mode;
 
 	if (_serverPtr->getChannel(splitLine[1]) == NULL)
 	{
@@ -32,7 +32,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		sendToClient(ERR_CHANOPRIVSNEEDED(_nickname, _username, splitLine[1]));
 		return false;
 	}
-	/*if (splitLine[2][0] == '-')
+	if (splitLine[2][0] == '-')
 		mode = false;
 	else if (splitLine[2][0] == '+')
 		mode = true;
@@ -46,13 +46,56 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		switch (char(splitLine[2][i]))
 		{
 			case 'i':
-
+				_serverPtr->getChannel(splitLine[1])->setIsInviteOnly(mode);
 				break;
+
+			case 't':
+				_serverPtr->getChannel(splitLine[1])->setIsTopicOperator(mode);
+				break;
+
+			case 'k':
+				if (mode == false)
+					_serverPtr->getChannel(splitLine[1])->setIsLocked(false, "");
+				else
+				{
+					if (splitLine.size() >= 4)
+						_serverPtr->getChannel(splitLine[1])->setIsLocked(true, splitLine[3]);
+					else
+					{
+						sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
+						return false;
+					}
+				}
+				break;
+				
+			case 'l':
+				if (mode == false)
+					_serverPtr->getChannel(splitLine[1])->setIsUserLimit(false, 0);
+				else
+				{
+					if (splitLine.size() >= 4)
+					{
+						if (atoi(splitLine[3].c_str()) <= 0)
+						{
+							sendToClient(ERR_UNKNOWNERROR(_nickname, _username, "Invalid User Limit"));
+							return false;
+						}
+						else
+							_serverPtr->getChannel(splitLine[1])->setIsUserLimit(true, atoi(splitLine[3].c_str()));
+					}
+					else
+					{
+						sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
+						return false;
+					}
+				}
+				break;
+
 			default:
 				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 				return false;
 		}
-	}*/
+	}
 	return true;
 }
 
@@ -96,6 +139,7 @@ bool	client::modeUser(std::vector<std::string> splitLine)
 					_modeOperator = mode;
 				break;
 			default:
+
 				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 				return false;
 		}

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:33:32 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:56:15 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,17 @@ void	channel::makeOperator(int clientSocket)
 {
 	_operatorList.push_back(clientSocket);
 }
+
+bool	channel::isOnChannel(int socket)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->first == socket)
+			return true;
+	}
+	return false;
+}
+
 void	channel::deleteOperator(int clientSocket)
 {
 	size_t y = 0;
@@ -79,7 +90,6 @@ void	channel::deleteOperator(int clientSocket)
 	}
 }
 
-
 bool	channel::isOperator(int clientSocket)
 {
 	for (size_t i = 0; i != _operatorList.size(); i++)
@@ -88,6 +98,28 @@ bool	channel::isOperator(int clientSocket)
 			return true;
 	}
 	return false;
+}
+
+void	channel::setIsInviteOnly(bool value)
+{
+	_isInviteOnly = value;
+}
+
+void	channel::setIsTopicOperator(bool value)
+{
+	_isTopicOperator = value;
+}
+
+void	channel::setIsLocked(bool value, std::string pass)
+{
+	_isLocked = value;
+	_passwd = pass;
+}
+
+void	channel::setIsUserLimit(bool value, unsigned int maxUser)
+{
+	_isUserLimit = value;
+	_maxUser = maxUser;
 }
 
 channel::channel(std::string name, int clientSocket)
