@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:03:43 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/21 21:02:03 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ private:
 	bool						_modeOperator;
 
 	server						*_serverPtr;
+
+	bool	modeUser(std::vector<std::string> splitLine);
+	bool	modeChannel(std::vector<std::string> splitLine);
+
 public:
 	client(int _clientSocket, server *serverPtr);
 	~client();

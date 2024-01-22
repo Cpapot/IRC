@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 18:37:17 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/21 20:35:36 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ public:
 	~server();
 
 	void				deleteChannel(std::string channelName);
-	void				assosiateChannel(std::string channelName);
+	void				assosiateChannel(std::string channelName, int clientSocket);
 	void				assosiateClientSocket(int clientSocket);
 	void				deleteClientSocket(int clientSocket);
 	void				parseArg(int argc, char **argv);
