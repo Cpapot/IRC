@@ -16,12 +16,14 @@
 
 using namespace COLORS;
 
-void	whatsThisShit(std::va_list variadic, char c)
+void	printStr(const char *str, const char *base);
+
+void	whatsThisShit(std::va_list variadic, const char *str, int i)
 {
-	switch(c)
+	switch(str[i])
 	{
 		case 's' :
-			std::cout << va_arg(variadic, char *);
+			printStr(va_arg(variadic, char *), str);
 			break;
 		case 'c' :
 			std::cout << va_arg(variadic, int);
@@ -40,10 +42,10 @@ void	whatsTheMode(char c)
 	switch(c)
 	{
 		case 'e' :
-			std::cout << underline << bold << red << "[ ERROR ]" << reset;
+			std::cerr << underline << bold << red << "[ ERROR ]" << reset;
 			break;
 		case 'd' :
-			std::cout << bold << red << "[ DEBUG ]" << reset;
+			std::cerr << bold << red << "[ DEBUG ]" << reset;
 			break;
 		case 'c' :
 			std::cout << bold << beige << "[ COMMAND ]" << reset;
@@ -51,6 +53,35 @@ void	whatsTheMode(char c)
 		case 'i' :
 			std::cout << underline << green << "[ INFO ]" << reset;
 			break;
+	}
+}
+
+void	recursivShit(const char *str, const char *base, int i)
+{
+	std::string newString;
+	std::cout << std::endl;
+	newString += base[0];
+	newString += base[1];
+	newString += &str[i + 1];
+	printStr(newString.c_str(), base);
+}
+
+void	printStr(const char *str, const char *base)
+{
+	for(size_t i = 0; i < strlen(str); i++)
+	{
+		if (i == 0 && str[i] == '#')
+		{
+			i++;	
+			whatsTheMode(str[i]);
+		}
+		else if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
+		{
+			recursivShit(str, base, i);
+			return ;
+		}
+		else
+			std::cout << str[i];
 	}
 }
 
@@ -69,15 +100,17 @@ void	printShit(const char *str, ...)
 		else if (str[i] == '%')
 		{
 			i++;
-			whatsThisShit(variadic, str[i]);
+			whatsThisShit(variadic, str, i);
+		}
+		else if (str[i] == '\n')
+		{
+			recursivShit(str, str, i);
+			std::cout << std::endl;
+			return ;
 		}
 		else
 			std::cout << str[i];
 	}
+	std::cout << std::endl;
 	va_end(variadic);
-}
-
-void debugUser()
-{
-	printShit("#d ")
 }

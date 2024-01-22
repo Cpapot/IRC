@@ -12,7 +12,6 @@
 
 #include "client.hpp"
 #include "IRCMessage.hpp"
-#include "print.hpp"
 
 void	client::listenToClient()
 {
@@ -21,7 +20,12 @@ void	client::listenToClient()
 	memset(buffer, 0, sizeof(buffer));
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
-	std::cout << buffer << std::endl;
+
+	if (buffer[0])
+	{	
+		// std::cout << buffer << std::endl;
+		printShit("#i %s\nsalut mon grow", buffer);
+	}
 	findCommand(buffer);
 }
 

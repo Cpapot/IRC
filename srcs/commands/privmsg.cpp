@@ -29,12 +29,12 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_NOTONCHANNEL(_nickname, _username, splitLine[1])));
 		return false;
 	}
-	message = ":" + _nickname + " PRIVMSG " + splitLine[1] + " :";
+	// message = ":" + _nickname + " PRIVMSG " + splitLine[1] + " :";
 	splitLine[2].erase(0, 1);
 	for (size_t i = 2; i != splitLine.size(); i++)
 		message += splitLine[i] + SPACE;
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
-	new Print(message, MAGENTA, 3);
+	printShit("#d PRIVMSG : %s : %s", _username.c_str(), message.c_str());
 	return true;
 }

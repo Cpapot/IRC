@@ -22,6 +22,8 @@ bool	client::join(std::vector<std::string> splitLine)
 	if (splitLine.size() <= 1)
 	{
 		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
+		// if (DEBUG)
+		// printShit("#d %s tried to join a channel with wrong parameters", _username, channelName);
 		return false;
 	}
 	if (splitLine[1][0] == '#')
@@ -29,6 +31,8 @@ bool	client::join(std::vector<std::string> splitLine)
 	else
 	{
 		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
+		// if (DEBUG)
+		// 	printShit("#d %s tried to join a channel with wrong parameters", _username, channelName);
 		return false;
 	}
 	_serverPtr->assosiateChannel(channelName);
@@ -38,8 +42,7 @@ bool	client::join(std::vector<std::string> splitLine)
 		return false;
 	}
 	_loggedChannel.push_back(channelName);
-	/*std::string join = "JOIN : ";
-	join += splitLine[1];
-	new Print(join, MAGENTA, 3);*/
+	if (DEBUG)
+		printShit("#d %s joined %s", _username.c_str(), channelName.c_str());
 	return true;
 }

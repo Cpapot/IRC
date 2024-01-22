@@ -24,7 +24,7 @@
 //UTILS
 # define USER_ID(nickname, username)				DDOT + nickname + EXCLAMATION + username + AROBASE + IP + SPACE
 # define PREFIX(nick, user, ID)						USER_ID(nick, user) + ID + SPACE + DDOT + nick + SPACE
-# define WELCOME_MSG								"**********************************************\n" + \
+# define WELCOME_MSG								"\n**********************************************\n" + \
 													"*                                            *\n" + \
 													"*          Welcome to IRC++ Network!         *\n" + \
 													"*                                            *\n" + \
