@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 17:51:37 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:35:03 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	channel::disconnectClient(int clientSocket)
 	{
 		if (i->first == clientSocket)
 		{
+			sendToAll(RPL_PART(i->second->getNickname(), i->second->getUsername(), _channelName));
 			_clientMap.erase(i);
 			break ;
 		}

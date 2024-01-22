@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/19 11:37:41 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/20 19:13:55 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <map>
 # include <vector>
 # include <poll.h>
+//# include "serverLogs.hpp"
 
 # define MAXCLIENT 64
 
@@ -40,7 +41,7 @@ private:
 	int						_socket;
 	struct sockaddr_in		_serverAddrs;
 	std::string				_passwd;
-	uint16_t				_port;
+	int						_port;
 	bool					_status;
 
 	socklen_t				_clientSocketLen;
@@ -64,9 +65,10 @@ public:
 	void				assosiateClientSocket(int clientSocket);
 	void				deleteClientSocket(int clientSocket);
 	void				parseArg(int argc, char **argv);
-	int					launch(void);
+	void				launch(void);
 	int					acceptClient();
 	int					WaitForClient();
+	void				sendToAllNetwork(std::string message);
 
 	//command
 	bool				ping(int clientSocket, std::vector<std::string> splitLine);
@@ -78,8 +80,6 @@ public:
 	int					getSocket(void);
 	struct sockaddr_in	getAddrs(void);
 	std::string			getPasswd(void);
-
-	server const		&operator=(const server &src);
 };
 
 #endif
