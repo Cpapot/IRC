@@ -37,6 +37,7 @@ LIST_SRC		=	main.cpp	\
 					serverUtils.cpp	\
 					channel.cpp	\
 					print.cpp	\
+					serverLogs.cpp	\
 					commands/join.cpp	\
 					commands/mode.cpp	\
 					commands/nick.cpp	\
@@ -45,7 +46,7 @@ LIST_SRC		=	main.cpp	\
 					commands/ping.cpp	\
 					commands/privmsg.cpp	\
 					commands/quit.cpp	\
-					commands/user.cpp
+					commands/user.cpp	\
 
 # ------------ DIRECTORIES ------------ #
 
@@ -106,6 +107,7 @@ endif
 
 clean:
 	$(RM) $(DIR_BUILD)
+	$(RM) .log
 
 fclean:	clean
 	$(RM) $(NAME)

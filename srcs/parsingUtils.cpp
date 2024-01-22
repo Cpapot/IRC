@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsingUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
 /*   Updated: 2024/01/21 15:42:46 by cprojean         ###   ########.fr       */
@@ -45,18 +45,19 @@ void	tokenize(std::string const &str, const char delim, std::vector<std::string>
 	}
 }
 
-bool	testString(std::string str)
+//std::string invalidChar = " &#:\r\n\t\v";
+bool	testString(std::string str, std::string invalidChar)
 {
-	std::string invalidChar = " &#:\r\n\t\v";
-
+	if (str.size() == 0)
+		return false;
 	for(unsigned long i = 0; i < str.size(); i++)
-	{	
+	{
 		for(unsigned long j = 0; j < invalidChar.size(); j++)
 		{
 			if (str[i] == invalidChar[j])
 			{
-				std::cout << str[i] << std::endl;
-				printShit("#e There's an unaccepted char in this info\n");
+				/*std::cout << str[i] << std::endl;
+				new Print("Invalid Char in this info", RED, 1);*/
 				return false;
 			}
 		}

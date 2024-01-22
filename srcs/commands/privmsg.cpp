@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:57:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:02:38 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:57:19 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 	}
 	if (!_serverPtr->getChannel(splitLine[1]))
 	{
-		sendToClient(std::string(ERR_NOTONCHANNEL(_nickname, _username, splitLine[1])));
+		sendToClient(std::string(ERR_NOSUCHCHANNEL(_nickname, _username, splitLine[1])));
+		return false;
+	}
+	if (!_serverPtr->getChannel(splitLine[1])->isOnChannel(_clientSocket))
+	{
+		sendToClient(ERR_NOTONCHANNEL(_nickname, _username, splitLine[1]));
 		return false;
 	}
 	// message = ":" + _nickname + " PRIVMSG " + splitLine[1] + " :";
