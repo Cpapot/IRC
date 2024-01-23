@@ -37,6 +37,8 @@ int main(int argc, char **argv)
 		std::cerr << "Fatal error: " << e.what() << '\n';
 		return 1;
 	}
+	printShit("#d salut %s au revoir %s", "pute", "#salope");
+	//	printShit("#d %s joined %s", _username.c_str(), channelName.c_str());
 
 	signal(SIGINT, handler);
 	while (serv->getStatus())

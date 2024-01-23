@@ -16,14 +16,14 @@
 
 using namespace COLORS;
 
-void	printStr(const char *str, const char *base);
+void	printStr(const char *str, const char *base, int mode);
 
 void	whatsThisShit(std::va_list variadic, const char *str, int i)
 {
 	switch(str[i])
 	{
 		case 's' :
-			printStr(va_arg(variadic, char *), str);
+			printStr(va_arg(variadic, char *), str, 0);
 			break;
 		case 'c' :
 			std::cout << va_arg(variadic, int);
@@ -64,25 +64,26 @@ void	recursivShit(const char *str, const char *base, int i)
 	newString += base[1];
 	newString += ' ';
 	newString += &str[i + 1];
-	printStr(newString.c_str(), base);
+	printStr(newString.c_str(), base, 1);
 }
 
-void	printStr(const char *str, const char *base)
+void	printStr(const char *str, const char *base, int mode)
 {
-	// std::cout << str << std::endl;
 	for(size_t i = 0; i < strlen(str); i++)
 	{
-		if (str[i] == '#' && i == 0)
+		if (str[i] == '#' && i == 0 && mode == 1)
 		{
 			i++;
 			whatsTheMode(str[i]);
 			i++;
 		}
-		if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
+		else if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
 		{
 			recursivShit(str, base, i);
 			return ;
 		}
+		else if (str[i] == '\n' && (i == strlen(str) || i == strlen(str) - 1))
+			i++;
 		else
 			std::cout << str[i];
 	}
