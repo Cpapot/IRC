@@ -33,6 +33,6 @@ bool	client::nick(std::vector<std::string> splitLine)
 	}
 	_nickname = splitLine[1];
 	if (DEBUG)
-		printShit("#d set his nickname to %s", _username.c_str(), _nickname.c_str());
+		printShit("#d set his nickname to %s", _nickname.c_str());
 	return true;
 }
