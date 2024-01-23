@@ -23,9 +23,7 @@ void	client::listenToClient()
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
 	if (buffer[0])
-	{	
-		printShit("#i %s\nsalut mon grow", buffer);
-	}
+		printShit("#i %s\n", buffer);
 	_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
 	findCommand(buffer);
 }
@@ -105,5 +103,6 @@ client::client(int clientSocket, server *serverPtr)
 client::~client()
 {
 	close(_clientSocket);
-	std::cout << _nickname << " deleted." << std::endl;
+	if (DEBUG)
+		printShit("#d %s deleted", _nickname.c_str());
 }

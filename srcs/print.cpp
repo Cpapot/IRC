@@ -42,7 +42,7 @@ void	whatsTheMode(char c)
 	switch(c)
 	{
 		case 'e' :
-			std::cerr << underline << bold << red << "[ ERROR ]" << reset;
+			std::cout << underline << bold << red << "[ ERROR ]" << reset;
 			break;
 		case 'd' :
 			std::cerr << bold << red << "[ DEBUG ]" << reset;
@@ -62,20 +62,23 @@ void	recursivShit(const char *str, const char *base, int i)
 	std::cout << std::endl;
 	newString += base[0];
 	newString += base[1];
+	newString += ' ';
 	newString += &str[i + 1];
 	printStr(newString.c_str(), base);
 }
 
 void	printStr(const char *str, const char *base)
 {
+	// std::cout << str << std::endl;
 	for(size_t i = 0; i < strlen(str); i++)
 	{
-		if (i == 0 && str[i] == '#')
+		if (str[i] == '#' && i == 0)
 		{
-			i++;	
+			i++;
 			whatsTheMode(str[i]);
+			i++;
 		}
-		else if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
+		if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
 		{
 			recursivShit(str, base, i);
 			return ;
@@ -102,7 +105,7 @@ void	printShit(const char *str, ...)
 			i++;
 			whatsThisShit(variadic, str, i);
 		}
-		else if (str[i] == '\n')
+		else if (str[i] == '\n' && i != strlen(str) - 1)
 		{
 			recursivShit(str, str, i);
 			std::cout << std::endl;

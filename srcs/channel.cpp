@@ -129,7 +129,8 @@ channel::channel(std::string name, int clientSocket)
 	_isLocked = false;
 	_isTopicOperator = false;
 	_isUserLimit = false;
-	std::cout << "new channel: " << name << std::endl;
+	if (DEBUG)
+		printShit("#d new channel %s", name.c_str());
 	_operatorList.push_back(clientSocket);
 }
 

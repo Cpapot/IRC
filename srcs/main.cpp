@@ -37,7 +37,6 @@ int main(int argc, char **argv)
 		std::cerr << "Fatal error: " << e.what() << '\n';
 		return 1;
 	}
-	std::cout << "server Lauched" << std::endl;
 
 	signal(SIGINT, handler);
 	while (serv->getStatus())

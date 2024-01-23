@@ -66,7 +66,7 @@ CPPFLAGS        =    -Wall -Wextra -Werror -std=c++98 -g $(DEBUG_FLAG)
 
 DEP_FLAGS        =    -MMD -MP
 
-# DEBUG_FLAG		= -D DEBUG=1
+DEBUG_FLAG		= -D DEBUG=1
 
 CXX              =    c++
 
