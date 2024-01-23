@@ -79,5 +79,7 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 
 bool	client::cap(void)
 {
+	if (DEBUG)
+		printShit("#d CAP LS");
 	return true;
 }

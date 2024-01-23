@@ -6,29 +6,38 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:19 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/19 17:22:05 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:56:57 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRINT_HPP
 # define PRINT_HPP
 
-# include <string>
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
-class Print 
+# include <string>
+#include <cstdarg>
+
+
+namespace COLORS
 {
-	public :
-		Print( std::string message, unsigned long color, int mode );
-		~Print( void );
+	//TYPO
+	const std::string bold		("\033[1m");
+	const std::string italic	("\033[3m");
+	const std::string underline	("\033[4m");
+	//COLORS
+	const std::string black("\033[30m");
+	const std::string red("\033[31m");
+	const std::string blue("\033[34m");
+	const std::string green("\033[32m");
+	const std::string white("\033[37m");	
+	const std::string beige("\033[223m");
+	//RESET
+	const std::string reset		("\033[0m");
 };
 
-# define BLACK 30
-# define RED 31
-# define GREEN 32
-# define YELLOW 33
-# define BLUE 34
-# define MAGENTA 35
-# define CYAN 36
-# define WHITE 37
+void	printShit(const char *str, ...);
 
 #endif

@@ -24,5 +24,7 @@ bool	server::ping(int clientSocket, std::vector<std::string> splitLine)
 		return false;
 	}
 	_clientMap[clientSocket]->sendToClient(RPL_PING(_clientMap[clientSocket]->getNickname(), _clientMap[clientSocket]->getUsername(), splitLine[1]));
+	if (DEBUG)
+		printShit("#d PONG");
 	return true;
 }

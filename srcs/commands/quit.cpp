@@ -19,12 +19,17 @@
 bool	client::quit(std::vector<std::string> splitLine)
 {
 	splitLine[1].erase(0, 1);
-	std::cout << _nickname << " is leaving from the server with the message: \"" << splitLine[1] << "\"" << std::endl;
 	for (size_t i = 0; i != _loggedChannel.size(); i++)
 	{
 		_serverPtr->getChannel(_loggedChannel[i])->disconnectClient(_clientSocket);
 	}
 	_serverPtr->deleteClientSocket(_clientSocket);
+	std::string quit;
+	for (unsigned long i = 1; i < splitLine.size(); i++)
+		quit += splitLine[i] + SPACE;
+	std::cout << _nickname << " is leaving from the server with the message: \"" << quit << "\"" << std::endl;
+	if (DEBUG)
+		printShit("#d %s left with the message : %s", _username.c_str(), quit.c_str());
 	_serverPtr->sendToAllNetwork(RPL_QUIT(_nickname, _username, "c'est tchao"));
 	delete this;
 	return true;

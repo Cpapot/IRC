@@ -56,6 +56,8 @@ bool	client::nick(std::vector<std::string> splitLine)
 	else
 	{
 		_serverPtr->sendToAllNetwork(RPL_NICK(_nickname, _username, splitLine[1]));
+    if (DEBUG)
+		  printShit("#d set his nickname to %s", _username.c_str(), _nickname.c_str());
 		_nickname = splitLine[1];
 	}
 	return true;

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
 /*   Updated: 2024/01/22 16:56:15 by cpapot           ###   ########.fr       */
@@ -58,7 +58,7 @@ int		channel::newClient(client *ClientPtr, std::vector<std::string> splitLine)
 	if (_isInviteOnly)
 		return INVITE_ONLY;
 	_clientMap[ClientPtr->getSocket()] = ClientPtr;
-	std::cout << ClientPtr->getNickname() << " joinded " << _channelName << std::endl;
+	std::cout << ClientPtr->getNickname() << " joined " << _channelName << std::endl;
 	return CHANNEL_JOINNED;
 }
 
@@ -129,7 +129,8 @@ channel::channel(std::string name, int clientSocket)
 	_isLocked = false;
 	_isTopicOperator = false;
 	_isUserLimit = false;
-	std::cout << "new channel: " << name << std::endl;
+	if (DEBUG)
+		printShit("#d new channel %s", name.c_str());
 	_operatorList.push_back(clientSocket);
 }
 

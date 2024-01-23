@@ -41,6 +41,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 		return false;
 	}
+
 	for (size_t i = 1; i != splitLine[2].size(); i++)
 	{
 		switch (char(splitLine[2][i]))
@@ -144,7 +145,7 @@ bool	client::modeUser(std::vector<std::string> splitLine)
 				return false;
 		}
 	}
-	//sendToClient(std::string(RPL_UMODEIS(splitLine[1] + SPACE + splitLine[2])));
+	// sendToClient(std::string(RPL_UMODEIS(splitLine[1] + SPACE + splitLine[2])));
 	return true;
 }
 
