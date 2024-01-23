@@ -41,6 +41,6 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
 	if (DEBUG)
-		printShit("#d PRIVMSG : %s : %s", _username.c_str(), message.c_str());
+		printShit("#c PRIVMSG : %s : %s", _username.c_str(), message.c_str());
 	return true;
 }

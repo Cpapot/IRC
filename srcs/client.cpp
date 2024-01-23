@@ -23,7 +23,7 @@ void	client::listenToClient()
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
 	if (buffer[0])
-		printShit("#i %s\n", buffer);
+		printShit("#d %s\n", buffer);
 	_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
 	findCommand(buffer);
 }
