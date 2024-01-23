@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 18:32:40 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 16:55:08 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 	case PASS:
 		return pass(splitLine);
 	case NICK:
-		return nick(splitLine);
+		return nick(splitLine) || true;
 	case USER:
-		return user(splitLine);
+		return user(splitLine) || true;
 	case PING:
 		return _serverPtr->ping(_clientSocket, splitLine) || true;
 	case QUIT:

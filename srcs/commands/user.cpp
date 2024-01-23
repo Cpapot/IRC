@@ -31,6 +31,10 @@ bool	client::user(std::vector<std::string> splitLine)
 	_servername = splitLine[3];
 	_realname = splitLine[4];
 	_realname.erase(0, 1);
-	sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
+	if (_nickname != "")
+	{
+		sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
+		_userAnswerSent = true;
+	}
 	return true;
 }

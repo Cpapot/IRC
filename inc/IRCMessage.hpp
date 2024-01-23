@@ -62,5 +62,6 @@
 # define ERR_BADCHANNELKEY(nick, user, chan)			PREFIX(nick, user, "475") + chan + std::string(" :Cannot join channel (+k)") + END
 # define ERR_CHANNELISFULL(nick, user, chan)			PREFIX(nick, user, "471") + chan + std::string(" :Cannot join channel (+l)") + END
 # define ERR_INVITEONLYCHAN(nick, user, chan)			PREFIX(nick, user, "473") + chan + std::string(" :Cannot join channel (+i)") + END
-# define ERR_NICKNAMEINUSE(nick, user)					PREFIX(nick, user, "433") + std::string(" is already in use") + END
+# define ERR_NICKNAMEINUSE(nick)						std::string(": 433 * ") + nick + std::string(" :Nickname is already in use") + END
+# define ERR_NOORIGIN(nick, user)						PREFIX(nick, user, "409") + std::string(" :No origin specified") + END
 #endif

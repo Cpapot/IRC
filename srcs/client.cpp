@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 17:56:18 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 16:53:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ client::client(int clientSocket, server *serverPtr)
 	_modeNotice = false;
 	_modeWallops = false;
 	_modeOperator = false;
+	_userAnswerSent = false;
+	_badNick = false;
 	_pass = "";
 	_username = "";
 	_nickname = "";

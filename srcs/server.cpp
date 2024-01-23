@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 18:20:32 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 17:16:41 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ server::server(int argc, char **argv): _serverName("IRC++")
 server::~server()
 {
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+		delete i->second;
+	for (std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
 		delete i->second;
 	close(_socket);
 	delete _logs;
