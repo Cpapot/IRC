@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:04:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 20:36:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 17:10:17 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	server::deleteClientSocket(int clientSocket)
 	{
 		if (i->first == clientSocket)
 		{
+			//delete i->second;
 			_clientMap.erase(i);
 			break ;
 		}

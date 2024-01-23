@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 18:58:05 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 16:53:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "print.hpp"
 #include "serverLogs.hpp"
 
-void	client::listenToClient()
+bool	client::listenToClient()
 {
 	char	buffer[CLIENTBUFFERSIZE];
 
@@ -25,7 +25,7 @@ void	client::listenToClient()
 	if (buffer[0])
 		printShit("#i %s\n", buffer);
 	_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
-	findCommand(buffer);
+	return findCommand(buffer);
 }
 
 void	client::sendToClient(char* message)
@@ -90,6 +90,8 @@ client::client(int clientSocket, server *serverPtr)
 	_modeNotice = false;
 	_modeWallops = false;
 	_modeOperator = false;
+	_userAnswerSent = false;
+	_badNick = false;
 	_pass = "";
 	_username = "";
 	_nickname = "";
