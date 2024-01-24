@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 18:37:07 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/23 17:16:41 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int		server::WaitForClient(void)
 					int	newClientSocket = acceptClient();
 					_pollFds.push_back(fillPollFd(newClientSocket));
 					assosiateClientSocket(newClientSocket);
-					_clientMap[newClientSocket]->listenToClient();
+					if (!_clientMap[newClientSocket]->listenToClient())
+						deleteClientSocket(newClientSocket);
 				}
 				else
 				{
@@ -156,6 +157,8 @@ server::~server()
 		printShit("#i Closing %s", _serverName.c_str());
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 		delete i->second;
+	for (std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
+		delete i->second;
 	close(_socket);
-	//delete _logs;
+	delete _logs;
 }
