@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 16:48:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 17:56:03 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 					}
 				}
 				break;
-				
+
 			case 'l':
 				if (mode == false)
 					_serverPtr->getChannel(splitLine[1])->setIsUserLimit(false, 0);
@@ -90,6 +90,23 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 						return false;
 					}
 				}
+				break;
+				
+			case 'o':
+				if (splitLine.size() <= 3)
+				{
+					sendToClient(ERR_NEEDMOREPARAMS(_nickname, _username));
+					return false;
+				}
+				if (!_serverPtr->getChannel(splitLine[1])->isOnChannelStr(splitLine[3]))
+				{
+					sendToClient(ERR_NOSUCHNICK(_nickname, _username, splitLine[3]));
+					return false;
+				}
+				if (mode)
+					_serverPtr->getChannel(splitLine[1])->makeOperator(_serverPtr->getClient(splitLine[3])->getSocket());
+				else
+					_serverPtr->getChannel(splitLine[1])->deleteOperator(_serverPtr->getClient(splitLine[3])->getSocket());
 				break;
 
 			default:
