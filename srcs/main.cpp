@@ -34,10 +34,9 @@ int main(int argc, char **argv)
 	catch(const std::exception& e)
 	{
 		//mettre print error clean;
-		std::cerr << "Fatal error: " << e.what() << '\n';
+		printShit("#e Fatal error: %s", e.what());
 		return 1;
 	}
-
 	signal(SIGINT, handler);
 	while (serv->getStatus())
 	{

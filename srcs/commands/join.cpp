@@ -20,8 +20,6 @@ enum {CHANNEL_JOINNED = 0, ALREADY_LOGGED, NO_SUCH_SPACE, BADPASS, INVITE_ONLY};
 bool	client::join(std::vector<std::string> splitLine)
 {
 	std::string	channelName;
-	if (DEBUG)
-		printShit("#d JOIN");
 	if (splitLine.size() <= 1)
 	{
 		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
@@ -59,6 +57,6 @@ bool	client::join(std::vector<std::string> splitLine)
 	}
 	_loggedChannel.push_back(channelName);
 	if (DEBUG)
-		printShit("#d %s joined %s", _username.c_str(), channelName.c_str());
+		printShit("#c %s joined %s", _username.c_str(), channelName.c_str());
 	return true;
 }

@@ -27,7 +27,7 @@ bool	client::quit(std::vector<std::string> splitLine)
 		quit += splitLine[i] + SPACE;
 	std::cout << _nickname << " is leaving from the server with the message: \"" << quit << "\"" << std::endl;
 	if (DEBUG)
-		printShit("#d %s left with the message : %s", _username.c_str(), quit.c_str());
+		printShit("#c %s left with the message : %s", _username.c_str(), quit.c_str());
 	_serverPtr->sendToAllNetwork(RPL_QUIT(_nickname, _username, "c'est tchao"));
 	delete this;
 	return true;

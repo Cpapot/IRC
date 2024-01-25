@@ -51,7 +51,7 @@ void		server::launch(void)
 	if (listen(_socket, MAXCLIENT) == -1)
 		return throw std::invalid_argument("server::FailedToListenOnSocket");
 	if (DEBUG)
-		printShit("#d Server %s launched on port %d with password %d", _serverName.c_str(), _port, atoi(_passwd.c_str()));
+		printShit("#i Server %s launched on port %d with password %d", _serverName.c_str(), _port, atoi(_passwd.c_str()));
 }
 
 
@@ -154,7 +154,7 @@ server::server(int argc, char **argv): _serverName("IRC++")
 server::~server()
 {
 	if (DEBUG)
-		printShit("#d Closing %s", _serverName.c_str());
+		printShit("#i Closing %s", _serverName.c_str());
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 		delete i->second;
 	for (std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)

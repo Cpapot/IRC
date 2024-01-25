@@ -16,7 +16,7 @@
 #include <vector>
 #include "print.hpp"
 
-bool	IsChanel(std::string str)
+bool	IsChannel(std::string str)
 {
 	if (str[0] == '#')
 		return true;

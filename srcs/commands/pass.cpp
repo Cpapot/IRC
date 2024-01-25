@@ -25,6 +25,8 @@ bool	client::pass(std::vector<std::string> splitLine)
 		return false;
 	}
 	sendToClient(std::string(":Logged\r\n"));
+	if (DEBUG)
+		printShit("#c caught password %d", atoi(_pass.c_str()));
 	_logged = true;
 	return true;
 }

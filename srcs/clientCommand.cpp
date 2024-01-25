@@ -69,6 +69,7 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 			if (split[i].find(commandList[y]) == 0 && commandfound == false)
 			{
 				commandfound = true;
+				printShit("#d found command %s", commandList[y].c_str());
 				if (!parseCommand(i, y, split))
 					return false;
 			}
@@ -82,6 +83,6 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 bool	client::cap(void)
 {
 	if (DEBUG)
-		printShit("#d CAP LS");
+		printShit("#c CAP LS");
 	return true;
 }

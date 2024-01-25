@@ -39,6 +39,6 @@ bool	client::part(std::vector<std::string> splitLine)
 	//_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_PART(_nickname, _username, splitLine[1]));
 	_serverPtr->getChannel(splitLine[1])->disconnectClient(_clientSocket, 1);
 	if (DEBUG)
-		printShit("#d %s left %s", _username.c_str(), splitLine[1].c_str());
+		printShit("#c %s left %s", _username.c_str(), splitLine[1].c_str());
 	return true;
 }
