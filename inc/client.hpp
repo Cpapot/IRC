@@ -79,6 +79,8 @@ public:
 	bool	join(std::vector<std::string> splitLine);
 	bool	privmsg(std::vector<std::string> splitLine);
 	bool	part(std::vector<std::string> splitLine);
+	bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
+	bool	sendFile(std::string message, std::vector<std::string> splitLine, int i);
 
 	//getters
 	std::string	getUsername(void);

@@ -32,6 +32,8 @@
 													" \n    Use /join <channel> to join a channel\n \n"
 
 //REPLY
+# define RPL_PVTMSG(nickname, username, dest, reply)	USER_ID(nickname, username) + nickname + SPACE + reply
+// # define RPL_CHANMSG(nickname, username, message)
 # define RPL_USER(nickname, username, msg)				USER_ID(nickname, username) + std::string("001 ") + nickname + SPACE + DDOT + msg + END
 # define RPL_NICK(oldnickname, username, nick)			USER_ID(oldnickname, username) + std::string("NICK ") + nick + END
 # define RPL_JOIN(nickname, channel)					DDOT + nickname + std::string(" JOIN ") + channel + END

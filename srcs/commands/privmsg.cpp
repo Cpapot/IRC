@@ -16,6 +16,9 @@
 #include "channel.hpp"
 #include "print.hpp"
 
+
+bool	IsChannel(std::string str);
+
 bool	client::privmsg(std::vector<std::string> splitLine)
 {
 	std::string message;
@@ -24,8 +27,18 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
+	if (!IsChannel(splitLine[1]))
+	{	
+		if (!_serverPtr->getClient(splitLine[1]))
+		{
+			sendToClient(ERR_NOSUCHNICK(_nickname, _username, splitLine[1]));
+			return false;
+		}
+		else
+			return (privateMessage(message, splitLine, 1));
+	}
 	if (!_serverPtr->getChannel(splitLine[1]))
-	{
+	{			
 		sendToClient(std::string(ERR_NOSUCHCHANNEL(_nickname, _username, splitLine[1])));
 		return false;
 	}
@@ -42,5 +55,37 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(message, _clientSocket);
 	if (DEBUG)
 		printShit("#c PRIVMSG : %s : %s", _username.c_str(), message.c_str());
+	return true;
+}
+
+bool	client::privateMessage(std::string message, std::vector<std::string> splitLine, int i)
+{
+	std::string reply;
+	i++;
+	for (size_t y = i; y != splitLine.size(); y++)
+	{
+		if (i == 2 && splitLine[i].find("DCC") == 1)
+		{
+			sendFile(message, splitLine, i);
+			break;
+		}
+		reply += splitLine[y] + SPACE;
+	}
+	reply += END;
+	_serverPtr->getClient(splitLine[1])->sendToClient(RPL_PVTMSG(_nickname, _username, splitLine[i], reply));
+	return true;
+}
+
+bool	client::sendFile(std::string message, std::vector<std::string> splitLine, int i)
+{
+	std::cout << "sendFile" << std::endl;
+	for (size_t y = i; y != splitLine.size(); y++)
+	{
+		message += splitLine[y] + SPACE;
+	}
+	message += END;
+	sendToClient(message);
+	if (DEBUG)
+		printShit("#c Trying to send a file");
 	return true;
 }

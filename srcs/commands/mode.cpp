@@ -16,7 +16,7 @@
 #include "channel.hpp"
 #include "print.hpp"
 
-bool	IsChanel(std::string str);
+bool	IsChannel(std::string str);
 
 bool	client::modeChannel(std::vector<std::string> splitLine)
 {
@@ -164,8 +164,8 @@ bool	client::mode(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_NEEDMOREPARAMS(_nickname, _username)));
 		return false;
 	}
-	if (!IsChanel(splitLine[1]))
+	if (!IsChannel(splitLine[1]))
 		return modeUser(splitLine);
 	else
 		return modeChannel(splitLine);
-}
+}	
