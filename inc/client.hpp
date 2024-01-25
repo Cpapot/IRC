@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 16:53:42 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 13:00:32 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ private:
 
 	bool	modeUser(std::vector<std::string> splitLine);
 	bool	modeChannel(std::vector<std::string> splitLine);
+  bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
+	bool	sendFile(std::string message, std::vector<std::string> splitLine, int i);
 
 public:
 	client(int _clientSocket, server *serverPtr);
@@ -79,8 +81,7 @@ public:
 	bool	join(std::vector<std::string> splitLine);
 	bool	privmsg(std::vector<std::string> splitLine);
 	bool	part(std::vector<std::string> splitLine);
-	bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
-	bool	sendFile(std::string message, std::vector<std::string> splitLine, int i);
+	bool	kick(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);
