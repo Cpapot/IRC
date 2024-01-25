@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 16:56:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 17:20:58 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ void	channel::sendToAllExept(std::string message, int senderSocket)
 	}
 }
 
-void	channel::disconnectClient(int clientSocket)
+void	channel::disconnectClient(int clientSocket, bool sendPart)
 {
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 	{
 		if (i->first == clientSocket)
 		{
-			sendToAll(RPL_PART(i->second->getNickname(), i->second->getUsername(), _channelName));
+			if (sendPart)
+				sendToAll(RPL_PART(i->second->getNickname(), i->second->getUsername(), _channelName));
 			_clientMap.erase(i);
 			break ;
 		}
@@ -72,6 +73,16 @@ bool	channel::isOnChannel(int socket)
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 	{
 		if (i->first == socket)
+			return true;
+	}
+	return false;
+}
+
+bool	channel::isOnChannelStr(std::string ClientNick)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->second->getNickname() == ClientNick)
 			return true;
 	}
 	return false;

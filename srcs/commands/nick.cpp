@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:30 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 16:55:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 17:37:27 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,14 @@
 #include "channel.hpp"
 #include "print.hpp"
 
+bool	testString(std::string str, std::string invalidChar);
+
 bool	client::nick(std::vector<std::string> splitLine)
 {
-	std::string invalidChar = " &#:\r\n\t\v";
-
-	for (size_t i = 0; i != splitLine[1].size(); i++)
+	if (!testString(splitLine[1], " &#:\r\n\t\v"))
 	{
-		for (size_t y = 0; y != invalidChar.size(); y++)
-		{
-			if (splitLine[1][i] == invalidChar[y])
-			{
-				sendToClient(std::string(ERR_ERRONEUSNICKNAME(_nickname, _username)));
-				return false;
-			}
-		}
+		sendToClient(std::string(ERR_ERRONEUSNICKNAME(_nickname, _username)));
+		return false;
 	}
 	if (_serverPtr->getClient(splitLine[1]) != NULL)
 	{

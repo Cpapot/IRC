@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:10:50 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:02:20 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 15:24:48 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ bool	server::whoIs(int clientSocket, std::vector<std::string> splitline)
 	// }
 	return true;
 }
-

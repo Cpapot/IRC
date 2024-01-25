@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/22 16:54:01 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/25 17:21:15 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ public:
 
 	int			newClient(client *ClientPtr, std::vector<std::string> splitLine);
 	bool		isOnChannel(int socket);
-	void		disconnectClient(int clientSocket);
+	bool		isOnChannelStr(std::string ClientNick);
+	void		disconnectClient(int clientSocket, bool sendPart);
 
 	void		sendToAll(std::string message);
 	void		sendToAllExept(std::string message, int senderSocket);
