@@ -56,7 +56,7 @@ private:
 
 	bool	modeUser(std::vector<std::string> splitLine);
 	bool	modeChannel(std::vector<std::string> splitLine);
-  bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
+	bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
 	bool	sendFile(std::string message, std::vector<std::string> splitLine, int i);
 
 public:
