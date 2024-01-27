@@ -32,7 +32,7 @@
 													" \n    Use /join <channel> to join a channel\n \n"
 
 //REPLY
-# define RPL_DCC(nickname, username, dcc, dest)			USER_ID(nickname, username) + std::string("PRIVMSG ") + dest + SPACE + DDOT + dcc + END
+# define RPL_DCC(nickname, username, dcc, dest)			USER_ID(nickname, username) + std::string("PRIVMSG ") + dest + SPACE + dcc + END
 # define RPL_PVTMSG(nickname, username, dest, reply)	USER_ID(nickname, username) + nickname + SPACE + reply
 # define RPL_CHANMSG(nickname, username, message)		DDOT + nickname + std::string(" PRIVMSG ") + username + SPACE + DDOT + message + END
 # define RPL_USER(nickname, username, msg)				USER_ID(nickname, username) + std::string("001 ") + nickname + SPACE + DDOT + msg + END

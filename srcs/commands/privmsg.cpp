@@ -62,12 +62,10 @@ bool	client::privateMessage(std::string message, std::vector<std::string> splitL
 {
 	std::string reply;
 	i++;
-	std::cout << splitLine[2] << std::endl;
 	for (size_t y = i; y != splitLine.size(); y++)
 	{
 		if (y == 2 && isDcc(splitLine[y]))
 		{
-			splitLine[2] = "DCC";
 			sendFile(message, splitLine, i);
 			return true;
 		}
@@ -106,12 +104,12 @@ bool	client::sendFile(std::string message, std::vector<std::string> splitLine, i
 {
 	for (size_t y = i; y != splitLine.size(); y++)
 	{
-		if ((int)y == i)
-			message += "DCC";
-		else if (y == splitLine.size() - 1)
-			message += getSize(splitLine[y]);
-		else
-			message += splitLine[y];
+		// if ((int)y == i)
+		// 	message += "DCC";
+		// else if (y == splitLine.size() - 1)
+		// 	message += getSize(splitLine[y]);
+		// else
+		message += splitLine[y];
 		if (y != splitLine.size() - 1)
 			message += SPACE;
 	}
