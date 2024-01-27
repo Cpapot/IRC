@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:30:13 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/27 18:25:36 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 # define RPL_PART(nick, user, channel)					USER_ID(nick, user) + std::string("PART") + SPACE + channel + END
 # define RPL_QUIT(nick, user, message)					USER_ID(nick, user) + std::string("QUIT") + SPACE + DDOT + message + END
 # define RPL_KICK(nick, user, chan, kicknick, message)	USER_ID(nick, user) + std::string("KICK ") + chan + SPACE + kicknick + SPACE + message + END
+# define RPL_INVITING(nick, user, inv_nick, chan)		PREFIX(nick, user, "341") + inv_nick + SPACE + chan + END
+# define RPL_INVITE(nick, user, new_nick, chan)			USER_ID(nick, user) + std::string("INVITE ") + new_nick + SPACE + DDOT + chan + END
 
 //ERROR REPLY
 # define ERR_UNKNOWNCOMMAND(cmd,nick, user)				PREFIX(nick, user, "421") + std::string("\"") + cmd + std::string("\" Unknown command\r\n")
@@ -67,6 +69,7 @@
 # define ERR_INVITEONLYCHAN(nick, user, chan)			PREFIX(nick, user, "473") + chan + std::string(" :Cannot join channel (+i)") + END
 # define ERR_NICKNAMEINUSE(nick)						std::string(": 433 * ") + nick + std::string(" :Nickname is already in use") + END
 # define ERR_NOORIGIN(nick, user)						PREFIX(nick, user, "409") + std::string(" :No origin specified") + END
+# define ERR_USERONCHANNEL(nick, user, inv_nick, chan)	PREFIX(nick, user, "443") + inv_nick + SPACE + chan + std::string(" :is already on channel") + END
 # define ERR_USERNOTINCHANNEL(nick, user, chan)			PREFIX(nick, user, "441") + chan + std::string(" :They aren't on that channel") + END
 
 #endif

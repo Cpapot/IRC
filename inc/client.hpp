@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 13:00:32 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/27 16:46:22 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ public:
 	bool	privmsg(std::vector<std::string> splitLine);
 	bool	part(std::vector<std::string> splitLine);
 	bool	kick(std::vector<std::string> splitLine);
+	bool	invite(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:38:47 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/27 17:45:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "channel.hpp"
 #include "print.hpp"
 
-enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG, KICK};
+enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG, KICK, INVITE};
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {
@@ -51,6 +51,8 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 		return privmsg(splitLine) || true;
 	case KICK:
 		return kick(splitLine) || true;
+	case INVITE:
+		return invite(splitLine) || true;
 	}
 	return true;
 }
@@ -58,13 +60,13 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
-	std::string	commandList[11] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG", "KICK"};
+	std::string	commandList[12] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG", "KICK", "INVITE"};
 
 	tokenize(std::string(buffer), '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
 	{
 		bool	commandfound = false;
-		for (size_t y = 0; y != 11; y++)
+		for (size_t y = 0; y != 12; y++)
 		{
 			if (split[i].find(commandList[y]) == 0 && commandfound == false)
 			{
@@ -73,7 +75,7 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 				if (!parseCommand(i, y, split))
 					return false;
 			}
-			else if (commandfound == false && y == 10)
+			else if (commandfound == false && y == 11)
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i], _nickname, _username)));
 		}
 	}

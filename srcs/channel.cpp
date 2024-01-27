@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:20:58 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/27 18:56:45 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,42 @@ void	channel::disconnectClient(int clientSocket, bool sendPart)
 	}
 }
 
+bool	channel::isInInviteList(std::string ClientNick)
+{
+	for (size_t i = 0; i != _inviteList.size(); i++)
+	{
+		if (_inviteList[i] == ClientNick)
+			return true;
+	}
+	return false;
+}
+
+void	channel::addToInviteList(std::string ClientNick)
+{
+	bool	info = false;
+
+	for (size_t i = 0; i != _inviteList.size(); i++)
+	{
+		if (_inviteList[i] == ClientNick)
+			info = true;
+	}
+	if (info == false)
+		_inviteList.push_back(ClientNick);
+}
+
+void	channel::removeFromInviteList(std::string ClientNick)
+{
+	size_t y = 0;
+	for (std::vector<std::string>::iterator i = _inviteList.begin(); i != _inviteList.end(); i++, y++)
+	{
+		if (_inviteList[y] == ClientNick)
+		{
+			_inviteList.erase(i);
+			break;
+		}
+	}
+}
+
 enum {CHANNEL_JOINNED = 0, ALREADY_LOGGED, NO_SUCH_SPACE, BADPASS, INVITE_ONLY};
 int		channel::newClient(client *ClientPtr, std::vector<std::string> splitLine)
 {
@@ -57,9 +93,13 @@ int		channel::newClient(client *ClientPtr, std::vector<std::string> splitLine)
 	if (_isLocked && splitLine[2] != _passwd)
 		return BADPASS;
 	if (_isInviteOnly)
-		return INVITE_ONLY;
+	{
+		if (isInInviteList(ClientPtr->getNickname()))
+			removeFromInviteList(ClientPtr->getNickname());
+		else
+			return INVITE_ONLY;
+	}
 	_clientMap[ClientPtr->getSocket()] = ClientPtr;
-	std::cout << ClientPtr->getNickname() << " joined " << _channelName << std::endl;
 	return CHANNEL_JOINNED;
 }
 
