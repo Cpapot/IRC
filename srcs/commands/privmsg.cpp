@@ -67,7 +67,7 @@ bool	client::privateMessage(std::string message, std::vector<std::string> splitL
 	{
 		if (y == 2 && isDcc(splitLine[y]))
 		{
-			splitLine[y] = "DCC";
+			splitLine[2] = "DCC";
 			sendFile(message, splitLine, i);
 			return true;
 		}
@@ -95,7 +95,10 @@ std::string		getSize(std::string message)
 {
 	std::string	size;
 	for (int i = 0; i != (int)message.size() - 1; i++)
+	{
 		size += message[i];
+		std::cout << message[i] << std::endl;
+	}
 	return (size);
 }
 
@@ -103,17 +106,16 @@ bool	client::sendFile(std::string message, std::vector<std::string> splitLine, i
 {
 	for (size_t y = i; y != splitLine.size(); y++)
 	{
-		std::cout << splitLine[y] << " sagranmere" << std::endl;
 		if ((int)y == i)
 			message += "DCC";
 		else if (y == splitLine.size() - 1)
 			message += getSize(splitLine[y]);
 		else
 			message += splitLine[y];
-		message += SPACE;
+		if (y != splitLine.size() - 1)
+			message += SPACE;
 	}
-	message += END;
-	_serverPtr->getClient(splitLine[1])->sendToClient(message);
+	_serverPtr->getClient(splitLine[1])->sendToClient(RPL_DCC(_nickname, _username, message, splitLine[1]));
 	if (DEBUG)
 		printShit("#c Trying to send a file");
 	return true;
