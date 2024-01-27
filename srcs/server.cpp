@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 17:16:41 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/27 18:37:22 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		server::launch(void)
 	if (listen(_socket, MAXCLIENT) == -1)
 		return throw std::invalid_argument("server::FailedToListenOnSocket");
 	if (DEBUG)
-		printShit("#i Server %s launched on port %d with password %d", _serverName.c_str(), _port, atoi(_passwd.c_str()));
+		printShit("#i Server %s launched on port %d with password %s", _serverName.c_str(), _port, _passwd.c_str());
 }
 
 
@@ -85,7 +85,6 @@ int		server::WaitForClient(void)
 		}
 	}
 }
-
 
 serverLogs			*server::getLogs(void)
 {

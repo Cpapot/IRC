@@ -47,7 +47,8 @@ LIST_SRC		=	main.cpp	\
 					commands/privmsg.cpp	\
 					commands/quit.cpp	\
 					commands/user.cpp	\
-					commands/kick.cpp
+					commands/kick.cpp	\
+					commands/invite.cpp
 
 # ------------ DIRECTORIES ------------ #
 
