@@ -1,68 +1,48 @@
-#include <curl/curl.h>
+#include <stdio.h>
 #include <iostream>
+#include <string>
 #include <cstdlib>
 
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
-    size_t totalSize = size * nmemb;
-    output->append((char*)contents, totalSize);
-    return totalSize;
-}
+# define CHECK_API_KEY(url, apiKey)			std::string("curl -s ") + url + std::string(" \"-H \"Authorization: Bearer ") + apiKey + std::string(" | jq '.error'\"")
 
-int main()
+# define CURL_REQUEST(prompt, url, apiKey)	std::string("curl -s ") + url + std::string("\
+	-H \"Content-Type: application/json\" \
+	-H \"Authorization: Bearer ") + apiKey + std::string("\" \
+	-d \'{ \
+	\"prompt\": \"") + prompt + std::string("\", \
+	\"n\": 1, \
+	\"size\": \"1024x1024\" \
+	}\'")
+
+# define BOTBUFFER	1024
+
+
+int main(int argc, char **argv)
 {
-	CURL	*curl;
-	CURLcode res;
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-	curl = curl_easy_init();
 
-	if (curl)
-	{
+		std::string url = "https://api.openai.com/v1/images/generations";
+		char *tmp = std::getenv("DALLE_API_KEY");
+		std::string prompt = "Illustrate a scene from a Victorian masquerade ball with elaborate costumes. Use contrasting colors and soft lighting to accentuate the mysterious and festive atmosphere.";
 
-		const char* url = "https://api.openai.com/v1/images/generations";
-		const char* apiKey = std::getenv("DALLE_API_KEY");
-		std::string prompt = "a photo of a happy corgi puppy sitting and facing forward, studio light, longshot";
-        const char* jsonData =
-            "{\n"
-            "    \"prompt\": \"a photo of a happy corgi puppy sitting and facing forward, studio light, longshot\",\n"
-            "    \"n\": 1,\n"
-            "    \"size\": \"1024x1024\"\n"
-            "}";
-
-
-		if (apiKey == NULL)
+		if (tmp == NULL)
 			throw std::invalid_argument("bot::YouNeedToSetApiKey");
 
-		curl_easy_setopt(curl, CURLOPT_URL, url);
-		curl_easy_setopt(curl, CURLOPT_POST, 1);
-		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData);
+		std::string apiKey = tmp;
+		apiKey.erase(apiKey.size() - 1, apiKey.size());
+		std::string curlCommand = CURL_REQUEST(prompt, url, apiKey) + " | jq";
 
-		struct curl_slist* headers = NULL;
-		headers = curl_slist_append(headers, "Content-Type: application/json");
-		char authHeader[100];
-		sprintf(authHeader, "Authorization: Bearer %s", apiKey);
-		headers = curl_slist_append(headers, authHeader);
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		FILE		*pipe = popen(curlCommand.c_str(), "r");
 
-
+		if (!pipe)
+		{
+			std::cout << "broken pipe" << std::endl;
+			return 0;
+		}
+		char buff[BOTBUFFER];
 
 		std::string response;
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-		// Exécuter la requête
-		res = curl_easy_perform(curl);
-
-		// Vérifier les erreurs
-		if (res != CURLE_OK) {
-			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-		} else {
-			// Afficher la réponse
-			std::cout << "Réponse de l'API : " << response << std::endl;
-		}
-
-		// Libérer les ressources
-		curl_slist_free_all(headers);
-		curl_easy_cleanup(curl);
-		curl_global_cleanup();
-	}
+		while (fgets(buff, 256, pipe) != NULL)
+			response += buff;
+		pclose(pipe);
+		std::cout << response << std::endl;
 }
