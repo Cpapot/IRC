@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/30 11:11:39 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:27:27 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "Irc.hpp"
+# include <string>
+# include "client.hpp"
 
 # define MAXCLIENT 64
 

@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ABot.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/30 17:16:48 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:31:09 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOT_HPP
-# define BOT_HPP
+#ifndef ABOT_HPP
+# define ABOT_HPP
 
 # include <string>
+
+class server;
 
 class ABot
 {
@@ -24,7 +26,7 @@ class ABot
 			std::string			_hostname;
 			std::string			_servername;
 			std::string			_realname;
-			
+
 			server				*_serverPtr;
 
 			std::string			_pass;

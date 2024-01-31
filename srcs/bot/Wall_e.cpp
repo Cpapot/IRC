@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Wall_e.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/30 13:56:01 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:24:14 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Irc.hpp"
+#include "wall_e.hpp"
+#include "server.hpp"
 
-Wall_e::Wall_e(int clientSocket, server *serverPtr, char **argv)
+void	wall_e::setAndCheckApiKey(void)
+{
+
+}
+
+wall_e::wall_e(int clientSocket, server *serverPtr, char **argv)
 {
 	_pass = argv[2];
 	_port = argv[1];
@@ -21,7 +27,6 @@ Wall_e::Wall_e(int clientSocket, server *serverPtr, char **argv)
 	_modeWallops = true;
 	_modeOperator = true;
 	_logged = false;
-	_pass = "";
 	_username = "Wall-e";
 	_nickname = "Wall-e";
 	_hostname = "Wall-e";
@@ -31,7 +36,7 @@ Wall_e::Wall_e(int clientSocket, server *serverPtr, char **argv)
 	_serverPtr = serverPtr;
 }
 
-Wall_e::~Wall_e(void)
+wall_e::~wall_e(void)
 {
 	close(_clientSocket);
 	return ;

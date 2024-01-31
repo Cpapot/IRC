@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/30 11:14:57 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:29:16 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "Irc.hpp"
+# include <string>
+# include <map>
+# include "client.hpp"
 
 class channel
 {
@@ -59,7 +61,7 @@ public:
 	void					clearTopic(void);
 	std::string				getTopic(void);
 	bool					isTopicOperator(void);
-	
+
 	void					addToInviteList(std::string ClientNick);
 	void					removeFromInviteList(std::string ClientNick);
 	bool					isInInviteList(std::string ClientNick);

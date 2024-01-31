@@ -3,17 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/30 11:15:39 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:27:42 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include "Irc.hpp"
+# include <arpa/inet.h>
+# include <iostream>
+# include <string>
+# include <unistd.h>
+# include <vector>
+# include <cstring>
+# include "server.hpp"
+# include "print.hpp"
 
 # define CLIENTBUFFERSIZE	1024
 

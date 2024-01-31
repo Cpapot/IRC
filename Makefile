@@ -50,9 +50,7 @@ LIST_SRC		=	main.cpp				\
 					commands/kick.cpp		\
 					commands/invite.cpp 	\
 					commands/topic.cpp 		\
-					bot/ABot.cpp 			\
-					bot/Wall_e.cpp
-					
+
 
 # ------------ DIRECTORIES ------------ #
 

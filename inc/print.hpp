@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:19 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/30 11:11:43 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:27:57 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #  define DEBUG 0
 # endif
 
-# include "Irc.hpp"
+# include <string>
+# include <cstdarg>
 
 namespace COLORS
 {
@@ -30,7 +31,7 @@ namespace COLORS
 	const std::string red("\033[31m");
 	const std::string blue("\033[34m");
 	const std::string green("\033[32m");
-	const std::string white("\033[37m");	
+	const std::string white("\033[37m");
 	const std::string beige("\033[223m");
 	//RESET
 	const std::string reset		("\033[0m");
