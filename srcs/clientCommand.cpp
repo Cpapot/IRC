@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clientCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 17:45:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/29 11:22:35 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "channel.hpp"
 #include "print.hpp"
 
-enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG, KICK, INVITE};
+enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG, KICK, INVITE, TOPIC};
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {
@@ -53,6 +53,8 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 		return kick(splitLine) || true;
 	case INVITE:
 		return invite(splitLine) || true;
+	case TOPIC:
+		return topic(splitLine) || true;
 	}
 	return true;
 }
@@ -60,13 +62,13 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 {
 	std::vector<std::string>	split;
-	std::string	commandList[12] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG", "KICK", "INVITE"};
+	std::string	commandList[13] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG", "KICK", "INVITE", "TOPIC"};
 
 	tokenize(std::string(buffer), '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
 	{
 		bool	commandfound = false;
-		for (size_t y = 0; y != 12; y++)
+		for (size_t y = 0; y != 13; y++)
 		{
 			if (split[i].find(commandList[y]) == 0 && commandfound == false)
 			{
@@ -75,7 +77,7 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 				if (!parseCommand(i, y, split))
 					return false;
 			}
-			else if (commandfound == false && y == 11)
+			else if (commandfound == false && y == 12)
 				sendToClient(std::string(ERR_UNKNOWNCOMMAND(split[i], _nickname, _username)));
 		}
 	}

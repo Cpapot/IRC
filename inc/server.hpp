@@ -3,28 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 20:35:36 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/30 11:11:39 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <string>
-# include <cstring>
-# include <unistd.h>
-# include <iostream>
-# include <sys/socket.h>
-# include <sys/types.h>
-# include <netinet/in.h>
-# include <cstdlib>
-# include <cerrno>
-# include <map>
-# include <vector>
-# include <poll.h>
+# include "Irc.hpp"
 
 # define MAXCLIENT 64
 

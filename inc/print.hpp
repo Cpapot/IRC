@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:19 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/21 15:56:57 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:11:43 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 #  define DEBUG 0
 # endif
 
-# include <string>
-#include <cstdarg>
-
+# include "Irc.hpp"
 
 namespace COLORS
 {
