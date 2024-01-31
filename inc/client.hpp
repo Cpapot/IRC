@@ -3,28 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 16:46:22 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/30 11:15:39 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include <arpa/inet.h>
-# include <iostream>
-# include <string>
-# include <unistd.h>
-# include <vector>
-# include <cstring>
-# include "server.hpp"
-# include "print.hpp"
+# include "Irc.hpp"
 
 # define CLIENTBUFFERSIZE	1024
 
 void tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
+
+class server;
 
 class client
 {
@@ -83,6 +78,7 @@ public:
 	bool	part(std::vector<std::string> splitLine);
 	bool	kick(std::vector<std::string> splitLine);
 	bool	invite(std::vector<std::string> splitLine);
+	bool	topic(std::vector<std::string> splitLine);
 
 	//getters
 	std::string	getUsername(void);

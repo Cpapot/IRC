@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 18:55:37 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/30 11:14:57 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-#include <string>
-#include "client.hpp"
+# include "Irc.hpp"
 
 class channel
 {
@@ -56,6 +55,11 @@ public:
 	void					setIsLocked(bool value, std::string pass);
 	void					setIsUserLimit(bool value, unsigned int maxUser);
 
+	void					setTopic(std::string topic);
+	void					clearTopic(void);
+	std::string				getTopic(void);
+	bool					isTopicOperator(void);
+	
 	void					addToInviteList(std::string ClientNick);
 	void					removeFromInviteList(std::string ClientNick);
 	bool					isInInviteList(std::string ClientNick);

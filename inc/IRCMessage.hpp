@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 18:25:36 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/30 10:33:17 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define RPL_USER(nickname, username, msg)				USER_ID(nickname, username) + std::string("001 ") + nickname + SPACE + DDOT + msg + END
 # define RPL_NICK(oldnickname, username, nick)			USER_ID(oldnickname, username) + std::string("NICK ") + nick + END
 # define RPL_JOIN(nickname, channel)					DDOT + nickname + std::string(" JOIN ") + channel + END
+# define RPL_TOPIC(nickname, username, chan, topic)		USER_ID(nickname, username) + std::string("TOPIC ") + chan + SPACE + topic + END
+# define RPL_CLEARTOPIC(nickname, username, chan)		USER_ID(nickname, username) + std::string("TOPIC ") + chan + END
 //# define RPL_WHOISUSER(nick, user, host, real)			std::string("311 :") + nick + SPACE + user + SPACE + host + std::string(" * :") + real + END
 //# define RPL_UMODEIS(msg)								std::string("221 :") + msg + END
 # define RPL_ENDOFNAMES(nick, user, chan)				PREFIX(nick, user, "464") + chan + ":End of NAMES list" + END

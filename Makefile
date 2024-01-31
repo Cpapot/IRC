@@ -28,27 +28,31 @@ IRC_PASS		=		mdp
 
 # --------------- FILES --------------- #
 
-LIST_SRC		=	main.cpp	\
-					parsingUtils.cpp	\
-					server.cpp	\
-					client.cpp	\
-					clientCommand.cpp	\
-					serverCommand.cpp	\
-					serverUtils.cpp	\
-					channel.cpp	\
-					print.cpp	\
-					serverLogs.cpp	\
-					commands/join.cpp	\
-					commands/mode.cpp	\
-					commands/nick.cpp	\
-					commands/part.cpp	\
-					commands/pass.cpp	\
-					commands/ping.cpp	\
+LIST_SRC		=	main.cpp				\
+					parsingUtils.cpp		\
+					server.cpp				\
+					client.cpp				\
+					clientCommand.cpp		\
+					serverCommand.cpp		\
+					serverUtils.cpp			\
+					channel.cpp				\
+					print.cpp				\
+					serverLogs.cpp			\
+					commands/join.cpp		\
+					commands/mode.cpp		\
+					commands/nick.cpp		\
+					commands/part.cpp		\
+					commands/pass.cpp		\
+					commands/ping.cpp		\
 					commands/privmsg.cpp	\
-					commands/quit.cpp	\
-					commands/user.cpp	\
-					commands/kick.cpp	\
-					commands/invite.cpp
+					commands/quit.cpp		\
+					commands/user.cpp		\
+					commands/kick.cpp		\
+					commands/invite.cpp 	\
+					commands/topic.cpp 		\
+					bot/ABot.cpp 			\
+					bot/Wall_e.cpp
+					
 
 # ------------ DIRECTORIES ------------ #
 
@@ -82,7 +86,7 @@ START = $(NAME) $(IRC_PORT) $(IRC_PASS)
 
 #***********************************  RULES  **********************************#
 
-all:	header $(NAME)
+all:	header $(NAME) $(BOT)
 
 # ---------- VARIABLES RULES ---------- #
 
@@ -119,7 +123,6 @@ header:
 
 re:		fclean
 	@$(MAKE) all --no-print-directory
-
 
 start:
 	@$(MAKE) all --no-print-directory
