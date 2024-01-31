@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:57:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 17:19:24 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/29 12:21:19 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ std::string		getSize(std::string message)
 	for (int i = 0; i != (int)message.size() - 1; i++)
 	{
 		size += message[i];
-		std::cout << message[i] << std::endl;
 	}
 	return (size);
 }
@@ -104,11 +103,6 @@ bool	client::sendFile(std::string message, std::vector<std::string> splitLine, i
 {
 	for (size_t y = i; y != splitLine.size(); y++)
 	{
-		// if ((int)y == i)
-		// 	message += "DCC";
-		// else if (y == splitLine.size() - 1)
-		// 	message += getSize(splitLine[y]);
-		// else
 		message += splitLine[y];
 		if (y != splitLine.size() - 1)
 			message += SPACE;

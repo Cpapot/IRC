@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 18:56:45 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/01/29 16:02:01 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,26 @@ void	channel::setIsUserLimit(bool value, unsigned int maxUser)
 {
 	_isUserLimit = value;
 	_maxUser = maxUser;
+}
+
+void	channel::setTopic(std::string topic)
+{
+	_topic = topic;
+}
+
+std::string		channel::getTopic(void)
+{
+	return (_topic);
+}
+
+bool	channel::isTopicOperator(void)
+{
+	return (_isTopicOperator);
+}
+
+void	channel::clearTopic(void)
+{
+	_topic = "";
 }
 
 channel::channel(std::string name, int clientSocket)
