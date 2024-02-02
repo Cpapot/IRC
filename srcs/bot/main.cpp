@@ -3,20 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:05:43 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/30 14:03:24 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/02 10:17:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Irc.hpp"
 
-int main(int argc, char **argv) {
+# include <sys/types.h>
+# include <netinet/in.h>
+# include <sys/socket.h>
+# include <string>
+# include <iostream>
+# include <unistd.h>
+# include <arpa/inet.h>
+
+int main() {
 	// Création du socket client
-	if (argc != 3)
-		std::cout << "Bots : I need only a port and a password !" << std::endl;
-	
+	/*if (argc != 3)
+		std::cout << "Bots : I need only a port and a password !" << std::endl;*/
+
 	int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (clientSocket == -1) {
 		std::cerr << "Erreur lors de la création du socket client." << std::endl;
@@ -24,7 +31,7 @@ int main(int argc, char **argv) {
 	}
 
 	// Configuration de l'adresse du serveur
-	
+
 	sockaddr_in serverAddress;
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1"); // Adresse IP du serveur (localhost dans cet exemple)

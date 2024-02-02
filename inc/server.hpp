@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/31 13:27:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 10:02:55 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,17 @@
 # define SERVER_HPP
 
 # include <string>
-# include "client.hpp"
+# include <cstring>
+# include <unistd.h>
+# include <iostream>
+# include <sys/socket.h>
+# include <sys/types.h>
+# include <netinet/in.h>
+# include <cstdlib>
+# include <cerrno>
+# include <map>
+# include <vector>
+# include <poll.h>
 
 # define MAXCLIENT 64
 
