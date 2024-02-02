@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/31 13:31:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 12:06:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,50 @@
 # define ABOT_HPP
 
 # include <string>
+# include <sys/types.h>
+# include <netinet/in.h>
+# include <sys/socket.h>
+# include <iostream>
+# include <unistd.h>
+# include <arpa/inet.h>
 
-class server;
+# define SERVERMESSAGEBUFFER				1024
+
+# define END								"\r\n"
+# define SPACE								" "
+
+# define HS_CAP								std::string("CAP LS") + END
+# define HS_PASS(pass)						std::string("PASS ") + pass + END
+# define HS_NICK(nick)						std::string("NICK ") + nick + END
+# define HS_USER(user, real, host, serv)	std::string("USER ") + user + SPACE + host + SPACE + serv + std::string(" :") + real + END
 
 class ABot
 {
 	protected :
-			std::string			_nickname;
+		std::string			_nickname;
 
-			std::string			_username;
-			std::string			_hostname;
-			std::string			_servername;
-			std::string			_realname;
+		std::string			_username;
+		std::string			_hostname;
+		std::string			_servername;
+		std::string			_realname;
 
-			server				*_serverPtr;
+		int					_clientSocket;
 
-			std::string			_pass;
-			std::string			_port;
-			int					_clientSocket;
-			bool				_logged;
-			bool				_modeInvisible;
-			bool				_modeNotice;
-			bool				_modeWallops;
-			bool				_modeOperator;
+		sockaddr_in			_serverAddress;
+		int					_serverSocket;
+		std::string			_serverPass;
 
+		void	parseArg(int argc, char **argv);
+		void	connectToServ();
+		void	fillSockAddr();
 	public :
-			ABot(void);
-			ABot(int clientSocket, server *serverPtr, char **argv);
-			virtual ~ABot( void );
-			virtual bool routine() const = 0;
+		ABot(void);
+
+		virtual ~ABot( void );
+		//virtual bool routine() const = 0;
+		bool			sendToServer(std::string message);
+		std::string		listenToServer();
+		void	sendFirstHandShake();
 };
 
 #endif

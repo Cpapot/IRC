@@ -29,7 +29,10 @@ IRC_PASS		=		mdp
 
 # --------------- FILES --------------- #
 
-LIST_BOT_SRC	=	main.cpp
+LIST_BOT_SRC	=	main.cpp				\
+					ABot.cpp				\
+					Wall_e.cpp				\
+					../print.cpp
 
 LIST_SRC		=	main.cpp				\
 					parsingUtils.cpp		\

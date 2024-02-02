@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/31 15:01:13 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 11:57:02 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ std::string	wall_e::generateImg(std::string prompt)
 	if (_botStatus == false)
 	{
 		printShit("#i %s", API_KEY_INVALID);
-		return "<null>\n";
+		return "null\n";
 	}
 	if (prompt.size() == 0)
 	{
 		printShit("#i %s", "Prompt can't be empty");
-		return "<null>\n";
+		return "null\n";
 	}
 	std::string request = CURL_REQUEST(prompt, _apiKey) + " | jq -r '.data[0].url'";
 	FILE	*requestAnswer = popen(request.c_str(), "r");
@@ -57,44 +57,39 @@ bool	wall_e::setAndCheckApiKey(void)
 	if (tmp == NULL)
 	{
 		_botStatus = false;
-		printShit("#i %s", API_KEY_ERROR);
+		throw std::invalid_argument("wall_e::" + API_KEY_ERROR);
 		return false;
 	}
 	_apiKey = std::string(tmp);
-	std::string checkKeyRequest = "curl -s https://api.openai.com/v1/images/generations -H \"Authorization: Bearer " + _apiKey + "\" | jq '.error'";
+	std::string checkKeyRequest = "curl -s https://api.openai.com/v1/models -H \"Authorization: Bearer " + _apiKey + "\" | jq '.error'";
 	FILE	*requestAnswer = popen(checkKeyRequest.c_str(), "r");
 	if (!requestAnswer)
 	{
-		printShit("#e %s", PIPE_ERROR);
+		throw std::invalid_argument("wall_e::" + PIPE_ERROR);
 		return false;
 	}
-	if (getStringFromPipe(requestAnswer) == "null\n")
+	std::string tmpstr = getStringFromPipe(requestAnswer);
+	if (tmpstr == "null\n")
 	{
 		_botStatus = true;
 		return true;
 	}
-	printShit("#i %s", API_KEY_INVALID);
+	std::cout << tmpstr << std::endl;
 	_botStatus = false;
+	throw std::invalid_argument("wall_e::" + API_KEY_INVALID);
 	return false;
 }
 
-wall_e::wall_e(int clientSocket, server *serverPtr, char **argv)
+wall_e::wall_e(int argc, char **argv)
 {
-	_pass = argv[2];
-	_port = argv[1];
-	_modeInvisible = true;
-	_modeNotice = true;
-	_modeWallops = true;
-	_modeOperator = true;
-	_logged = false;
 	_username = "Wall-e";
 	_nickname = "Wall-e";
-	_hostname = "Wall-e";
-	_servername = "";
-	_realname = "";
-	_clientSocket = clientSocket;
-	_serverPtr = serverPtr;
+	_hostname = "127.0.0.1";
+	_servername = "Wall-e";
+	_realname = "Wall-e";
+	parseArg(argc, argv);
 	setAndCheckApiKey();
+	connectToServ();
 }
 
 wall_e::~wall_e(void)
