@@ -6,29 +6,35 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:05:43 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 12:10:59 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 18:11:10 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "wall_e.hpp"
 # include "print.hpp"
+# include <stdlib.h>
+# include <signal.h>
 
 wall_e	*bot;
 
+void handler(int s)
+{
+	bot->disconnectBot("Bot Stopped");
+	delete bot;
+	exit(s);
+}
+
 int main(int argc, char **argv)
 {
+	signal(SIGINT, handler);
 	try
 	{
 		bot = new wall_e(argc, argv);
+		bot->waitForServer();
 	}
 	catch(const std::exception& e)
 	{
 		printShit("#e Fatal error: %s", e.what());
 		return 1;
-	}
-	bot->sendFirstHandShake();
-	while (true)
-	{
-		bot->listenToServer();
 	}
 }

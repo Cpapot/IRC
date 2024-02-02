@@ -6,14 +6,17 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 12:09:53 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 18:15:40 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ABot.hpp"
 #include "print.hpp"
 #include <cstdlib>
+#include <sys/time.h>
 #include <cstring>
+
+void	tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
 
 ABot::ABot(void)
 {
@@ -66,7 +69,82 @@ void	ABot::connectToServ()
 		throw std::invalid_argument("ABot::FailedToOpenSocket");
 	if (connect(_clientSocket, (struct sockaddr*)&_serverAddress, sizeof(_serverAddress)) == -1)
 		throw std::invalid_argument("ABot::FailedToConnectOnServer");
-	printShit("#i %s", "Succeffuly connected to server");
+	printShit("#i %s", "Successfully connected to server");
+}
+
+void			ABot::waitForServer(void)
+{
+	struct timeval timeout;
+	while (true)
+	{
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
+
+		if (_handShakeDone == false)
+		{
+			sendToServer(HS_CAP);
+			sendToServer(HS_PASS(_serverPass));
+		}
+		int selectRes = select(_clientSocket + 1, &_readSet, NULL, NULL, &timeout);
+		if (selectRes == -1)
+			throw std::invalid_argument("ABot::failedToSelectFd");
+		else if (selectRes > 0)
+		{
+			if (FD_ISSET(_clientSocket, &_readSet))
+				parseServerCommand(listenToServer());
+		}
+		usleep(100000);
+	}
+}
+
+void		ABot::parseServerCommand(std::string message)
+{
+	std::vector<std::string>	splitLine;
+	tokenize(message, ' ', splitLine);
+	std::cout << message << std::endl;
+	if (_handShakeDone == false)
+	{
+		if (splitLine.size() == 1)
+		{
+			_handShakeDone = true;
+			sendToServer(HS_NICK(_nickname));
+			sendToServer(HS_USER(_username, _realname, _hostname, _servername));
+			printShit("#i %s", "Successfully logged to server");
+		}
+		else
+			throw std::invalid_argument("ABot::BadPass");
+	}
+	else
+	{
+		if (splitLine[1] == "433")
+		{
+			disconnectBot("Bot Disconnected due to an error");
+			throw std::invalid_argument("ABot::BotIsAlreadyLoggedOrHisNickIsTaken");
+		}
+		if (splitLine[1] == "JOIN" && !isInChannelList(splitLine[2]))
+		{
+			sendToServer(JOIN(splitLine[2]));
+			_channelList.push_back(splitLine[2]);
+		}
+	}
+}
+
+void	ABot::disconnectBot(std::string message)
+{
+	if (_handShakeDone)
+	{
+		sendToServer(std::string("QUIT :") + message + std::string("\r\n"));
+	}
+}
+
+bool	ABot::isInChannelList(std::string channel)
+{
+	for (size_t index = 0; index != _channelList.size(); index++)
+	{
+		if (_channelList[index] == channel)
+			return true;
+	}
+	return false;
 }
 
 std::string		ABot::listenToServer()
@@ -74,18 +152,10 @@ std::string		ABot::listenToServer()
 	char	buffer[SERVERMESSAGEBUFFER];
 
 	memset(buffer, 0, sizeof(buffer));
-	if (recv(_serverSocket, buffer, sizeof(buffer) - 1, 0) == -1)
+	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw std::invalid_argument("ABot::CantReceiveMessageFromServer");
 	if (buffer[0])
 		printShit("#d %s\n", buffer);
 	std::string result(buffer);
 	return (result);
-}
-
-void	ABot::sendFirstHandShake()
-{
-	sendToServer(HS_CAP);
-	sendToServer(HS_PASS(_serverPass));
-	sendToServer(HS_NICK(_nickname));
-	sendToServer(HS_USER(_username, _realname, _hostname, _servername));
 }

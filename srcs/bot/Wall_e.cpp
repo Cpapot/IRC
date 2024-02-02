@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 11:57:02 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 17:06:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ wall_e::wall_e(int argc, char **argv)
 	parseArg(argc, argv);
 	setAndCheckApiKey();
 	connectToServ();
+	FD_ZERO(&_readSet);
+	FD_SET(_clientSocket, &_readSet);
+	_handShakeDone = false;
 }
 
 wall_e::~wall_e(void)

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 21:43:45 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 17:47:17 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ bool	client::join(std::vector<std::string> splitLine)
 	switch (_serverPtr->getChannel(channelName)->newClient(this, splitLine))
 	{
 		case CHANNEL_JOINNED:
-			_serverPtr->getChannel(channelName)->sendToAll(RPL_JOIN(_nickname, channelName));
+			//_serverPtr->getChannel(channelName)->sendToAll(RPL_JOIN(_nickname, channelName));
+			_serverPtr->sendToAllNetwork(RPL_JOIN(_nickname, channelName));
 			break;
 		case ALREADY_LOGGED:
 			sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));

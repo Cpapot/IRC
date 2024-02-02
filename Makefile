@@ -32,7 +32,8 @@ IRC_PASS		=		mdp
 LIST_BOT_SRC	=	main.cpp				\
 					ABot.cpp				\
 					Wall_e.cpp				\
-					../print.cpp
+					../print.cpp			\
+					../parsingUtils.cpp
 
 LIST_SRC		=	main.cpp				\
 					parsingUtils.cpp		\
