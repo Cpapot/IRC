@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 18:15:40 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:57:08 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ABot::parseArg(int argc, char **argv)
 	_serverPass = std::string(argv[2]);
 }
 
-bool	ABot::sendToServer(std::string message)
+bool	ABot::sendToServer(std::string message) const
 {
 	if (send(_clientSocket, message.c_str(), message.length(), 0) == -1)
 		return false;
@@ -77,8 +77,10 @@ void			ABot::waitForServer(void)
 	struct timeval timeout;
 	while (true)
 	{
-		timeout.tv_sec = 1;
-		timeout.tv_usec = 0;
+		FD_ZERO(&_readSet);
+		FD_SET(_clientSocket, &_readSet);
+		timeout.tv_sec = 0;
+		timeout.tv_usec = 100;
 
 		if (_handShakeDone == false)
 		{
@@ -93,15 +95,15 @@ void			ABot::waitForServer(void)
 			if (FD_ISSET(_clientSocket, &_readSet))
 				parseServerCommand(listenToServer());
 		}
-		usleep(100000);
+		usleep(10000);
 	}
 }
 
 void		ABot::parseServerCommand(std::string message)
 {
+	message.erase(message.size() - 2);
 	std::vector<std::string>	splitLine;
 	tokenize(message, ' ', splitLine);
-	std::cout << message << std::endl;
 	if (_handShakeDone == false)
 	{
 		if (splitLine.size() == 1)
@@ -126,6 +128,10 @@ void		ABot::parseServerCommand(std::string message)
 			sendToServer(JOIN(splitLine[2]));
 			_channelList.push_back(splitLine[2]);
 		}
+		if (splitLine[1] == "PRIVMSG" && isInChannelList(splitLine[2]))
+			privmsgBot(message);
+		else if (splitLine[1] == "PRIVMSG" && !isInChannelList(splitLine[2]))
+			printShit("#e %s", "Message from a chanel in which the bot is not");
 	}
 }
 
@@ -144,6 +150,9 @@ bool	ABot::isInChannelList(std::string channel)
 		if (_channelList[index] == channel)
 			return true;
 	}
+	std::cout << _channelList.size() << std::endl;
+	if ( _channelList.size() != 0)
+		std::cout << _channelList[0] << std::endl;
 	return false;
 }
 

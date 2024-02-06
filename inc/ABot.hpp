@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 18:09:54 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:58:01 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define HS_PASS(pass)						std::string("PASS ") + pass + END
 # define HS_NICK(nick)						std::string("NICK ") + nick + END
 # define HS_USER(user, real, host, serv)	std::string("USER ") + user + SPACE + host + SPACE + serv + std::string(" :") + real + END
-# define JOIN(channel)						std::string("JOIN ") + channel + END
+# define JOIN(channel)						std::string("JOIN ") + channel
+# define PRIVMSG(message, channel)			std::string("PRIVMSG ") + channel + std::string(" :") + message + END
 
 class ABot
 {
@@ -62,10 +63,12 @@ class ABot
 	public :
 		ABot(void);
 
-		virtual ~ABot( void );
-		//virtual bool routine() const = 0;
+		virtual			~ABot( void );
+
+		virtual	void	privmsgBot(std::string) const = 0;
+
 		void			waitForServer(void);
-		bool			sendToServer(std::string message);
+		bool			sendToServer(std::string message) const;
 		std::string		listenToServer();
 		void			parseServerCommand(std::string message);
 

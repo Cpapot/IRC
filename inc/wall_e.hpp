@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:46:17 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 11:34:19 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:57:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ class wall_e : public ABot
 		std::string		_apiKey;
 
 		bool			setAndCheckApiKey(void);
-		std::string		getStringFromPipe(FILE *pipe);
+		std::string		getStringFromPipe(FILE *pipe) const;
 	public :
-		std::string	generateImg(std::string prompt);
+		std::string	generateImg(std::string prompt) const;
 		wall_e(int argc, char **argv);
 		~wall_e(void);
-		// bool routine() const;
+		void	privmsgBot(std::string) const;
 };
 
 #endif

@@ -6,17 +6,39 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/02 17:06:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/06 17:24:15 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "wall_e.hpp"
 # include "server.hpp"
 # include <stdio.h>
+# include <string>
 # include "print.hpp"
 
-std::string	wall_e::generateImg(std::string prompt)
+void	tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
+
+void	wall_e::privmsgBot(std::string mess) const
 {
+	std::vector<std::string>	splitLine;
+	std::string					prompt;
+	tokenize(mess, ' ', splitLine);
+	if (splitLine[3] != std::string(":") + BOT_PREFIX)
+		return ;
+	//std::cout << splitLine[4] << std::endl;
+	for (size_t i = 4; i != splitLine.size(); i++)
+	{
+		std::cout << splitLine[i] << std::endl;
+		prompt += splitLine[i] + " ";
+	}
+	/*printShit("#d prompt receive: \"%s\"", prompt);
+	std::cout << prompt << std::endl;*/
+	sendToServer(PRIVMSG(generateImg(prompt),  splitLine[2]));
+}
+
+std::string	wall_e::generateImg(std::string prompt) const
+{
+	std::cout << prompt << std::endl;
 	if (_botStatus == false)
 	{
 		printShit("#i %s", API_KEY_INVALID);
@@ -33,7 +55,7 @@ std::string	wall_e::generateImg(std::string prompt)
 	return result;
 }
 
-std::string		wall_e::getStringFromPipe(FILE *pipe)
+std::string		wall_e::getStringFromPipe(FILE *pipe) const
 {
 	std::string	result("");
 	char		buffer[FGETS_BOT_BUFFER];
