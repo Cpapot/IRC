@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/06 17:24:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/07 17:36:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,35 @@
 # include <string>
 # include "print.hpp"
 
-void	tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
-
-void	wall_e::privmsgBot(std::string mess) const
+void	wall_e::privmsgBot(std::vector<std::string> splitLine) const
 {
-	std::vector<std::string>	splitLine;
-	std::string					prompt;
-	tokenize(mess, ' ', splitLine);
+	std::string				prompt;
+	printShit("#i %s %s", splitLine[0].c_str(), "is trying to generate an image");
 	if (splitLine[3] != std::string(":") + BOT_PREFIX)
 		return ;
-	//std::cout << splitLine[4] << std::endl;
 	for (size_t i = 4; i != splitLine.size(); i++)
 	{
-		std::cout << splitLine[i] << std::endl;
-		prompt += splitLine[i] + " ";
+		prompt += splitLine[i];
+		if (i + 1 != splitLine.size())
+			prompt += " ";
 	}
-	/*printShit("#d prompt receive: \"%s\"", prompt);
-	std::cout << prompt << std::endl;*/
-	sendToServer(PRIVMSG(generateImg(prompt),  splitLine[2]));
+	prompt.erase(prompt.size() - 3, prompt.size());
+	std::string	message = generateImg(prompt);
+	if (message == "null\n")
+		message = "An error occured while generating the image, make shire that the prompt is write in english";
+	else
+	{
+		message.erase(message.size() - 1);
+		printShit("#i %s \"%s\"", "Image succesfully generated with the prompt:", prompt.c_str());
+	}
+	sendToServer(PRIVMSG(message, splitLine[2]));
 }
 
 std::string	wall_e::generateImg(std::string prompt) const
 {
-	std::cout << prompt << std::endl;
 	if (_botStatus == false)
 	{
-		printShit("#i %s", API_KEY_INVALID);
+		printShit("#i %s", "The api key you gave is invalid.");
 		return "null\n";
 	}
 	if (prompt.size() == 0)
@@ -49,27 +52,30 @@ std::string	wall_e::generateImg(std::string prompt) const
 		printShit("#i %s", "Prompt can't be empty");
 		return "null\n";
 	}
-	std::string request = CURL_REQUEST(prompt, _apiKey) + " | jq -r '.data[0].url'";
+	std::string request = CURL_REQUEST(prompt, DALL_E_URL, _apiKey) + " | jq -r '.data[0].url'";
 	FILE	*requestAnswer = popen(request.c_str(), "r");
+	if (requestAnswer == NULL)
+		throw std::invalid_argument("wall_e::BrokenPipe");
 	std::string	result = getStringFromPipe(requestAnswer);
 	return result;
 }
 
 std::string		wall_e::getStringFromPipe(FILE *pipe) const
 {
-	std::string	result("");
+	std::string	result;
 	char		buffer[FGETS_BOT_BUFFER];
 
 	while (fgets(buffer, FGETS_BOT_BUFFER, pipe) != NULL)
 	{
 		if (ferror(pipe))
 		{
-			printShit("#e %s", FGETS_ERROR);
-			return "<null>\n";
+			printShit("#e %s", "fgets() crashed");
+			return "null\n";
 		}
 		result += buffer;
 	}
 	pclose (pipe);
+	//result.erase(result.size() - 1);
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/06 16:58:01 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/07 14:59:44 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class ABot
 
 		virtual			~ABot( void );
 
-		virtual	void	privmsgBot(std::string) const = 0;
+		virtual	void	privmsgBot(std::vector<std::string> splitLine) const = 0;
 
 		void			waitForServer(void);
 		bool			sendToServer(std::string message) const;

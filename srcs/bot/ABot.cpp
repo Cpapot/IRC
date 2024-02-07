@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/06 16:57:08 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/07 14:59:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void		ABot::parseServerCommand(std::string message)
 			_channelList.push_back(splitLine[2]);
 		}
 		if (splitLine[1] == "PRIVMSG" && isInChannelList(splitLine[2]))
-			privmsgBot(message);
+			privmsgBot(splitLine);
 		else if (splitLine[1] == "PRIVMSG" && !isInChannelList(splitLine[2]))
 			printShit("#e %s", "Message from a chanel in which the bot is not");
 	}
