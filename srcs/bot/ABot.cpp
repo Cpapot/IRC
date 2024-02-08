@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/07 14:59:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 15:24:13 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	ABot::connectToServ()
 	_clientSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_clientSocket == -1)
 		throw std::invalid_argument("ABot::FailedToOpenSocket");
+	_isOpen = true;
 	if (connect(_clientSocket, (struct sockaddr*)&_serverAddress, sizeof(_serverAddress)) == -1)
 		throw std::invalid_argument("ABot::FailedToConnectOnServer");
 	printShit("#i %s", "Successfully connected to server");
@@ -137,7 +138,7 @@ void		ABot::parseServerCommand(std::string message)
 
 void	ABot::disconnectBot(std::string message)
 {
-	if (_handShakeDone)
+	if (_isOpen && _handShakeDone)
 	{
 		sendToServer(std::string("QUIT :") + message + std::string("\r\n"));
 	}

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/07 14:59:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 15:20:58 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class ABot
 		fd_set						_readSet;
 
 		bool						_handShakeDone;
+		bool						_isOpen;
 
 		std::vector<std::string>	_channelList;
 

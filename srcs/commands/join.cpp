@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/02 17:47:17 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 17:37:02 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,22 @@
 #include "print.hpp"
 
 enum {CHANNEL_JOINNED = 0, ALREADY_LOGGED, NO_SUCH_SPACE, BADPASS, INVITE_ONLY};
+
+void	client::joinInfo(std::string channel)
+{
+	if (_serverPtr->getChannel(channel)->getTopic() == "")
+		sendToClient(RPL_NOTOPIC(_nickname, _username, channel));
+	else
+		sendToClient(RPL_TOPIC(_nickname, _username, channel, _serverPtr->getChannel(channel)->getTopic()));
+	std::map<int, client *> map = _serverPtr->getChannel(channel)->getClientMap();
+	for (std::map<int, client *>::iterator ite = map.begin(); ite != map.end(); ite++)
+	{
+		sendToClient(RPL_NAMREPLY(_nickname, _username, channel, ite->second->getNickname(), _serverPtr->getChannel(channel)->getUserStatus(ite->second->getSocket())));
+		std::cout << ite->second->getSocket() << std::endl;
+	}
+	sendToClient(RPL_ENDOFNAMES(_nickname, _username, channel));
+}
+
 bool	client::join(std::vector<std::string> splitLine)
 {
 	std::string	channelName;
@@ -40,8 +56,8 @@ bool	client::join(std::vector<std::string> splitLine)
 	switch (_serverPtr->getChannel(channelName)->newClient(this, splitLine))
 	{
 		case CHANNEL_JOINNED:
-			//_serverPtr->getChannel(channelName)->sendToAll(RPL_JOIN(_nickname, channelName));
 			_serverPtr->sendToAllNetwork(RPL_JOIN(_nickname, channelName));
+			joinInfo(channelName);
 			break;
 		case ALREADY_LOGGED:
 			sendToClient(std::string(ERR_UNKNOWNERROR(_nickname, _username, "Already log into channel")));

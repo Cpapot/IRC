@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/31 13:29:16 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 17:18:36 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ public:
 	void					makeOperator(int clientSocket);
 	void					deleteOperator(int clientSocket);
 
+	std::map<int, client*>	getClientMap();
 	std::string				getChannelName(void);
 	void					setIsInviteOnly(bool value);
 	void					setIsTopicOperator(bool value);
@@ -66,6 +67,7 @@ public:
 	void					removeFromInviteList(std::string ClientNick);
 	bool					isInInviteList(std::string ClientNick);
 
+	std::string				getUserStatus(int userSocket);
 };
 
 #endif

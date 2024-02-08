@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/07 17:36:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 15:22:35 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,41 @@
 # include <string>
 # include "print.hpp"
 
-void	wall_e::privmsgBot(std::vector<std::string> splitLine) const
+std::string	wall_e::cleanPrompt(std::vector<std::string> splitLine) const
 {
-	std::string				prompt;
-	printShit("#i %s %s", splitLine[0].c_str(), "is trying to generate an image");
-	if (splitLine[3] != std::string(":") + BOT_PREFIX)
-		return ;
+	std::string		tmp;
+	size_t			index = 0;
 	for (size_t i = 4; i != splitLine.size(); i++)
 	{
-		prompt += splitLine[i];
+		tmp += splitLine[i];
 		if (i + 1 != splitLine.size())
-			prompt += " ";
+			tmp += " ";
+	}
+	std::string		prompt;
+	for (std::string::iterator ite = tmp.begin(); ite != tmp.end(); ite++, index++)
+	{
+		if (tmp[index] != '\'')
+			prompt += tmp[index];
 	}
 	prompt.erase(prompt.size() - 3, prompt.size());
-	std::string	message = generateImg(prompt);
-	if (message == "null\n")
-		message = "An error occured while generating the image, make shire that the prompt is write in english";
+	return prompt;
+}
+
+void	wall_e::privmsgBot(std::vector<std::string> splitLine) const
+{
+	if (splitLine[3] != std::string(":") + BOT_PREFIX)
+		return ;
+	printShit("#i %s %s", splitLine[0].substr(1).c_str(), "is trying to generate an image");
+	std::string	prompt = cleanPrompt(splitLine);
+	std::string	url = generateImg(prompt);
+	if (url == "null\n")
+		url = "An error occured while generating the image";
 	else
 	{
-		message.erase(message.size() - 1);
+		url.erase(url.size() - 1);
 		printShit("#i %s \"%s\"", "Image succesfully generated with the prompt:", prompt.c_str());
 	}
-	sendToServer(PRIVMSG(message, splitLine[2]));
+	sendToServer(PRIVMSG(SEND_LINK(url, prompt,splitLine[0].substr(1).c_str()), splitLine[2]));
 }
 
 std::string	wall_e::generateImg(std::string prompt) const
@@ -75,7 +88,6 @@ std::string		wall_e::getStringFromPipe(FILE *pipe) const
 		result += buffer;
 	}
 	pclose (pipe);
-	//result.erase(result.size() - 1);
 	return (result);
 }
 
@@ -115,16 +127,18 @@ wall_e::wall_e(int argc, char **argv)
 	_hostname = "127.0.0.1";
 	_servername = "Wall-e";
 	_realname = "Wall-e";
+	_isOpen = false;
+	_handShakeDone = false;
 	parseArg(argc, argv);
 	setAndCheckApiKey();
 	connectToServ();
 	FD_ZERO(&_readSet);
 	FD_SET(_clientSocket, &_readSet);
-	_handShakeDone = false;
 }
 
 wall_e::~wall_e(void)
 {
-	close(_clientSocket);
+	if (_isOpen)
+		close(_clientSocket);
 	return ;
 }

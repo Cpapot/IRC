@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/31 13:27:42 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/08 16:53:55 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ private:
 	bool	modeChannel(std::vector<std::string> splitLine);
 	bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
 	bool	sendFile(std::string message, std::vector<std::string> splitLine, int i);
+	void	joinInfo(std::string channel);
 
 public:
 	client(int _clientSocket, server *serverPtr);
