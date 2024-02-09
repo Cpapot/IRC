@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:36 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:03:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/02 16:57:14 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	client::pass(std::vector<std::string> splitLine)
 	}
 	sendToClient(std::string(":Logged\r\n"));
 	if (DEBUG)
-		printShit("#c caught password %d", atoi(_pass.c_str()));
+		printShit("#c caught password \"%s\"", _pass.c_str());
 	_logged = true;
 	return true;
 }

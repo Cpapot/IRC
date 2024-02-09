@@ -3,17 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   serverLogs.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:22:16 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/30 11:11:34 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:28:09 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVERLOGS_HPP
 # define SERVERLOGS_HPP
 
-# include "Irc.hpp"
+# include <fstream>
+# include <sstream>
+# include <cstdlib>
+# include <string>
+# include <ctime>
+# include <iostream>
 
 
 # define LOGS_TABULATION		std::string("				")
