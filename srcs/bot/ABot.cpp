@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ABot.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 15:15:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:55:31 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #include <cstring>
 
 void	tokenize(std::string const &str, const char delim, std::vector<std::string> &out);
+
+
+				/*Constructors*/
+
 
 ABot::ABot(void)
 {
@@ -32,6 +36,10 @@ ABot::~ABot(void)
 	close(_clientSocket);
 	return ;
 }
+
+
+					/*ABot utils*/
+
 
 void	ABot::fillSockAddr()
 {

@@ -6,19 +6,22 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:20 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 17:08:09 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:51:50 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print.hpp"
 #include <iostream>
 #include <string.h>
-
 using namespace COLORS;
 
 void	printStr(const char *str, const char *base, int mode);
 
-void	whatsThisShit(std::va_list variadic, const char *str, int i)
+
+					/*ft_printf2.cpp*/
+
+
+void	whatsThisChar(std::va_list variadic, const char *str, int i)
 {
 	switch(str[i])
 	{
@@ -56,7 +59,7 @@ void	whatsTheMode(char c)
 	}
 }
 
-void	recursivShit(const char *str, const char *base, int i)
+void	recursivPrinter(const char *str, const char *base, int i)
 {
 	std::string newString;
 	std::cout << std::endl;
@@ -79,7 +82,7 @@ void	printStr(const char *str, const char *base, int mode)
 		}
 		else if(str[i] == '\n' && i != strlen(str) - 1 && i != strlen(str))
 		{
-			recursivShit(str, base, i);
+			recursivPrinter(str, base, i);
 			return ;
 		}
 		else if (str[i] == '\n' && (i == strlen(str) || i == strlen(str) - 1))
@@ -118,11 +121,11 @@ void	printShit(const char *str, ...)
 		else if (str[i] == '%')
 		{
 			i++;
-			whatsThisShit(variadic, str, i);
+			whatsThisChar(variadic, str, i);
 		}
 		else if (str[i] == '\n' && i != strlen(str) - 1)
 		{
-			recursivShit(str, str, i);
+			recursivPrinter(str, str, i);
 			std::cout << std::endl;
 			return ;
 		}

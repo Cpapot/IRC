@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   serverUtils.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:04:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 17:10:17 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:50:31 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "channel.hpp"
+
+
+					/*Server Utils*/
+
 
 void	server::fillSockAddr(void)
 {

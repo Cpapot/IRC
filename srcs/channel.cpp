@@ -6,14 +6,14 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 17:14:21 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:44:34 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 #include "IRCMessage.hpp"
 
-/*Constructors*/
+					/*Constructors*/
 
 channel::channel(std::string name, int clientSocket)
 {
@@ -87,7 +87,9 @@ std::string	channel::getChannelName(void)
 	return (_channelName);
 }
 
-/*Checkers*/
+
+					/*Checkers*/
+
 
 bool	channel::isOperator(int clientSocket)
 {
@@ -134,7 +136,9 @@ bool	channel::isInInviteList(std::string ClientNick)
 	return false;
 }
 
-/*Utils*/
+
+					/*Utils*/
+
 
 void	channel::sendToAll(std::string message)
 {

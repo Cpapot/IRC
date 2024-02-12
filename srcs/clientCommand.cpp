@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:43:56 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:52:51 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #include "print.hpp"
 
 enum {CAP = 0, PASS, PING, QUIT, NICK, USER, PART, MODE, JOIN, PRIVMSG, KICK, INVITE, TOPIC};
+
+
+					/*Client Commands*/
+
 
 bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split)
 {

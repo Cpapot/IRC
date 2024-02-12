@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:44:28 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:49:02 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,93 @@
 #include "client.hpp"
 #include "serverLogs.hpp"
 #include "channel.hpp"
+
+
+					/*Constructors*/
+
+server::server(/* args */)
+{
+	_status = true;
+	_port = 6667;
+	_passwd = "1234";
+	this->fillSockAddr();
+	this->launch();
+}
+
+server::server(int argc, char **argv): _serverName("IRC++")
+{
+	_status = false;
+	this->parseArg(argc, argv);
+	this->fillSockAddr();
+	this->launch();
+	_logs = new serverLogs(_port);
+	_status = true;
+}
+
+server::~server()
+{
+	
+		printShit("#i Closing %s", _serverName.c_str());
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+		delete i->second;
+	for (std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
+		delete i->second;
+	close(_socket);
+	delete _logs;
+}
+
+
+					/*Getters*/
+
+
+std::string		server::getPasswd(void)
+{
+	return (_passwd);
+}
+
+bool	server::getStatus(void)
+{
+	return (_status);
+}
+
+int	server::getSocket(void)
+{
+	return (_socket);
+}
+
+struct sockaddr_in	server::getAddrs(void)
+{
+	return (_serverAddrs);
+}
+
+channel	*server::getChannel(std::string channelName)
+{
+	for(std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
+	{
+		if (i->second->getChannelName() == channelName)
+			return i->second;
+	}
+	return NULL;
+}
+
+client	*server::getClient(std::string nickname)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->second->getNickname() == nickname)
+			return i->second;
+	}
+	return NULL;
+}
+
+serverLogs			*server::getLogs(void)
+{
+	return _logs;
+}
+
+
+					/*Server functions*/
+
 
 void	server::sendToAllNetwork(std::string message)
 {
@@ -83,80 +170,4 @@ int		server::WaitForClient(void)
 			}
 		}
 	}
-}
-
-serverLogs			*server::getLogs(void)
-{
-	return _logs;
-}
-
-std::string		server::getPasswd(void)
-{
-	return (_passwd);
-}
-
-bool	server::getStatus(void)
-{
-	return (_status);
-}
-
-int	server::getSocket(void)
-{
-	return (_socket);
-}
-
-struct sockaddr_in	server::getAddrs(void)
-{
-	return (_serverAddrs);
-}
-
-channel	*server::getChannel(std::string channelName)
-{
-	for(std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
-	{
-		if (i->second->getChannelName() == channelName)
-			return i->second;
-	}
-	return NULL;
-}
-
-client	*server::getClient(std::string nickname)
-{
-	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
-	{
-		if (i->second->getNickname() == nickname)
-			return i->second;
-	}
-	return NULL;
-}
-
-server::server(/* args */)
-{
-	_status = true;
-	_port = 6667;
-	_passwd = "1234";
-	this->fillSockAddr();
-	this->launch();
-}
-
-server::server(int argc, char **argv): _serverName("IRC++")
-{
-	_status = false;
-	this->parseArg(argc, argv);
-	this->fillSockAddr();
-	this->launch();
-	_logs = new serverLogs(_port);
-	_status = true;
-}
-
-server::~server()
-{
-	
-		printShit("#i Closing %s", _serverName.c_str());
-	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
-		delete i->second;
-	for (std::map<std::string, channel*>::iterator i = _channelMap.begin(); i != _channelMap.end(); i++)
-		delete i->second;
-	close(_socket);
-	delete _logs;
 }

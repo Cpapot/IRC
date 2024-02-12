@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   serverLogs.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 18:41:44 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/21 18:58:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:51:00 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "serverLogs.hpp"
+
+
+					/*Server Log Utils*/
+
 
 void	serverLogs::sent(std::string messageSent, int target)
 {
