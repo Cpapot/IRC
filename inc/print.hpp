@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:19 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/31 13:27:57 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:07:21 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PRINT_HPP
 
 # ifndef DEBUG
-#  define DEBUG 0
+#  define DEBUG 1
 # endif
 
 # include <string>

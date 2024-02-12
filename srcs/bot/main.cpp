@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:05:43 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/08 15:29:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:13:59 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int main(int argc, char **argv)
 	{
 		bot = new wall_e(argc, argv);
 		bot->waitForServer();
+		bot->disconnectBot("Bot Stopped");
 	}
 	catch(const std::exception& e)
 	{
 		printShit("#e Fatal error: %s", e.what());
 	}
-	//bot->disconnectBot("Bot Stopped");
 	delete bot;
 }
