@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/08 15:24:13 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:15:15 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,19 @@ void			ABot::waitForServer(void)
 		else if (selectRes > 0)
 		{
 			if (FD_ISSET(_clientSocket, &_readSet))
-				parseServerCommand(listenToServer());
+			{
+				if (!parseServerCommand(listenToServer()))
+					return ;
+			}
 		}
 		usleep(10000);
 	}
 }
 
-void		ABot::parseServerCommand(std::string message)
+bool	ABot::parseServerCommand(std::string message)
 {
+	if (!message[0])
+		return false;
 	message.erase(message.size() - 2);
 	std::vector<std::string>	splitLine;
 	tokenize(message, ' ', splitLine);
@@ -134,6 +139,7 @@ void		ABot::parseServerCommand(std::string message)
 		else if (splitLine[1] == "PRIVMSG" && !isInChannelList(splitLine[2]))
 			printShit("#e %s", "Message from a chanel in which the bot is not");
 	}
+	return true;
 }
 
 void	ABot::disconnectBot(std::string message)

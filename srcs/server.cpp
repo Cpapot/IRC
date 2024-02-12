@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/27 18:37:22 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:04:24 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ int		server::WaitForClient(void)
 				else
 				{
 					// ANCIEN USER
-					_clientMap[_pollFds[i].fd]->listenToClient();
+					if (!_clientMap[_pollFds[i].fd]->listenToClient())
+						deleteClientSocket(_pollFds[i].fd);
 				}
 			}
 		}

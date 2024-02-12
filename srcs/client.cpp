@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/23 16:53:53 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:02:40 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,13 @@ bool	client::listenToClient()
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
 	if (buffer[0])
+	{
 		printShit("#d %s\n", buffer);
-	_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
-	return findCommand(buffer);
+		_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
+		return findCommand(buffer);
+	}
+	else
+		return false;
 }
 
 void	client::sendToClient(char* message)
