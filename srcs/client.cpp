@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:02:40 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:44:21 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,5 @@ client::client(int clientSocket, server *serverPtr)
 client::~client()
 {
 	close(_clientSocket);
-	if (DEBUG)
-		printShit("#d %s deleted", _nickname.c_str());
+	printShit("#d %s deleted", _nickname.c_str());
 }

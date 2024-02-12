@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 17:18:40 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:43:55 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,8 +216,7 @@ channel::channel(std::string name, int clientSocket)
 	_isLocked = false;
 	_isTopicOperator = false;
 	_isUserLimit = false;
-	if (DEBUG)
-		printShit("#d new channel %s", name.c_str());
+	printShit("#d new channel %s", name.c_str());
 	_operatorList.push_back(clientSocket);
 }
 

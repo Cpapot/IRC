@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:20 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/21 17:20:34 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:08:09 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	whatsTheMode(char c)
 			std::cout << underline << bold << red << "[ ERROR ]" << reset;
 			break;
 		case 'd' :
-			std::cerr << bold << red << "[ DEBUG ]" << reset;
+				std::cerr << bold << red << "[ DEBUG ]" << reset;
 			break;
 		case 'c' :
 			std::cout << bold << beige << "[ COMMAND ]" << reset;
@@ -89,6 +89,18 @@ void	printStr(const char *str, const char *base, int mode)
 	}
 }
 
+int		isDebug(char c)
+{
+	if (c == 'd')
+	{
+		if (DEBUG != 0)
+			return (0);
+		else
+			return (1);
+	}
+	return (0);
+}
+
 void	printShit(const char *str, ...)
 {
 	std::va_list variadic;
@@ -98,7 +110,9 @@ void	printShit(const char *str, ...)
 	{
 		if (i == 0 && str[i] == '#')
 		{
-			i++;	
+			i++;
+			if (isDebug(str[i]))
+				return ;
 			whatsTheMode(str[i]);
 		}
 		else if (str[i] == '%')

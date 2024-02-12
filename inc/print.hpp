@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:29:19 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 16:07:21 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 17:06:01 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PRINT_HPP
 
 # ifndef DEBUG
-#  define DEBUG 1
+#  define DEBUG 0
 # endif
 
 # include <string>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:30 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:37:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:12 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ bool	client::nick(std::vector<std::string> splitLine)
 	else
 	{
 		_serverPtr->sendToAllNetwork(RPL_NICK(_nickname, _username, splitLine[1]));
-    if (DEBUG)
-		  printShit("#d set his nickname to %s", _username.c_str(), _nickname.c_str());
+		printShit("#d set his nickname to %s", _username.c_str(), _nickname.c_str());
 		_nickname = splitLine[1];
 	}
 	return true;

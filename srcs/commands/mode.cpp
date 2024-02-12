@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:56:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:18 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,12 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		{
 			case 'i':
 				_serverPtr->getChannel(splitLine[1])->setIsInviteOnly(mode);
-				if (DEBUG)
-					printShit("#c %s : switched to mode Invite Only", splitLine[1].c_str());
+				printShit("#c %s : switched to mode Invite Only", splitLine[1].c_str());
 				break;
 
 			case 't':
 				_serverPtr->getChannel(splitLine[1])->setIsTopicOperator(mode);
-				if (DEBUG)
-					printShit("#c %s : switched to mode T", splitLine[1].c_str());
+				printShit("#c %s : switched to mode T", splitLine[1].c_str());
 				break;
 
 			case 'k':
@@ -71,8 +69,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 						return false;
 					}
 				}
-				if (DEBUG)
-					printShit("#c %s : switched to mode K", splitLine[1].c_str());
+				printShit("#c %s : switched to mode K", splitLine[1].c_str());
 				break;
 
 			case 'l':
@@ -96,8 +93,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 						return false;
 					}
 				}
-				if (DEBUG)
-					printShit("#c %s : switched to mode L", splitLine[1].c_str());
+				printShit("#c %s : switched to mode L", splitLine[1].c_str());
 				break;
 				
 			case 'o':

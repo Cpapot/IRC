@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:04:24 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:44:28 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int		server::acceptClient()
 		std::cout << "client can't connect" << std::endl;
 		return -1;
 	}
-	if (DEBUG)
-		printShit("#d Connexion accepted");
+	printShit("#d Connexion accepted");
 	return clientSocket;
 }
 
@@ -50,8 +49,7 @@ void		server::launch(void)
 		return throw std::invalid_argument("server::FailedToBindSocket(PortMayBeBusy)");
 	if (listen(_socket, MAXCLIENT) == -1)
 		return throw std::invalid_argument("server::FailedToListenOnSocket");
-	if (DEBUG)
-		printShit("#i Server %s launched on port %d with password %s", _serverName.c_str(), _port, _passwd.c_str());
+	printShit("#i Server %s launched on port %d with password %s", _serverName.c_str(), _port, _passwd.c_str());
 }
 
 
@@ -153,7 +151,7 @@ server::server(int argc, char **argv): _serverName("IRC++")
 
 server::~server()
 {
-	if (DEBUG)
+	
 		printShit("#i Closing %s", _serverName.c_str());
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 		delete i->second;

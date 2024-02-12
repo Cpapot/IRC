@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:57:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/29 12:21:19 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:49 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ bool	client::privmsg(std::vector<std::string> splitLine)
 		message += splitLine[i] + SPACE;
 	message += END;
 	_serverPtr->getChannel(splitLine[1])->sendToAllExept(RPL_CHANMSG(_nickname, splitLine[1], message), _clientSocket);
-	if (DEBUG)
-		printShit("#c PRIVMSG : %s : %s", _username.c_str(), message.c_str());
+	printShit("#c PRIVMSG : %s : %s", _username.c_str(), message.c_str());
 	return true;
 }
 
@@ -108,7 +107,6 @@ bool	client::sendFile(std::string message, std::vector<std::string> splitLine, i
 			message += SPACE;
 	}
 	_serverPtr->getClient(splitLine[1])->sendToClient(RPL_DCC(_nickname, _username, message, splitLine[1]));
-	if (DEBUG)
-		printShit("#c Trying to send a file");
+	printShit("#c Trying to send a file");
 	return true;
 }

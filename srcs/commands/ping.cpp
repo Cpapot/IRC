@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ping.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:39 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:02:15 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:46:01 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ bool	server::ping(int clientSocket, std::vector<std::string> splitLine)
 		return false;
 	}
 	_clientMap[clientSocket]->sendToClient(RPL_PING(_clientMap[clientSocket]->getNickname(), _clientMap[clientSocket]->getUsername(), splitLine[1]));
-	if (DEBUG)
-		printShit("#d PONG");
+	printShit("#d PONG");
 	return true;
 }
