@@ -6,17 +6,135 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:43:55 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:14:21 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 #include "IRCMessage.hpp"
 
+/*Constructors*/
+
+channel::channel(std::string name, int clientSocket)
+{
+	_channelName = name;
+	_isInviteOnly = false;
+	_isLocked = false;
+	_isTopicOperator = false;
+	_isUserLimit = false;
+	printShit("#d new channel %s", name.c_str());
+	_operatorList.push_back(clientSocket);
+}
+
+channel::~channel()
+{
+}
+
+/*Setters*/
+
+void	channel::setIsInviteOnly(bool value)
+{
+	_isInviteOnly = value;
+}
+
+void	channel::setIsTopicOperator(bool value)
+{
+	_isTopicOperator = value;
+}
+
+void	channel::setIsLocked(bool value, std::string pass)
+{
+	_isLocked = value;
+	_passwd = pass;
+}
+
+void	channel::setIsUserLimit(bool value, unsigned int maxUser)
+{
+	_isUserLimit = value;
+	_maxUser = maxUser;
+}
+
+void	channel::setTopic(std::string topic)
+{
+	_topic = topic;
+}
+
+/*Getters*/
+
+std::string			channel::getUserStatus(int userSocket)
+{
+
+	for (size_t i = 0; i != _operatorList.size(); i++)
+	{
+		if (_operatorList[i] == userSocket)
+			return "@";
+	}
+	return "";
+}
+
+std::map<int, client*>	channel::getClientMap()
+{
+	return _clientMap;
+}
+
+std::string		channel::getTopic(void)
+{
+	return (_topic);
+}
+
 std::string	channel::getChannelName(void)
 {
 	return (_channelName);
 }
+
+/*Checkers*/
+
+bool	channel::isOperator(int clientSocket)
+{
+	for (size_t i = 0; i != _operatorList.size(); i++)
+	{
+		if (_operatorList[i] == clientSocket)
+			return true;
+	}
+	return false;
+}
+
+bool	channel::isTopicOperator(void)
+{
+	return (_isTopicOperator);
+}
+
+bool	channel::isOnChannel(int socket)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->first == socket)
+			return true;
+	}
+	return false;
+}
+
+bool	channel::isOnChannelStr(std::string ClientNick)
+{
+	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
+	{
+		if (i->second->getNickname() == ClientNick)
+			return true;
+	}
+	return false;
+}
+
+bool	channel::isInInviteList(std::string ClientNick)
+{
+	for (size_t i = 0; i != _inviteList.size(); i++)
+	{
+		if (_inviteList[i] == ClientNick)
+			return true;
+	}
+	return false;
+}
+
+/*Utils*/
 
 void	channel::sendToAll(std::string message)
 {
@@ -45,16 +163,6 @@ void	channel::disconnectClient(int clientSocket, bool sendPart)
 			break ;
 		}
 	}
-}
-
-bool	channel::isInInviteList(std::string ClientNick)
-{
-	for (size_t i = 0; i != _inviteList.size(); i++)
-	{
-		if (_inviteList[i] == ClientNick)
-			return true;
-	}
-	return false;
 }
 
 void	channel::addToInviteList(std::string ClientNick)
@@ -108,26 +216,6 @@ void	channel::makeOperator(int clientSocket)
 	_operatorList.push_back(clientSocket);
 }
 
-bool	channel::isOnChannel(int socket)
-{
-	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
-	{
-		if (i->first == socket)
-			return true;
-	}
-	return false;
-}
-
-bool	channel::isOnChannelStr(std::string ClientNick)
-{
-	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
-	{
-		if (i->second->getNickname() == ClientNick)
-			return true;
-	}
-	return false;
-}
-
 void	channel::deleteOperator(int clientSocket)
 {
 	size_t y = 0;
@@ -141,85 +229,7 @@ void	channel::deleteOperator(int clientSocket)
 	}
 }
 
-bool	channel::isOperator(int clientSocket)
-{
-	for (size_t i = 0; i != _operatorList.size(); i++)
-	{
-		if (_operatorList[i] == clientSocket)
-			return true;
-	}
-	return false;
-}
-
-void	channel::setIsInviteOnly(bool value)
-{
-	_isInviteOnly = value;
-}
-
-void	channel::setIsTopicOperator(bool value)
-{
-	_isTopicOperator = value;
-}
-
-void	channel::setIsLocked(bool value, std::string pass)
-{
-	_isLocked = value;
-	_passwd = pass;
-}
-
-void	channel::setIsUserLimit(bool value, unsigned int maxUser)
-{
-	_isUserLimit = value;
-	_maxUser = maxUser;
-}
-
-void	channel::setTopic(std::string topic)
-{
-	_topic = topic;
-}
-
-std::string			channel::getUserStatus(int userSocket)
-{
-
-	for (size_t i = 0; i != _operatorList.size(); i++)
-	{
-		if (_operatorList[i] == userSocket)
-			return "@";
-	}
-	return "";
-}
-
-std::map<int, client*>	channel::getClientMap()
-{
-	return _clientMap;
-}
-
-std::string		channel::getTopic(void)
-{
-	return (_topic);
-}
-
-bool	channel::isTopicOperator(void)
-{
-	return (_isTopicOperator);
-}
-
 void	channel::clearTopic(void)
 {
 	_topic = "";
-}
-
-channel::channel(std::string name, int clientSocket)
-{
-	_channelName = name;
-	_isInviteOnly = false;
-	_isLocked = false;
-	_isTopicOperator = false;
-	_isUserLimit = false;
-	printShit("#d new channel %s", name.c_str());
-	_operatorList.push_back(clientSocket);
-}
-
-channel::~channel()
-{
 }
