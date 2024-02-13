@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:21:49 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:35 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ bool	client::quit(std::vector<std::string> splitLine)
 	for (unsigned long i = 1; i < splitLine.size(); i++)
 		quit += splitLine[i] + SPACE;
 	std::cout << _nickname << " is leaving from the server with the message: \"" << quit << "\"" << std::endl;
-	if (DEBUG)
-		printShit("#c %s left with the message : %s", _username.c_str(), quit.c_str());
+	printShit("#c %s left with the message : %s", _username.c_str(), quit.c_str());
 	_serverPtr->sendToAllNetwork(RPL_QUIT(_nickname, _username, "c'est tchao"));
 	delete this;
 	return true;

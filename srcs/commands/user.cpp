@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:47 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/20 18:03:10 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:44 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ bool	client::user(std::vector<std::string> splitLine)
 	_realname.erase(0, 1);
 	if (_nickname != "")
 	{
-	    if (DEBUG)
-			  printShit("#d %s created his user. Welcome !", _username.c_str());
-			sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
-			_userAnswerSent = true;
+		printShit("#d %s created his user. Welcome !", _username.c_str());
+		sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
+		_userAnswerSent = true;
 	}
 	return true;
 }

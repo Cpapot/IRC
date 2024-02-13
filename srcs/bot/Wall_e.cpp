@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Wall_e.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/08 15:22:35 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:55:01 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,37 @@
 # include <stdio.h>
 # include <string>
 # include "print.hpp"
+
+
+					/*Constructors*/
+
+
+wall_e::wall_e(int argc, char **argv)
+{
+	_username = "Wall-e";
+	_nickname = "Wall-e";
+	_hostname = "127.0.0.1";
+	_servername = "Wall-e";
+	_realname = "Wall-e";
+	_isOpen = false;
+	_handShakeDone = false;
+	parseArg(argc, argv);
+	setAndCheckApiKey();
+	connectToServ();
+	FD_ZERO(&_readSet);
+	FD_SET(_clientSocket, &_readSet);
+}
+
+wall_e::~wall_e(void)
+{
+	if (_isOpen)
+		close(_clientSocket);
+	return ;
+}
+
+
+					/*Wall-e utils*/
+
 
 std::string	wall_e::cleanPrompt(std::vector<std::string> splitLine) const
 {
@@ -118,27 +149,4 @@ bool	wall_e::setAndCheckApiKey(void)
 	_botStatus = false;
 	throw std::invalid_argument("wall_e::" + API_KEY_INVALID);
 	return false;
-}
-
-wall_e::wall_e(int argc, char **argv)
-{
-	_username = "Wall-e";
-	_nickname = "Wall-e";
-	_hostname = "127.0.0.1";
-	_servername = "Wall-e";
-	_realname = "Wall-e";
-	_isOpen = false;
-	_handShakeDone = false;
-	parseArg(argc, argv);
-	setAndCheckApiKey();
-	connectToServ();
-	FD_ZERO(&_readSet);
-	FD_SET(_clientSocket, &_readSet);
-}
-
-wall_e::~wall_e(void)
-{
-	if (_isOpen)
-		close(_clientSocket);
-	return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/06 16:28:20 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:52:24 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include <cstring>
 #include <vector>
 #include "print.hpp"
+
+
+					/*Parsing Utils*/
+
 
 bool	IsChannel(std::string str)
 {

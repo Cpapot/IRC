@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 17:37:02 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:44:43 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ bool	client::join(std::vector<std::string> splitLine)
 			return false;
 	}
 	_loggedChannel.push_back(channelName);
-	if (DEBUG)
-		printShit("#c %s joined %s", _username.c_str(), channelName.c_str());
+	printShit("#c %s joined %s", _username.c_str(), channelName.c_str());
 	return true;
 }
