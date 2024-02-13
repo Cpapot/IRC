@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ABot.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:26 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 18:55:31 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:22:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	ABot::connectToServ()
 
 void			ABot::waitForServer(void)
 {
-	struct timeval timeout;
+	bool	cpSent = false;
+	struct	timeval timeout;
 	while (true)
 	{
 		FD_ZERO(&_readSet);
@@ -91,10 +92,11 @@ void			ABot::waitForServer(void)
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 100;
 
-		if (_handShakeDone == false)
+		if (_handShakeDone == false && cpSent == false)
 		{
 			sendToServer(HS_CAP);
 			sendToServer(HS_PASS(_serverPass));
+			cpSent = true;
 		}
 		int selectRes = select(_clientSocket + 1, &_readSet, NULL, NULL, &timeout);
 		if (selectRes == -1)
@@ -136,14 +138,20 @@ bool	ABot::parseServerCommand(std::string message)
 		{
 			disconnectBot("Bot Disconnected due to an error");
 			throw std::invalid_argument("ABot::BotIsAlreadyLoggedOrHisNickIsTaken");
+			return true;
 		}
-		if (splitLine[1] == "JOIN" && !isInChannelList(splitLine[2]))
+		if (splitLine[1] == "JOIN" && !isInChannelList(splitLine[2]) && splitLine[0] != ":" + _nickname)
 		{
+			printShit("#i %s %s", splitLine[2].c_str(), "joined");
 			sendToServer(JOIN(splitLine[2]));
 			_channelList.push_back(splitLine[2]);
+			return true;
 		}
 		if (splitLine[1] == "PRIVMSG" && isInChannelList(splitLine[2]))
+		{
 			privmsgBot(splitLine);
+			return true;
+		}
 		else if (splitLine[1] == "PRIVMSG" && !isInChannelList(splitLine[2]))
 			printShit("#e %s", "Message from a chanel in which the bot is not");
 	}
@@ -165,9 +173,6 @@ bool	ABot::isInChannelList(std::string channel)
 		if (_channelList[index] == channel)
 			return true;
 	}
-	std::cout << _channelList.size() << std::endl;
-	if ( _channelList.size() != 0)
-		std::cout << _channelList[0] << std::endl;
 	return false;
 }
 

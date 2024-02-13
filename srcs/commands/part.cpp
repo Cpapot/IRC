@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:33 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:45:54 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:25:50 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ bool	client::part(std::vector<std::string> splitLine)
 			return false;
 		}
 	}
-	//_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_PART(_nickname, _username, splitLine[1]));
 	_serverPtr->getChannel(splitLine[1])->disconnectClient(_clientSocket, 1);
 	printShit("#c %s left %s", _username.c_str(), splitLine[1].c_str());
 	return true;

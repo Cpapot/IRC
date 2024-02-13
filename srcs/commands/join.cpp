@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:44:43 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:28:36 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void	client::joinInfo(std::string channel)
 		sendToClient(RPL_TOPIC(_nickname, _username, channel, _serverPtr->getChannel(channel)->getTopic()));
 	std::map<int, client *> map = _serverPtr->getChannel(channel)->getClientMap();
 	for (std::map<int, client *>::iterator ite = map.begin(); ite != map.end(); ite++)
-	{
 		sendToClient(RPL_NAMREPLY(_nickname, _username, channel, ite->second->getNickname(), _serverPtr->getChannel(channel)->getUserStatus(ite->second->getSocket())));
-		std::cout << ite->second->getSocket() << std::endl;
-	}
 	sendToClient(RPL_ENDOFNAMES(_nickname, _username, channel));
 }
 

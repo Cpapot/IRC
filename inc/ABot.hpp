@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 15:14:43 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:28:00 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define HS_PASS(pass)						std::string("PASS ") + pass + END
 # define HS_NICK(nick)						std::string("NICK ") + nick + END
 # define HS_USER(user, real, host, serv)	std::string("USER ") + user + SPACE + host + SPACE + serv + std::string(" :") + real + END
-# define JOIN(channel)						std::string("JOIN ") + channel
+# define JOIN(channel)						std::string("JOIN ") + channel + END
 # define PRIVMSG(message, channel)			std::string("PRIVMSG ") + channel + std::string(" :") + message + END
 
 class ABot
