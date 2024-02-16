@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:44:43 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:53:12 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	client::joinInfo(std::string channel)
 	if (_serverPtr->getChannel(channel)->getTopic() == "")
 		sendToClient(RPL_NOTOPIC(_nickname, _username, channel));
 	else
-		sendToClient(RPL_TOPIC(_nickname, _username, channel, _serverPtr->getChannel(channel)->getTopic()));
+		sendToClient(RPL_TOPIC(_serverPtr->getChannel(channel)->getTopicSetter(), _username, channel, _serverPtr->getChannel(channel)->getTopic()));
 	std::map<int, client *> map = _serverPtr->getChannel(channel)->getClientMap();
 	for (std::map<int, client *>::iterator ite = map.begin(); ite != map.end(); ite++)
 	{

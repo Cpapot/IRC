@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ABot.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:55:11 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 15:14:43 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 14:56:45 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,16 @@ class ABot
 		void						connectToServ();
 		void						fillSockAddr();
 	public :
+		/*Constructors*/
 		ABot(void);
-
 		virtual			~ABot( void );
 
+		/*Command utils*/
 		virtual	void	privmsgBot(std::vector<std::string> splitLine) const = 0;
-
 		void			waitForServer(void);
 		bool			sendToServer(std::string message) const;
 		std::string		listenToServer();
 		bool			parseServerCommand(std::string message);
-
 		void			disconnectBot(std::string message);
 		bool			isInChannelList(std::string channel);
 };

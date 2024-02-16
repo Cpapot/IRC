@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 14:26:22 by cprojean          #+#    #+#             */
-/*   Updated: 2024/01/29 16:11:11 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:53:49 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	client::topic(std::vector<std::string> splitLine)
 			if (i != (int)splitLine.size() - 1)
 				topic += SPACE;
 		}
-		currentChannel->setTopic(topic);
+		currentChannel->setTopic(topic, _nickname);
 		currentChannel->sendToAll(RPL_TOPIC(_nickname, _username, splitLine[1], topic));
 	}
 	else

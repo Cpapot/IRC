@@ -1,12 +1,15 @@
-/* ************************************************************************** */
+		// if (DEBUG)
+		// 	printShit("#d %s tried to join a channel with wrong parameters", _username, channelName);		// if (DEBUG)
+		// 	printShit("#d %s tried to join a channel with wrong parameters", _username, channelName);		// if (DEBUG)
+		// 	printShit("#d %s tried to join a channel with wrong parameters", _username, channelName);/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:43:48 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/02 10:02:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:11:07 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +62,21 @@ private:
 	void					fillSockAddr();
 public:
 	//server(std::string _passwd, std::string _port);
+	/*Constructors*/
 	server();
 	server(int argc, char **argv);
 	~server();
 
+	/*Getters*/
+	channel				*getChannel(std::string channel);
+	client				*getClient(std::string nickname);
+	bool				getStatus(void);
+	int					getSocket(void);
+	struct sockaddr_in	getAddrs(void);
+	std::string			getPasswd(void);
+	serverLogs			*getLogs(void);
+
+	/*Server Utils*/
 	void				deleteChannel(std::string channelName);
 	void				assosiateChannel(std::string channelName, int clientSocket);
 	void				assosiateClientSocket(int clientSocket);
@@ -73,17 +87,9 @@ public:
 	int					WaitForClient();
 	void				sendToAllNetwork(std::string message);
 
-	//command
+	/*Commands*/
 	bool				ping(int clientSocket, std::vector<std::string> splitLine);
 	bool				whoIs(int clientSocket, std::vector<std::string> splitline);
-
-	channel				*getChannel(std::string channel);
-	client				*getClient(std::string nickname);
-	bool				getStatus(void);
-	int					getSocket(void);
-	struct sockaddr_in	getAddrs(void);
-	std::string			getPasswd(void);
-	serverLogs			*getLogs(void);
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 16:53:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:09:56 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ private:
 	bool						_userAnswerSent;
 	bool						_badNick;
 
+	/*Private functions*/
 	bool	modeUser(std::vector<std::string> splitLine);
 	bool	modeChannel(std::vector<std::string> splitLine);
 	bool	privateMessage(std::string message, std::vector<std::string> splitLine, int i);
@@ -63,17 +64,17 @@ private:
 	void	joinInfo(std::string channel);
 
 public:
+	/*Constructors*/
 	client(int _clientSocket, server *serverPtr);
 	~client();
 
+	/*Utils*/
 	void	sendToClient(std::string message);
 	void	sendToClient(char *message);
 	bool	listenToClient();
-
-
 	bool	parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 
-	//command
+	/*Commands*/
 	bool	findCommand(char buffer[CLIENTBUFFERSIZE]);
 	bool	nick(std::vector<std::string> splitLine);
 	bool	user(std::vector<std::string> splitLine);
@@ -88,7 +89,7 @@ public:
 	bool	invite(std::vector<std::string> splitLine);
 	bool	topic(std::vector<std::string> splitLine);
 
-	//getters
+	/*Getters*/
 	std::string	getUsername(void);
 	std::string	getNickname(void);
 	std::string	getHostname(void);

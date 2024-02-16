@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 18:44:34 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:50:31 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ void	channel::setIsUserLimit(bool value, unsigned int maxUser)
 	_maxUser = maxUser;
 }
 
-void	channel::setTopic(std::string topic)
+void	channel::setTopic(std::string topic, std::string username)
 {
 	_topic = topic;
+	_topicSetter = username;
 }
 
 /*Getters*/
@@ -80,6 +81,11 @@ std::map<int, client*>	channel::getClientMap()
 std::string		channel::getTopic(void)
 {
 	return (_topic);
+}
+
+std::string		channel::getTopicSetter(void)
+{
+	return (_topicSetter);
 }
 
 std::string	channel::getChannelName(void)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 17:18:36 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:51:13 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ private:
 
 	std::string					_passwd;
 	std::string					_topic;
+	std::string					_topicSetter;
 	unsigned int				_maxUser;
 
 	std::map<int, client*>		_clientMap;
@@ -36,38 +37,42 @@ private:
 	bool						_isLocked;
 	bool						_isUserLimit;
 public:
+	/*Constructors*/
 	channel(std::string	name, int clientSocket);
 	~channel();
 
-	int						newClient(client *ClientPtr, std::vector<std::string> splitLine);
-	bool					isOnChannel(int socket);
-	bool					isOnChannelStr(std::string ClientNick);
-	void					disconnectClient(int clientSocket, bool sendPart);
-
-	void					sendToAll(std::string message);
-	void					sendToAllExept(std::string message, int senderSocket);
-
-	bool					isOperator(int clientSocket);
-	void					makeOperator(int clientSocket);
-	void					deleteOperator(int clientSocket);
-
-	std::map<int, client*>	getClientMap();
-	std::string				getChannelName(void);
+	/*Setters*/
 	void					setIsInviteOnly(bool value);
 	void					setIsTopicOperator(bool value);
 	void					setIsLocked(bool value, std::string pass);
 	void					setIsUserLimit(bool value, unsigned int maxUser);
-
-	void					setTopic(std::string topic);
-	void					clearTopic(void);
+	void					setTopic(std::string topic, std::string username);
+	
+	/*Getters*/
+	std::map<int, client*>	getClientMap();
+	std::string				getChannelName(void);
 	std::string				getTopic(void);
+	std::string				getTopicSetter(void);
+	std::string				getUserStatus(int userSocket);
+	
+	/*Checkers*/
+	bool					isOnChannel(int socket);
+	bool					isOnChannelStr(std::string ClientNick);
+	bool					isOperator(int clientSocket);
 	bool					isTopicOperator(void);
-
-	void					addToInviteList(std::string ClientNick);
-	void					removeFromInviteList(std::string ClientNick);
 	bool					isInInviteList(std::string ClientNick);
 
-	std::string				getUserStatus(int userSocket);
+	
+	/*Channel commands*/
+	int						newClient(client *ClientPtr, std::vector<std::string> splitLine);
+	void					disconnectClient(int clientSocket, bool sendPart);
+	void					sendToAll(std::string message);
+	void					sendToAllExept(std::string message, int senderSocket);
+	void					makeOperator(int clientSocket);
+	void					deleteOperator(int clientSocket);
+	void					clearTopic(void);
+	void					addToInviteList(std::string ClientNick);
+	void					removeFromInviteList(std::string ClientNick);
 };
 
 #endif

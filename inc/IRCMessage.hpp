@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 17:11:34 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/13 16:46:33 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define EXCLAMATION	"!"
 # define END			"\r\n"
 
-//UTILS
+/*UTILS*/
 # define USER_ID(nickname, username)				DDOT + nickname + EXCLAMATION + username + AROBASE + IP + SPACE
 # define PREFIX(nick, user, ID)						USER_ID(nick, user) + ID + SPACE + nick + SPACE
 # define WELCOME_MSG								"**********************************************\n" + \
@@ -31,7 +31,7 @@
 													"**********************************************\n" + \
 													" \n    Use /join <channel> to join a channel\n \n"
 
-//REPLY
+/*Replies*/
 # define RPL_DCC(nickname, username, dcc, dest)			USER_ID(nickname, username) + std::string("PRIVMSG ") + dest + SPACE + dcc + END
 # define RPL_PVTMSG(nickname, username, dest, reply)	USER_ID(nickname, username) + nickname + SPACE + reply
 # define RPL_CHANMSG(nickname, username, message)		DDOT + nickname + std::string(" PRIVMSG ") + username + SPACE + DDOT + message + END
@@ -50,7 +50,7 @@
 # define RPL_INVITING(nick, user, inv_nick, chan)		PREFIX(nick, user, "341") + inv_nick + SPACE + chan + END
 # define RPL_INVITE(nick, user, new_nick, chan)			USER_ID(nick, user) + std::string("INVITE ") + new_nick + SPACE + DDOT + chan + END
 
-//ERROR REPLY
+/*Error Replies*/
 # define ERR_UNKNOWNCOMMAND(cmd,nick, user)				PREFIX(nick, user, "421") + std::string("\"") + cmd + std::string("\" Unknown command\r\n")
 # define ERR_PASSWDMISMATCH(nick, user)					PREFIX(nick, user, "464") + std::string("Password incorrect\r\n")
 # define ERR_ALREADYREGISTERED(nick, user)				PREFIX(nick, user, "432") + std::string("You may not reregister\r\n")
