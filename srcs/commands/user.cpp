@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:47 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:45:44 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/17 13:30:48 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,20 @@
 #include "channel.hpp"
 #include "print.hpp"
 
+bool	testString(std::string str, std::string invalidChar);
+
 bool	client::user(std::vector<std::string> splitLine)
 {
-	// if (testString(splitLine[1]) == false)
-	// 	return(sendToClient(std::string("Le user il pue sa mere")), false);
-	// if (testString(splitLine[2]) == false)
-	// 	return(sendToClient(std::string("Le hostname il pue sa mere")), false);
-	// if (testString(splitLine[3]) == false)
-	// 	return(sendToClient(std::string("The server name has an incorrect character")), false);
-	// if (testString(splitLine[4]) == false)
-	// 	return(sendToClient(std::string("This real name has an incorrect character")), false);
+	if (splitLine.size() != 5)
+		return (sendToClient(ERR_NEEDMOREPARAMS(_nickname, "")), false);
+	if (testString(splitLine[1], " &#\r\n\t\v") == false)
+		return (sendToClient(ERR_NEEDMOREPARAMS(_nickname, "")), false);
+	if (testString(splitLine[2], " &#\r\n\t\v") == false)
+		return (sendToClient(ERR_NEEDMOREPARAMS(_nickname, "")), false);
+	if (testString(splitLine[3], " &#\r\n\t\v") == false)
+		return (sendToClient(ERR_NEEDMOREPARAMS(_nickname, "")), false);
+	if (testString(splitLine[4], " &#\r\n\t\v") == false)
+		return (sendToClient(ERR_NEEDMOREPARAMS(_nickname, "")), false);
 	_username = splitLine[1];
 	_hostname = splitLine[2];
 	_servername = splitLine[3];
@@ -36,6 +40,7 @@ bool	client::user(std::vector<std::string> splitLine)
 		printShit("#d %s created his user. Welcome !", _username.c_str());
 		sendToClient(std::string(RPL_USER(_nickname, _username, WELCOME_MSG)));
 		_userAnswerSent = true;
+		_hsDone = true;
 	}
 	return true;
 }

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/08 16:53:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/17 12:41:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ private:
 	//utils
 	bool						_userAnswerSent;
 	bool						_badNick;
+	bool						_hsDone;
 
 	bool	modeUser(std::vector<std::string> splitLine);
 	bool	modeChannel(std::vector<std::string> splitLine);

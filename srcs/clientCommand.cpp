@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clientCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 18:52:51 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/17 13:33:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 {
 	std::vector<std::string>	splitLine;
 	tokenize(split[splitIndex], ' ', splitLine);
-	if (commandIndex >= 3 && _logged != true)
+	if ((commandIndex >= 3 && _logged != true) || (commandIndex >= 6 && _hsDone != true))
 	{
+		std::cout << "qposioqsio" << std::endl;
 		sendToClient(std::string(ERR_NOTREGISTERED(_nickname, _username)));
-		return false;
+		return true;
 	}
 	switch (commandIndex)
 	{
@@ -90,7 +91,7 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 
 bool	client::cap(void)
 {
-	
+
 		printShit("#c CAP LS");
 	return true;
 }

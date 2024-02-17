@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 18:35:15 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:42:24 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ client::client(int clientSocket, server *serverPtr)
 	_modeOperator = false;
 	_userAnswerSent = false;
 	_badNick = false;
+	_hsDone = false;
 	_pass = "";
 	_username = "";
 	_nickname = "";
