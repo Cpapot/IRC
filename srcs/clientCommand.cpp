@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/17 13:33:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/17 13:56:16 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ bool	client::parseCommand(size_t splitIndex, size_t commandIndex, std::vector<st
 	return true;
 }
 
-bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
+bool	client::findCommand(std::string message)
 {
 	std::vector<std::string>	split;
 	std::string	commandList[13] = {"CAP", "PASS", "PING", "QUIT", "NICK", "USER", "PART", "MODE", "JOIN", "PRIVMSG", "KICK", "INVITE", "TOPIC"};
 
-	tokenize(std::string(buffer), '\n', split);
+	tokenize(message, '\n', split);
 	for (size_t i = 0; i < split.size(); i++)
 	{
 		bool	commandfound = false;

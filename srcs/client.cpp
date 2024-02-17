@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/17 12:42:24 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/17 14:37:05 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ client::client(int clientSocket, server *serverPtr)
 	_userAnswerSent = false;
 	_badNick = false;
 	_hsDone = false;
+	_messageBuffer = "";
 	_pass = "";
 	_username = "";
 	_nickname = "";
@@ -84,16 +85,30 @@ int	client::getSocket(void)
 
 bool	client::listenToClient()
 {
-	char	buffer[CLIENTBUFFERSIZE];
+	char			buffer[CLIENTBUFFERSIZE];
+	std::string		message;
 
 	memset(buffer, 0, sizeof(buffer));
 	if (recv(_clientSocket, buffer, sizeof(buffer) - 1, 0) == -1)
 		throw	std::invalid_argument("client::CantReceiveMessageFromClient");
-	if (buffer[0])
+	message = buffer;
+	if (message[0] && message[message.size() - 1] != '\n')
 	{
-		printShit("#d %s\n", buffer);
-		_serverPtr->getLogs()->receive(std::string(buffer), _clientSocket);
-		return findCommand(buffer);
+		_messageBuffer += message;
+		return true;
+	}
+	else if (message[0])
+	{
+		message = _messageBuffer + message;
+		_messageBuffer = "";
+	}
+	if (message[0] && message[message.size() - 2] != '\r' && message[message.size() - 1] == '\n')
+		message.insert((int)message.length() - 1, 1, '\r');
+	if (message[0])
+	{
+		printShit("#d %s\n", message);
+		_serverPtr->getLogs()->receive(message, _clientSocket);
+		return findCommand(message);
 	}
 	else
 		return false;

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 07:02:26 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/17 12:41:33 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/02/17 13:56:28 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ private:
 	bool						_userAnswerSent;
 	bool						_badNick;
 	bool						_hsDone;
+	std::string					_messageBuffer;
 
 	bool	modeUser(std::vector<std::string> splitLine);
 	bool	modeChannel(std::vector<std::string> splitLine);
@@ -75,7 +76,7 @@ public:
 	bool	parseCommand(size_t splitIndex, size_t commandIndex, std::vector<std::string> split);
 
 	//command
-	bool	findCommand(char buffer[CLIENTBUFFERSIZE]);
+	bool	findCommand(std::string message);
 	bool	nick(std::vector<std::string> splitLine);
 	bool	user(std::vector<std::string> splitLine);
 	bool	pass(std::vector<std::string> splitLine);
