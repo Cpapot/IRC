@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Wall_e.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:51:02 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/12 18:55:01 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/17 15:14:32 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,19 @@ void	wall_e::privmsgBot(std::vector<std::string> splitLine) const
 {
 	if (splitLine[3] != std::string(":") + BOT_PREFIX)
 		return ;
+	if (splitLine.size() <= 5)
+		return ;
 	printShit("#i %s %s", splitLine[0].substr(1).c_str(), "is trying to generate an image");
 	std::string	prompt = cleanPrompt(splitLine);
 	std::string	url = generateImg(prompt);
 	if (url == "null\n")
-		url = "An error occured while generating the image";
+		sendToServer(PRIVMSG("An error occured during image generation", splitLine[2]));
 	else
 	{
 		url.erase(url.size() - 1);
 		printShit("#i %s \"%s\"", "Image succesfully generated with the prompt:", prompt.c_str());
+		sendToServer(PRIVMSG(SEND_LINK(url, prompt,splitLine[0].substr(1).c_str()), splitLine[2]));
 	}
-	sendToServer(PRIVMSG(SEND_LINK(url, prompt,splitLine[0].substr(1).c_str()), splitLine[2]));
 }
 
 std::string	wall_e::generateImg(std::string prompt) const
