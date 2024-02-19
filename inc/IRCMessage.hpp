@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/13 16:46:33 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:33:22 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define RPL_KICK(nick, user, chan, kicknick, message)	USER_ID(nick, user) + std::string("KICK ") + chan + SPACE + kicknick + SPACE + message + END
 # define RPL_INVITING(nick, user, inv_nick, chan)		PREFIX(nick, user, "341") + inv_nick + SPACE + chan + END
 # define RPL_INVITE(nick, user, new_nick, chan)			USER_ID(nick, user) + std::string("INVITE ") + new_nick + SPACE + DDOT + chan + END
+# define RPL_CHANMODE(nick, user, chan, modestr)		USER_ID(nick, user) + std::string("MODE ") + chan + SPACE + modestr + END
 
 /*Error Replies*/
 # define ERR_UNKNOWNCOMMAND(cmd,nick, user)				PREFIX(nick, user, "421") + std::string("\"") + cmd + std::string("\" Unknown command\r\n")

@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 14:26:22 by cprojean          #+#    #+#             */
-/*   Updated: 2024/02/13 16:53:49 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:23:19 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@ bool	client::topic(std::vector<std::string> splitLine)
 	std::string topic;
 	channel		*currentChannel;
 	// bool		needOperator;
-	
+
+	if (splitLine.size() <= 1)
+	{
+		sendToClient(std::string(ERR_NOSUCHCHANNEL(_nickname, _username, "")));
+		return false;
+	}
 	currentChannel = _serverPtr->getChannel(splitLine[1]);
 	if (!currentChannel)
 	{

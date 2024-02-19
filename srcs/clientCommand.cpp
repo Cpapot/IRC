@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:52:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 18:52:51 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:09:21 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ bool	client::findCommand(char buffer[CLIENTBUFFERSIZE])
 
 bool	client::cap(void)
 {
-	
-		printShit("#c CAP LS");
+	printShit("#c CAP LS");
 	return true;
 }

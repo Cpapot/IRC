@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:45:18 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:31:14 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,19 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 		return false;
 	}
-
+	int	y = 0;
 	for (size_t i = 1; i != splitLine[2].size(); i++)
 	{
 		switch (char(splitLine[2][i]))
 		{
 			case 'i':
 				_serverPtr->getChannel(splitLine[1])->setIsInviteOnly(mode);
-				printShit("#c %s : switched to mode Invite Only", splitLine[1].c_str());
+				printShit("#c %s : switched the channel to mode Invite Only", splitLine[1].c_str());
 				break;
 
 			case 't':
 				_serverPtr->getChannel(splitLine[1])->setIsTopicOperator(mode);
-				printShit("#c %s : switched to mode T", splitLine[1].c_str());
+				printShit("#c %s : set a topic", splitLine[1].c_str());
 				break;
 
 			case 'k':
@@ -116,8 +116,10 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 			default:
 				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
 				return false;
+			y = i;
 		}
 	}
+	_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_CHANMODE(_nickname, _username, splitLine[1], splitLine[2][1]));
 	return true;
 }
 

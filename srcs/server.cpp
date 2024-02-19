@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 18:49:02 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:41:48 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,13 @@ int		server::acceptClient()
 
 void		server::launch(void)
 {
+	int opt = 1;
 	//crée un socket (comme un fd)
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socket == -1)
 		return throw std::invalid_argument("server::FailedToOpenSocket");
+	else if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
+		return throw std::invalid_argument("server::FailedToOpenSocket");	
 	//affecte le socket a un nom
 	if(bind(_socket, (struct sockaddr*)&_serverAddrs, (socklen_t)sizeof(_serverAddrs)) == -1)
 		return throw std::invalid_argument("server::FailedToBindSocket(PortMayBeBusy)");
