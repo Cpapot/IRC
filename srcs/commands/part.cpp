@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:33 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:45:54 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:32:08 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 bool	client::part(std::vector<std::string> splitLine)
 {
-	if (splitLine.size() != 2)
+	if (splitLine.size() < 1)
 	{
 		sendToClient(ERR_NEEDMOREPARAMS(_nickname, _username));
 		return false;
@@ -36,8 +36,10 @@ bool	client::part(std::vector<std::string> splitLine)
 			return false;
 		}
 	}
-	//_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_PART(_nickname, _username, splitLine[1]));
-	_serverPtr->getChannel(splitLine[1])->disconnectClient(_clientSocket, 1);
+	std::string message;
+	for (unsigned long i = 2; i < splitLine.size(); i++)
+		message += splitLine[i] + SPACE;
+	_serverPtr->getChannel(splitLine[1])->disconnectClient(_clientSocket, 1, message);
 	printShit("#c %s left %s", _username.c_str(), splitLine[1].c_str());
 	return true;
 }

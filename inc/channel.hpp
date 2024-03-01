@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:26:23 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/13 16:51:13 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:22:12 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ public:
 	
 	/*Channel commands*/
 	int						newClient(client *ClientPtr, std::vector<std::string> splitLine);
-	void					disconnectClient(int clientSocket, bool sendPart);
+	void					disconnectClient(int clientSocket, bool sendPart, std::string message);
 	void					sendToAll(std::string message);
 	void					sendToAllExept(std::string message, int senderSocket);
 	void					makeOperator(int clientSocket);

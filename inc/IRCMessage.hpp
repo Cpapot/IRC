@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/19 17:33:22 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:39:44 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define RPL_NAMREPLY(nick, user, chan, names, status)	PREFIX(nick, user, "353") + std::string("=") + SPACE + chan + std::string(" :") + status + names + END
 # define RPL_NOTOPIC(nick, user, chan)					PREFIX(nick, user, "331") + chan + " :No topic is set" + END
 # define RPL_PING(nick, user, msg)						USER_ID(nick, user) + std::string("PONG") + SPACE + msg + END
-# define RPL_PART(nick, user, channel)					USER_ID(nick, user) + std::string("PART") + SPACE + channel + END
+# define RPL_PART(nick, user, channel, message)			USER_ID(nick, user) + std::string("PART") + SPACE + channel + SPACE + message + END
 # define RPL_QUIT(nick, user, message)					USER_ID(nick, user) + std::string("QUIT") + SPACE + DDOT + message + END
 # define RPL_KICK(nick, user, chan, kicknick, message)	USER_ID(nick, user) + std::string("KICK ") + chan + SPACE + kicknick + SPACE + message + END
 # define RPL_INVITING(nick, user, inv_nick, chan)		PREFIX(nick, user, "341") + inv_nick + SPACE + chan + END

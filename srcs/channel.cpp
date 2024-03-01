@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:03:00 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/13 16:50:31 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:21:56 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,14 @@ void	channel::sendToAllExept(std::string message, int senderSocket)
 	}
 }
 
-void	channel::disconnectClient(int clientSocket, bool sendPart)
+void	channel::disconnectClient(int clientSocket, bool sendPart, std::string message)
 {
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 	{
 		if (i->first == clientSocket)
 		{
 			if (sendPart)
-				sendToAll(RPL_PART(i->second->getNickname(), i->second->getUsername(), _channelName));
+				sendToAll(RPL_PART(i->second->getNickname(), i->second->getUsername(), _channelName, message));
 			_clientMap.erase(i);
 			break ;
 		}

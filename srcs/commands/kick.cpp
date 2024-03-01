@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:47:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/01/25 17:41:12 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/03/01 12:23:15 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ bool	client::kick(std::vector<std::string> splitLine)
 	}
 	kickMsg.erase(0, 1);
 	_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_KICK(_nickname, _username, splitLine[1], splitLine[2], kickMsg));
-	_serverPtr->getChannel(splitLine[1])->disconnectClient(_serverPtr->getClient(splitLine[2])->getSocket(), false);
+	_serverPtr->getChannel(splitLine[1])->disconnectClient(_serverPtr->getClient(splitLine[2])->getSocket(), false, NULL);
 	return true;
 }

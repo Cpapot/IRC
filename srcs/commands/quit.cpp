@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/12 16:45:35 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:22:46 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	client::quit(std::vector<std::string> splitLine)
 {
 	splitLine[1].erase(0, 1);
 	for (size_t i = 0; i != _loggedChannel.size(); i++)
-		_serverPtr->getChannel(_loggedChannel[i])->disconnectClient(_clientSocket, 1);
+		_serverPtr->getChannel(_loggedChannel[i])->disconnectClient(_clientSocket, 1, NULL);
 	_serverPtr->deleteClientSocket(_clientSocket);
 	std::string quit;
 	for (unsigned long i = 1; i < splitLine.size(); i++)
