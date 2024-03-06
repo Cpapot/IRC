@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCMessage.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:07:45 by cpapot            #+#    #+#             */
-/*   Updated: 2024/03/01 11:39:44 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/06 15:34:06 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@
 # define ERR_NEEDMOREPARAMS(nick, user)					PREFIX(nick, user, "461") + std::string("Not enough parameters\r\n")
 # define ERR_NOTREGISTERED(nick, user)					PREFIX(nick, user, "451") + std::string("You have not registered\r\n")
 # define ERR_ERRONEUSNICKNAME(nick, user)				PREFIX(nick, user, "432") + std::string("Errorneus nickname\r\n")
-# define ERR_UMODEUNKNOWNFLAG(nick, user)				PREFIX(nick, user, "501") + std::string("Unknown MODE flag\r\n")
+# define ERR_UMODEUNKNOWNFLAG(nick, user, channel)		PREFIX(nick, user, "501") + channel + std::string(" Unknown MODE flag\r\n")
 # define ERR_NOTONCHANNEL(nick, user, chan)				PREFIX(nick, user, "442") + std::string("\"") + chan + std::string("\" You are not on that channel\r\n")
 # define ERR_NOSUCHCHANNEL(nick, user, chan)			PREFIX(nick, user, "403") + std::string("\"") + chan + std::string("\" No such channel\r\n")
 # define ERR_USERSDONTMATCH(nick, user)					PREFIX(nick, user, "502") + std::string("Cant change mode for other users") + END

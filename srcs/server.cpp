@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:42:46 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/19 16:41:48 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/06 15:23:19 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ server::server(int argc, char **argv): _serverName("IRC++")
 	this->fillSockAddr();
 	this->launch();
 	_logs = new serverLogs(_port);
+	_clientSocketLen = sizeof(struct sockaddr_in);
 	_status = true;
 }
 
 server::~server()
 {
-	
+
 		printShit("#i Closing %s", _serverName.c_str());
 	for (std::map<int, client*>::iterator i = _clientMap.begin(); i != _clientMap.end(); i++)
 		delete i->second;
@@ -133,7 +134,7 @@ void		server::launch(void)
 	if (_socket == -1)
 		return throw std::invalid_argument("server::FailedToOpenSocket");
 	else if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
-		return throw std::invalid_argument("server::FailedToOpenSocket");	
+		return throw std::invalid_argument("server::FailedToOpenSocket");
 	//affecte le socket a un nom
 	if(bind(_socket, (struct sockaddr*)&_serverAddrs, (socklen_t)sizeof(_serverAddrs)) == -1)
 		return throw std::invalid_argument("server::FailedToBindSocket(PortMayBeBusy)");

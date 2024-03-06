@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
+/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/19 17:31:14 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/06 15:35:32 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 		mode = true;
 	else
 	{
-		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
+		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username, splitLine[1])));
 		return false;
 	}
-	int	y = 0;
 	for (size_t i = 1; i != splitLine[2].size(); i++)
 	{
 		switch (char(splitLine[2][i]))
@@ -95,7 +94,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 				}
 				printShit("#c %s : switched to mode L", splitLine[1].c_str());
 				break;
-				
+
 			case 'o':
 				if (splitLine.size() <= 3)
 				{
@@ -114,12 +113,11 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 				break;
 
 			default:
-				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
+				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username, splitLine[1])));
 				return false;
-			y = i;
 		}
 	}
-	_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_CHANMODE(_nickname, _username, splitLine[1], splitLine[2][1]));
+	_serverPtr->getChannel(splitLine[1])->sendToAll(RPL_CHANMODE(_nickname, _username, splitLine[1], splitLine[2]));
 	return true;
 }
 
@@ -142,7 +140,7 @@ bool	client::modeUser(std::vector<std::string> splitLine)
 		mode = true;
 	else
 	{
-		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
+		sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username, "")));
 		return false;
 	}
 	for (size_t i = 1; i != splitLine[2].size(); i++)
@@ -164,7 +162,7 @@ bool	client::modeUser(std::vector<std::string> splitLine)
 				break;
 			default:
 
-				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username)));
+				sendToClient(std::string(ERR_UMODEUNKNOWNFLAG(_nickname, _username, "")));
 				return false;
 		}
 	}
@@ -183,4 +181,4 @@ bool	client::mode(std::vector<std::string> splitLine)
 		return modeUser(splitLine);
 	else
 		return modeChannel(splitLine);
-}	
+}
