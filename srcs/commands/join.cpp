@@ -6,7 +6,7 @@
 /*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:03 by cpapot            #+#    #+#             */
-/*   Updated: 2024/02/13 16:53:12 by cprojean         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:00:15 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	client::joinInfo(std::string channel)
 	for (std::map<int, client *>::iterator ite = map.begin(); ite != map.end(); ite++)
 	{
 		sendToClient(RPL_NAMREPLY(_nickname, _username, channel, ite->second->getNickname(), _serverPtr->getChannel(channel)->getUserStatus(ite->second->getSocket())));
-		std::cout << ite->second->getSocket() << std::endl;
+		// std::cout << ite->second->getSocket() << std::endl;
 	}
 	sendToClient(RPL_ENDOFNAMES(_nickname, _username, channel));
 }

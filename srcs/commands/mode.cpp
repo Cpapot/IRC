@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
+/*   By: cprojean <cprojean@42lyon.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2024/03/06 15:35:32 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/03/06 16:04:09 by cprojean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 						return false;
 					}
 				}
-				printShit("#c %s : switched to mode K", splitLine[1].c_str());
+				printShit("#c %s : mode Restricted triggered", splitLine[1].c_str());
 				break;
 
 			case 'l':
@@ -92,7 +92,7 @@ bool	client::modeChannel(std::vector<std::string> splitLine)
 						return false;
 					}
 				}
-				printShit("#c %s : switched to mode L", splitLine[1].c_str());
+				printShit("#c %s : mode Limit triggered", splitLine[1].c_str());
 				break;
 
 			case 'o':
